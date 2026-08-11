@@ -1,8 +1,6 @@
 import { Button } from '../ui';
 
 interface HeaderProps {
-  /** Context-aware CTA per Design System — Middle East / Workforce Intelligence
-   *  Platform pages use the alternate CTA copy. Default is the general one. */
   ctaContext?: 'general' | 'workforce-intelligence';
 }
 
@@ -15,10 +13,10 @@ const NAV_ITEMS = [
 ];
 
 /**
- * Pass 1: solid Graphite background, always-on (not transparent-over-hero
- * transitioning to solid). The scroll-triggered transparency/blur transition
- * is a Pass 3 enhancement — ships now as a correct, accessible, static header
- * rather than an animation stub.
+ * Pass 2: real wordmark treatment — offset hairline seam through the "A"
+ * (46%, not dead-centre, per Brand Book v1.4 / Design System Section 16),
+ * tightened tracking, tagline lockup beneath at reduced opacity so it never
+ * competes with the wordmark. Matches the locked Identity System exactly.
  */
 export function Header({ ctaContext = 'general' }: HeaderProps) {
   const ctaLabel =
@@ -29,8 +27,22 @@ export function Header({ ctaContext = 'general' }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-graphite">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-4 lg:px-20">
-        <a href="/" className="text-lg font-medium tracking-wordmark text-white">
-          STRATISION
+        <a href="/" className="flex flex-col leading-none">
+          <span className="text-lg font-medium tracking-wordmark text-white">
+            STR
+            <span className="relative inline-block">
+              A
+              <span
+                aria-hidden="true"
+                className="absolute bottom-[12%] top-[12%] w-px bg-graphite"
+                style={{ left: '46%' }}
+              />
+            </span>
+            TISION
+          </span>
+          <span className="mt-0.5 text-[9px] font-bold uppercase tracking-eyebrow text-accent-300 opacity-70">
+            Strategy&nbsp;&middot;&nbsp;Vision&nbsp;&middot;&nbsp;Intelligence
+          </span>
         </a>
 
         <nav aria-label="Primary" className="hidden gap-8 lg:flex">
@@ -49,7 +61,6 @@ export function Header({ ctaContext = 'general' }: HeaderProps) {
           {ctaLabel}
         </Button>
 
-        {/* Mobile nav trigger — Pass 2 wires the actual menu panel */}
         <button
           className="inline-flex h-10 w-10 items-center justify-center text-white lg:hidden"
           aria-label="Open menu"

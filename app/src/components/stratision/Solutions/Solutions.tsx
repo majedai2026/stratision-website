@@ -59,13 +59,14 @@ export function Solutions() {
                   <span aria-hidden="true" className="text-accent-500">{isOpen ? '−' : '+'}</span>
                 </button>
                 {isOpen && (
-                  <div id={`outcome-panel-${i}`} className="flex flex-wrap gap-2 pb-6">
-                    {outcome.services.map((service) => (
-                      <span
-                        key={service}
-                        className="rounded-sm border border-accent-300 px-3 py-1.5 text-sm text-accent-500"
-                      >
-                        {service}
+                  <div id={`outcome-panel-${i}`} className="flex flex-wrap items-center gap-3 pb-6 pl-1">
+                    <span aria-hidden="true" className="h-px w-6 bg-accent-500" />
+                    {outcome.services.map((service, si) => (
+                      <span key={service} className="flex items-center gap-3">
+                        {si > 0 && <span aria-hidden="true" className="h-px w-3 bg-accent-300" />}
+                        <span className="rounded-sm border border-accent-300 px-3 py-1.5 text-sm text-accent-500">
+                          {service}
+                        </span>
                       </span>
                     ))}
                   </div>
