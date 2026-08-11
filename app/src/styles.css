@@ -111,3 +111,23 @@
     border-color: var(--hf-color-border-default);
   }
 }
+
+/* Stratision brand tokens */
+@theme {
+  --color-white: #FFFFFF;
+  --color-soft-grey: #F5F5F7;
+  --color-graphite: #1C1C1E;
+  --color-near-black: #111111;
+  --color-brand-midnight: #0E1B2E;
+  --color-accent-100: #E0E5E9;
+  --color-accent-200: #B6C1CD;
+  --color-accent-300: #8295A9;
+  --color-accent-400: #546F89;
+  --color-accent-500: #2F4F6F;
+  --color-accent-600: #29435C;
+  --color-accent-700: #233649;
+  --tracking-wordmark: 0.074em;
+  --tracking-eyebrow: 0.08em;
+  --leading-body: 1.5;
+  --leading-display: 1.1;
+}
