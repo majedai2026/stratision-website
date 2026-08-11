@@ -46,7 +46,7 @@ export function Header({ ctaContext = 'general' }: HeaderProps) {
           <img
             src={logoLockup}
             alt="Stratision — Strategy, Vision, Intelligence"
-            className="h-10 w-auto lg:h-11"
+            className="h-12 w-auto lg:h-14"
           />
         </a>
 
