@@ -8,3 +8,4 @@ export { IndustrySelector } from './IndustrySelector';
 export { OpportunityMatrix } from './OpportunityMatrix';
 export { StoryCard } from './StoryCard';
 export { InsightCard } from './InsightCard';
+export { Reveal } from './Reveal';

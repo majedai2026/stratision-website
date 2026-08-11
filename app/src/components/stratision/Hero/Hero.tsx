@@ -18,17 +18,20 @@ export function Hero() {
 
       <div className="relative">
         <h1 className="mx-auto max-w-4xl text-5xl font-bold leading-display text-near-black lg:text-7xl">
-          The future won't replace businesses.
-          <br />
-          Businesses using AI will.
+          <span className="strat-hero-line strat-hero-line-1 block">
+            The future won't replace businesses.
+          </span>
+          <span className="strat-hero-line strat-hero-line-2 block">
+            Businesses using AI will.
+          </span>
         </h1>
 
-        <p className="mx-auto mt-6 max-w-xl text-lg leading-body text-[#444444]">
+        <p className="strat-hero-line strat-hero-sub mx-auto mt-6 max-w-xl text-lg leading-body text-[#444444]">
           Stratision helps organisations identify, prioritise and implement practical AI
           solutions that deliver measurable business value.
         </p>
 
-        <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+        <div className="strat-hero-line strat-hero-cta mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Button variant="primary">Book an AI Strategy Session</Button>
           <a
             href="#methodology"
@@ -38,7 +41,7 @@ export function Hero() {
           </a>
         </div>
 
-        <div className="mx-auto mt-16 flex max-w-lg items-center justify-center gap-3">
+        <div className="strat-hero-line strat-hero-trust mx-auto mt-16 flex max-w-lg items-center justify-center gap-3">
           <span aria-hidden="true" className="h-px w-8 bg-accent-500" />
           <p className="text-sm text-[#777777]">
             Built for leadership teams serious about long-term operational transformation —

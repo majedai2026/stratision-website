@@ -9,18 +9,23 @@ interface Industry {
 
 interface IndustrySelectorProps {
   industries: Industry[];
+  /** Controlled mode — when provided, the scroll-pin (or any parent) drives
+   *  the active tab; clicks call onSelect instead of internal state. */
+  activeIndex?: number;
+  onSelect?: (index: number) => void;
 }
 
 /**
- * Pass 2: visually elevated (larger type, numbered indices, more deliberate
- * spacing) while remaining the same accessible tab interface as Pass 1 —
- * real <button role="tab">, keyboard navigable. The scroll-pinned upgrade
- * (matching CustomAI Studio's sticky-scroll pattern) is Pass 3 motion work,
- * not done here — see Design System Section 19 / motion-rules.md.
+ * Pass 3: supports controlled mode so the scroll-pinned Industries section
+ * can drive the active tab from scroll position while tabs stay clickable
+ * and keyboard-navigable. Uncontrolled behaviour (own state) is unchanged
+ * for any other usage.
  */
-export function IndustrySelector({ industries }: IndustrySelectorProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
+export function IndustrySelector({ industries, activeIndex: controlled, onSelect }: IndustrySelectorProps) {
+  const [internal, setInternal] = useState(0);
+  const activeIndex = controlled ?? internal;
   const active = industries[activeIndex];
+  const select = (i: number) => (onSelect ? onSelect(i) : setInternal(i));
 
   return (
     <div>
@@ -32,7 +37,7 @@ export function IndustrySelector({ industries }: IndustrySelectorProps) {
             aria-selected={i === activeIndex}
             aria-controls={`industry-panel-${i}`}
             id={`industry-tab-${i}`}
-            onClick={() => setActiveIndex(i)}
+            onClick={() => select(i)}
             className={`flex items-center gap-2 px-5 py-4 text-left text-sm font-medium transition-colors duration-[120ms]
               ${i === activeIndex
                 ? 'border-b-2 border-accent-500 text-near-black'
