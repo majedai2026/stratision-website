@@ -18,7 +18,7 @@ const PRINCIPLES = [
 
 export function WhyStratision() {
   return (
-    <section id="why-stratision" className="bg-graphite px-6 py-16 text-white lg:px-20 lg:py-24">
+    <section id="why-stratision" className="bg-[#0E1B2E] px-6 py-20 text-white lg:px-20 lg:py-28">
       <div className="mx-auto max-w-[1440px]">
         <SectionHeader dark headline="Our principles never change." />
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

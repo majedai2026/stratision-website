@@ -58,3 +58,23 @@
     transition: none;
   }
 }
+
+/* ============================================================
+ * Editorial Intelligence — Locked Visual System (V1)
+ * Colour: Deep Blue #0E1B2E · Off-White #F7F5F0 · Near-Black #14140F
+ * Accent: Slate Blue #2F4F6F (unchanged — no electric blue, confirmed
+ * against the actual approved logo file, not a generated reference image)
+ * Type: Fraunces (display/serif) + Archivo (body/UI)
+ * LOCKED per Majed's explicit decision — do not reopen without a new
+ * deliberate conversation, not a "this mockup looked nicer" reflex.
+ * ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&display=swap');
+
+:root {
+  --strat-deep-blue: #0E1B2E;
+  --strat-off-white: #F7F5F0;
+  --strat-near-black: #14140F;
+}
+
+.font-serif { font-family: 'Fraunces', serif; font-optical-sizing: auto; }
+.font-archivo { font-family: 'Archivo', sans-serif; }

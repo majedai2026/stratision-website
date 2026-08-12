@@ -46,8 +46,8 @@ export function Assessment() {
           <div className="grid divide-y divide-soft-grey lg:grid-cols-4 lg:divide-x lg:divide-y-0">
             {DELIVERABLES.map((item) => (
               <div key={item.title} className="p-8">
-                <span className="text-xs font-bold text-accent-300">{item.index}</span>
-                <h3 className="mt-2 mb-2 text-sm font-semibold text-near-black">{item.title}</h3>
+                <span className="font-serif text-xs text-accent-300">{item.index}</span>
+                <h3 className="font-serif mt-2 mb-2 text-base font-medium text-near-black">{item.title}</h3>
                 <p className="text-sm leading-body text-[#555555]">{item.body}</p>
               </div>
             ))}
@@ -55,7 +55,7 @@ export function Assessment() {
 
           <div className="grid gap-px bg-soft-grey lg:grid-cols-2">
             <div className="bg-white p-8">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-eyebrow text-accent-500">
+              <h3 className="font-serif mb-4 text-sm text-accent-500">
                 Exhibit A — Business Intelligence Score
               </h3>
               {SCORE_ROWS.map((row) => (
@@ -64,7 +64,7 @@ export function Assessment() {
             </div>
 
             <div className="bg-white p-8">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-eyebrow text-accent-500">
+              <h3 className="font-serif mb-4 text-sm text-accent-500">
                 Exhibit B — Opportunity Matrix
               </h3>
               <OpportunityMatrix

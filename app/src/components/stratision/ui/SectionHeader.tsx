@@ -5,14 +5,13 @@ interface SectionHeaderProps {
   headline: ReactNode;
   supporting?: ReactNode;
   dark?: boolean;
-  /** Heading level for correct document outline — sections are h2 by default */
   as?: 'h1' | 'h2' | 'h3';
 }
 
 /**
- * The recurring "01 — Headline" + Signature Seam underline pattern used at
- * the top of Sections 04-10. The seam is a design token (1px, offset 46%),
- * not a one-off logo flourish — see Brand Book Section 16.
+ * Editorial Intelligence system (locked). Headline uses Fraunces (font-serif),
+ * everything else stays Archivo (the default). This is the single place that
+ * change lives — every section inherits it automatically.
  */
 export function SectionHeader({
   eyebrow,
@@ -23,7 +22,7 @@ export function SectionHeader({
 }: SectionHeaderProps) {
   const eyebrowColor = dark ? 'text-accent-200' : 'text-accent-500';
   const textColor = dark ? 'text-white' : 'text-near-black';
-  const supportingColor = dark ? 'text-accent-200' : 'text-[#333333]';
+  const supportingColor = dark ? 'text-accent-200' : 'text-[#4A5A6C]';
 
   return (
     <div className="mb-8">
@@ -33,7 +32,7 @@ export function SectionHeader({
         </p>
       )}
       <Heading
-        className={`relative pb-6 text-4xl font-bold leading-display ${textColor}
+        className={`font-serif relative pb-6 text-4xl font-normal leading-[1.15] ${textColor}
           after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-accent-500`}
       >
         {headline}

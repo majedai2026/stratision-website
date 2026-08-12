@@ -15,12 +15,11 @@ const NAV_ITEMS = [
 ];
 
 /**
- * Pass 3: uses the locked, approved Stratision logo lockup (raster asset —
- * see Brand Book note: production vector pass by a type designer still
- * recommended for print/small-size use; this asset is the approved on-screen
- * lockup). Header background is #020C21 — the logo image's exact background
- * colour, sampled from the approved file — so the mark blends seamlessly.
- * On scroll: hairline border + subtle shadow appear (strat-header CSS).
+ * Editorial Intelligence system. Nav labels UNCHANGED (locked IA) — only
+ * visually refined: smaller, lighter, more generously spaced. Background
+ * stays #020C21 (the actual logo file's own background colour) rather than
+ * the locked #0E1B2E section colour, so the logo blends with zero visible
+ * edge — the one deliberate exception to the single-hex Deep Blue rule.
  */
 export function Header({ ctaContext = 'general' }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -38,31 +37,29 @@ export function Header({ ctaContext = 'general' }: HeaderProps) {
       : 'Book an AI Strategy Session';
 
   return (
-    <header
-      className={`strat-header sticky top-0 z-50 bg-[#020C21] ${scrolled ? 'strat-scrolled' : ''}`}
-    >
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-3 lg:px-20">
+    <header className={`strat-header sticky top-0 z-50 bg-[#020C21] ${scrolled ? 'strat-scrolled' : ''}`}>
+      <div className="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-3.5 lg:px-20">
         <a href="/" className="flex items-center" aria-label="Stratision — home">
           <img
             src={logoLockup}
             alt="Stratision — Strategy, Vision, Intelligence"
-            className="h-12 w-auto lg:h-14"
+            className="h-11 w-auto lg:h-12"
           />
         </a>
 
-        <nav aria-label="Primary" className="hidden gap-8 lg:flex">
+        <nav aria-label="Primary" className="hidden gap-10 lg:flex">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-sm text-accent-200 transition-colors duration-[120ms] hover:text-white"
+              className="text-[13px] font-medium tracking-wide text-accent-200 transition-colors duration-[120ms] hover:text-white"
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <Button variant="primary" className="hidden sm:inline-flex">
+        <Button variant="primary" className="hidden text-xs sm:inline-flex">
           {ctaLabel}
         </Button>
 

@@ -131,3 +131,9 @@
   --leading-body: 1.5;
   --leading-display: 1.1;
 }
+
+/* Stratision Editorial Intelligence — locked typography */
+@theme {
+  --font-sans: 'Archivo', -apple-system, sans-serif;
+  --font-serif: 'Fraunces', serif;
+}

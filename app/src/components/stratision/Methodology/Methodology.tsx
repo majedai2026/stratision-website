@@ -1,4 +1,4 @@
-import { SectionHeader, Timeline } from '../ui';
+import { SectionHeader } from '../ui';
 
 const STAGES = [
   { label: 'Discover', detail: "We start by understanding your business, not by pitching a tool." },
@@ -10,20 +10,31 @@ const STAGES = [
 ];
 
 /**
- * Section 04. Internal 8-stage Consultancy Methodology collapsed to 6
- * client-facing stages — full detail stays in the Company Bible, not here.
- * No trademark symbol on "Consultancy Methodology" per the 2-mark cap.
+ * Section 04 — Editorial Intelligence system. Same locked copy/structure,
+ * restyled as a continuous hairline-divided editorial strip (Fraunces
+ * numerals + labels) instead of a small card grid — all six stages remain
+ * visible at once, per Majed's explicit decision to keep this non-carousel.
  */
 export function Methodology() {
   return (
-    <section id="methodology" className="bg-white px-6 py-16 lg:px-20 lg:py-24">
+    <section id="methodology" className="bg-[#F7F5F0] px-6 py-20 lg:px-20 lg:py-28">
       <div className="mx-auto max-w-[1440px]">
         <SectionHeader
           eyebrow="How we work"
           headline="Great outcomes aren't accidental. They're engineered."
           supporting="Every engagement follows a proven methodology designed to reduce risk, accelerate adoption and deliver measurable business value."
         />
-        <Timeline stages={STAGES} />
+        <div className="grid grid-cols-1 gap-px bg-[#14140F]/10 sm:grid-cols-2 lg:grid-cols-6">
+          {STAGES.map((stage) => (
+            <div key={stage.label} className="bg-[#F7F5F0] pt-8">
+              <span className="font-serif mb-14 block text-sm text-accent-500">
+                {String(STAGES.indexOf(stage) + 1).padStart(2, '0')}
+              </span>
+              <h3 className="font-serif mb-2 text-xl font-medium text-near-black">{stage.label}</h3>
+              <p className="text-[13px] leading-body text-[#4A5A6C]">{stage.detail}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

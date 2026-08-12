@@ -82,12 +82,13 @@ export function Industries() {
 
   const content = (
     <div className="mx-auto max-w-[1440px]">
-      <SectionHeader headline="Built around how your industry actually works." />
-      <div className="bg-white p-2">
+      <SectionHeader dark headline="Built around how your industry actually works." />
+      <div className="bg-[#14283F] p-2">
         <IndustrySelector
           industries={INDUSTRIES}
           activeIndex={activeIndex}
           onSelect={handleSelect}
+          dark
         />
       </div>
     </div>
@@ -95,7 +96,7 @@ export function Industries() {
 
   if (!pinEnabled) {
     return (
-      <section id="industries" className="bg-soft-grey px-6 py-16 lg:px-20 lg:py-24">
+      <section id="industries" className="bg-[#0E1B2E] px-6 py-20 text-white lg:px-20 lg:py-28">
         {content}
       </section>
     );
@@ -104,7 +105,7 @@ export function Industries() {
   return (
     <section id="industries" aria-label="Industries">
       <div ref={outerRef} className="relative" style={{ height: '220vh' }}>
-        <div className="sticky top-0 flex min-h-screen items-center bg-soft-grey px-6 lg:px-20">
+        <div className="sticky top-0 flex min-h-screen items-center bg-[#0E1B2E] px-6 text-white lg:px-20">
           <div className="w-full">{content}</div>
         </div>
       </div>

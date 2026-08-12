@@ -43,7 +43,7 @@ export function Insights() {
             <span className="text-xs font-bold text-accent-300">01 / {String(TOTAL).padStart(2, '0')}</span>
             <span className="text-xs font-bold uppercase tracking-eyebrow text-accent-500">Featured</span>
           </div>
-          <h3 className="mt-4 max-w-2xl text-4xl font-bold leading-display text-near-black group-hover:text-accent-500">
+          <h3 className="mt-4 max-w-2xl font-serif text-4xl font-normal leading-display text-near-black group-hover:text-accent-500">
             {FEATURED.title}
           </h3>
           <p className="mt-4 max-w-xl text-base leading-body text-[#555555]">{FEATURED.excerpt}</p>
@@ -55,7 +55,7 @@ export function Insights() {
               <span className="text-xs font-bold text-accent-300">
                 {String(i + 2).padStart(2, '0')} / {String(TOTAL).padStart(2, '0')}
               </span>
-              <h3 className="text-lg font-semibold leading-display text-near-black group-hover:text-accent-500">
+              <h3 className="font-serif text-lg font-medium leading-display text-near-black group-hover:text-accent-500">
                 {article.title}
               </h3>
               <p className="text-sm leading-body text-[#666666]">{article.excerpt}</p>
