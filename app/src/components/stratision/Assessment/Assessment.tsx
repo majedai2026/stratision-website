@@ -1,78 +1,72 @@
-import { SectionHeader, ScoreBar, OpportunityMatrix } from '../ui';
-
+/**
+ * Section 05 — Production Pass 2. Faithful port of the approved HTML lab
+ * (v6): bordered white document frame on Off-White, retaining the
+ * executive-report treatment exactly. Deliberately kept distinct from
+ * Stories (Pass 3) per the review — this stays a "document," Stories
+ * becomes a "spread." Score data remains illustrative and labelled.
+ * Copy unchanged.
+ */
 const SCORE_ROWS = [
   { label: 'Knowledge Retention', score: 2 },
   { label: 'Process Consistency', score: 3 },
   { label: 'Technology Utilisation', score: 2 },
   { label: 'Decision-Making Visibility', score: 1 },
-  { label: 'Operational Efficiency', score: 3 },
 ];
 
-const DELIVERABLES = [
-  { index: '01', title: 'Business Intelligence Score', body: 'Understand your current AI maturity.' },
-  { index: '02', title: 'Opportunity Matrix', body: 'See where AI will create the greatest business value.' },
-  { index: '03', title: 'Transformation Roadmap', body: 'Know exactly what to do first, second and third.' },
-  { index: '04', title: 'Executive Recommendations', body: 'A prioritised action plan for leadership.' },
-];
+function ScoreDots({ score, max = 5 }: { score: number; max?: number }) {
+  return (
+    <span className="flex gap-1">
+      {Array.from({ length: max }).map((_, i) => (
+        <span
+          key={i}
+          className={`h-[9px] w-[9px] rounded-sm ${i < score ? 'bg-accent-500' : 'bg-[#e0e0e0]'}`}
+        />
+      ))}
+    </span>
+  );
+}
 
-/**
- * Section 05. Pass 2: restyled to read as an excerpt from a real executive
- * report (document border, "EXHIBIT" framing, near-black headers, numbered
- * deliverables) rather than generic SaaS dashboard cards — matches the
- * visual language already established in the BIA docx template, so the
- * website preview and the actual client deliverable feel like the same
- * artifact rather than two different products.
- */
 export function Assessment() {
   return (
-    <section id="assessment" className="bg-soft-grey px-6 py-16 lg:px-20 lg:py-24">
+    <section id="assessment" className="bg-off-white px-6 pb-16 lg:px-20 lg:pb-28">
       <div className="mx-auto max-w-[1440px]">
-        <SectionHeader
-          headline="The first step isn't a sales call."
-          supporting="It's a structured business assessment designed to identify where AI creates measurable value — and where it doesn't. You'll leave with clear priorities, practical recommendations and a roadmap tailored to your business."
-        />
-
-        {/* Document frame — echoes the BIA docx cover treatment */}
-        <div className="border border-accent-300/40 bg-white">
-          <div className="flex items-center justify-between border-b border-soft-grey px-8 py-4">
-            <span className="text-xs font-bold uppercase tracking-eyebrow text-accent-500">
-              Business Intelligence Assessment — Executive Report
-            </span>
-            <span className="text-xs font-bold uppercase tracking-eyebrow text-[#999999]">
-              Sample Exhibit
-            </span>
-          </div>
-
-          <div className="grid divide-y divide-soft-grey lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-            {DELIVERABLES.map((item) => (
-              <div key={item.title} className="p-8">
-                <span className="font-serif text-xs text-accent-300">{item.index}</span>
-                <h3 className="font-serif mt-2 mb-2 text-base font-medium text-near-black">{item.title}</h3>
-                <p className="text-sm leading-body text-[#555555]">{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid gap-px bg-soft-grey lg:grid-cols-2">
-            <div className="bg-white p-8">
-              <h3 className="font-serif mb-4 text-sm text-accent-500">
-                Exhibit A — Business Intelligence Score
-              </h3>
-              {SCORE_ROWS.map((row) => (
-                <ScoreBar key={row.label} label={row.label} score={row.score} illustrative />
-              ))}
+        <div className="border border-black/15 bg-white">
+          <div className="flex flex-col gap-2.5 border-b border-black/10 px-6 py-6 lg:flex-row lg:items-baseline lg:justify-between lg:px-12 lg:py-9">
+            <div>
+              <span className="text-[11px] uppercase tracking-eyebrow text-[#7C8A9A]">
+                Business Intelligence Assessment™ — Executive Report
+              </span>
+              <h2 className="font-serif mt-2 text-2xl font-normal text-near-black lg:text-[32px]">
+                The first step isn't a sales call.
+              </h2>
             </div>
+            <span className="text-[11px] uppercase tracking-eyebrow text-[#7C8A9A]">Sample Exhibit</span>
+          </div>
 
-            <div className="bg-white p-8">
-              <h3 className="font-serif mb-4 text-sm text-accent-500">
-                Exhibit B — Opportunity Matrix
-              </h3>
-              <OpportunityMatrix
-                highImpactLowEffort={{ label: 'Priority', placeholder: 'Priority findings — act first' }}
-                highImpactHighEffort={{ label: 'Strategic', placeholder: 'Strategic bets — plan carefully' }}
-                lowImpactLowEffort={{ label: 'Quick Win', placeholder: 'Quick wins — worth doing, not urgent' }}
-                lowImpactHighEffort={{ label: 'Deprioritise', placeholder: 'Deprioritise — do not recommend' }}
-              />
+          <div className="grid grid-cols-1 gap-9 px-6 py-6 lg:grid-cols-2 lg:gap-16 lg:px-12 lg:py-12">
+            <div>
+              <p className="text-base leading-[1.7] text-[#333]">
+                It's a structured business assessment designed to identify where AI creates
+                measurable value — and where it doesn't. You'll leave with clear priorities,
+                practical recommendations and a roadmap tailored to your business.
+              </p>
+              <a
+                href="#"
+                className="mt-6 inline-block text-sm text-near-black underline decoration-accent-500 decoration-1 underline-offset-4"
+              >
+                Learn about the Assessment →
+              </a>
+            </div>
+            <div>
+              <p className="mb-5 text-[11px] uppercase tracking-eyebrow text-accent-500">
+                Exhibit A — Business Intelligence Score
+              </p>
+              {SCORE_ROWS.map((row) => (
+                <div key={row.label} className="flex items-center justify-between border-b border-black/[0.08] py-3 text-sm">
+                  <span>{row.label}</span>
+                  <ScoreDots score={row.score} />
+                </div>
+              ))}
             </div>
           </div>
         </div>

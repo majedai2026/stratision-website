@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&display=swap');
 /**
  * Stratision Motion System — Pass 3.
  * Timings from tokens.ts / motion-rules.md. Governing rule: motion guides
@@ -68,7 +69,6 @@
  * LOCKED per Majed's explicit decision — do not reopen without a new
  * deliberate conversation, not a "this mockup looked nicer" reflex.
  * ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&display=swap');
 
 :root {
   --strat-deep-blue: #0E1B2E;

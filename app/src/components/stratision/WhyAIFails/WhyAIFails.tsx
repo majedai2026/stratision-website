@@ -1,46 +1,47 @@
-import { SectionHeader } from '../ui';
-
-const FAILURE_PATH = ['Buy AI', 'Deploy AI', 'Hope for results', 'Low adoption', 'Poor ROI'];
-const SUCCESS_PATH = ['Understand', 'Assess', 'Prioritise', 'Implement', 'Optimise'];
-
-function PathRow({ steps, active }: { steps: string[]; active: boolean }) {
-  return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-3">
-      {steps.map((step, i) => (
-        <span key={step} className="flex items-center gap-2">
-          <span
-            className={`rounded-sm px-3 py-1.5 text-sm font-medium ${
-              active ? 'bg-accent-500 text-white' : 'bg-soft-grey text-[#777777] line-through'
-            }`}
-          >
-            {step}
-          </span>
-          {i < steps.length - 1 && <span aria-hidden="true" className="text-accent-300">→</span>}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 /**
- * Section 03 — the signature belief statement lives here first, then repeats
- * at 05b and again in Insights (10), per the repetition strategy in the
- * Homepage Copy Draft. Do not reword between appearances.
+ * Section 03 — Production Pass 2. Faithful port of the approved HTML lab
+ * (v6): two-column diagnostic LEDGER — no pills, no rounded chips, no
+ * arrow-between-badges UI. Dark Deep Blue. The closing statement is
+ * deliberately subordinate (small caption, not a manifesto) per the
+ * explicit review decision that Breathing Space alone owns the full
+ * cinematic treatment of this repeated belief. Copy unchanged.
  */
+const ROWS = [
+  { fail: 'Buy AI', success: 'Understand' },
+  { fail: 'Deploy AI', success: 'Assess' },
+  { fail: 'Hope for results', success: 'Prioritise' },
+  { fail: 'Low adoption', success: 'Implement' },
+  { fail: 'Poor ROI', success: 'Optimise' },
+];
+
 export function WhyAIFails() {
   return (
-    <section className="bg-white px-6 py-16 lg:px-20 lg:py-24">
-      <div className="mx-auto max-w-3xl">
-        <SectionHeader headline="Most companies do this:" />
-        <PathRow steps={FAILURE_PATH} active={false} />
+    <section className="bg-deep-blue px-6 py-16 text-white lg:px-20 lg:py-28">
+      <div className="mx-auto max-w-[820px]">
+        <h2 className="font-serif mb-14 text-center text-[26px] font-normal lg:text-[34px]">
+          Most companies do this:
+        </h2>
 
-        <p className="my-8 text-center text-sm font-medium uppercase tracking-eyebrow text-accent-500">
-          Stratision does this instead:
-        </p>
+        <div className="mx-auto max-w-[760px] border-t border-white/15">
+          <div className="hidden grid-cols-[1fr_60px_1fr] pb-3.5 lg:grid">
+            <span className="text-right text-[11px] uppercase tracking-eyebrow text-accent-300">The common path</span>
+            <span />
+            <span className="text-[11px] uppercase tracking-eyebrow text-accent-300">The Stratision path</span>
+          </div>
 
-        <PathRow steps={SUCCESS_PATH} active />
+          {ROWS.map((row) => (
+            <div
+              key={row.fail}
+              className="grid grid-cols-1 gap-1 border-b border-white/10 py-3 lg:grid-cols-[1fr_60px_1fr] lg:items-center lg:gap-0 lg:py-[18px]"
+            >
+              <span className="text-[13px] text-[#5C6B7E] lg:text-right lg:text-[15px]">{row.fail}</span>
+              <span className="hidden text-center text-[11px] text-accent-300 lg:block">→</span>
+              <span className="text-[15px] font-medium text-white">{row.success}</span>
+            </div>
+          ))}
+        </div>
 
-        <p className="mt-12 text-lg leading-body text-near-black">
+        <p className="mx-auto mt-12 max-w-[520px] text-center text-sm leading-[1.7] text-accent-300">
           Businesses don't fail with AI because the technology isn't ready. They fail because
           they implement tools before understanding the business problem. We start with the
           problem — every time.

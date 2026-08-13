@@ -1,12 +1,9 @@
-import { SectionHeader } from '../ui';
-
 /**
- * Section 09. Rewritten from a generic "Why us" feature list into philosophy
- * statements pulled from the Company Bible's operating principles, per
- * Brand Book Section 12 (The Stratision Test) — this is the section that
- * should feel most distinctly Stratision. Keep this wording in sync with the
- * Company Bible if either changes; consistency between internal docs and
- * public copy matters more here than anywhere else on the site.
+ * Section 09 — Production Pass 3. Faithful port of the approved HTML lab
+ * (v6): quiet, centred, dark manifesto — no cards, no icons, no grid.
+ * Deliberately the most restrained section on the page besides Breathing
+ * Space. Copy unchanged, sourced from the Company Bible's operating
+ * principles per Brand Book Section 9.
  */
 const PRINCIPLES = [
   'We diagnose before we recommend.',
@@ -18,16 +15,18 @@ const PRINCIPLES = [
 
 export function WhyStratision() {
   return (
-    <section id="why-stratision" className="bg-[#0E1B2E] px-6 py-20 text-white lg:px-20 lg:py-28">
+    <section id="why-stratision" className="bg-deep-blue px-6 py-16 text-center text-white lg:px-20 lg:py-28">
       <div className="mx-auto max-w-[1440px]">
-        <SectionHeader dark headline="Our principles never change." />
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <h2 className="font-serif mb-16 text-2xl font-normal italic lg:mb-[72px] lg:text-4xl">
+          "Our principles never change."
+        </h2>
+        <div className="mx-auto flex max-w-[640px] flex-col gap-7 lg:gap-8">
           {PRINCIPLES.map((principle) => (
-            <li key={principle} className="border-l-2 border-accent-500 py-1 pl-4 text-base text-accent-200">
+            <p key={principle} className="font-serif text-lg font-normal leading-[1.4] text-[#dbe3ea] lg:text-[22px]">
               {principle}
-            </li>
+            </p>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

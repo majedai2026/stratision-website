@@ -137,3 +137,11 @@
   --font-sans: 'Archivo', -apple-system, sans-serif;
   --font-serif: 'Fraunces', serif;
 }
+/* Production tokens — updated to match the approved HTML lab (v6) exactly.
+   Near Black corrected from #111111 (original Design System) to #14140F
+   (the value actually used throughout the approved lab). */
+@theme {
+  --color-near-black: #14140F;
+  --color-deep-blue: #0E1B2E;
+  --color-off-white: #F7F5F0;
+}
