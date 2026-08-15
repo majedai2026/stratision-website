@@ -1,19 +1,27 @@
 /**
- * Production QA fix. Restores the approved staggered entrance animation
- * (stratision-motion.css classes, already shipped in an earlier pass) onto
- * the asymmetric layout — this was dropped when Hero was rebuilt for the
- * Editorial Intelligence composition and never re-added. Layout, copy, and
- * structure are otherwise UNCHANGED from the approved version.
- * Respects prefers-reduced-motion via the existing global CSS rule in
- * stratision-motion.css (.strat-hero-line { animation: none; opacity: 1; }
- * under the @media (prefers-reduced-motion: reduce) block) — no new logic
- * needed here since that guard already applies to any element using these
- * classes; this component just needed to use them again.
+ * Motion Phase 1 — Hero. Approved concept: quiet precision-drawing lines
+ * (NOT a full website grid), one blue axis line with tick marks acting as
+ * a measurement reference rather than decoration. CSS/React motion only —
+ * no GSAP dependency here, per the explicit "Hero shouldn't need the whole
+ * animation library" decision. Headline/copy/CTA structure and the
+ * existing strat-hero-line reveal classes are unchanged.
  */
 export function Hero() {
   return (
-    <section className="bg-deep-blue px-6 pb-0 pt-16 lg:px-20">
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 border-b border-white/[0.08] pb-16 lg:grid-cols-[280px_1fr] lg:gap-16 lg:pb-28">
+    <section className="relative overflow-hidden bg-deep-blue px-6 pb-0 pt-16 lg:px-20">
+      {/* Precision lines — sparse, varied length, asymmetric. Not a grid. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[12%] top-[15%] h-[180px] w-px bg-accent-300 opacity-[0.14]" />
+        <div className="absolute left-[12%] top-[15%] h-px w-[120px] bg-accent-300 opacity-[0.14]" />
+        <div className="absolute bottom-[10%] right-[8%] h-[90px] w-px bg-accent-300 opacity-[0.14]" />
+
+        {/* The single blue axis — a measurement line, not an effect */}
+        <div className="absolute left-[9%] top-[8%] h-[280px] w-px bg-accent-500 opacity-70" />
+        <div className="absolute left-[6%] top-[8%] h-px w-1.5 bg-accent-500 opacity-70" />
+        <div className="absolute left-[6%] top-[calc(8%+280px)] h-px w-1.5 bg-accent-500 opacity-70" />
+      </div>
+
+      <div className="relative mx-auto grid max-w-[1440px] grid-cols-1 gap-8 border-b border-white/[0.08] pb-16 lg:grid-cols-[280px_1fr] lg:gap-16 lg:pb-28">
         <div className="strat-hero-line strat-hero-line-1 flex flex-col justify-between pt-0 lg:pt-3">
           <p className="text-xs font-semibold uppercase tracking-eyebrow text-accent-300 lg:leading-loose">
             Strategy
@@ -31,7 +39,7 @@ export function Hero() {
         </div>
 
         <div>
-          <h1 className="strat-hero-line strat-hero-line-2 font-serif text-[34px] font-normal leading-[1.15] text-white lg:text-[66px]">
+          <h1 className="font-serif strat-hero-line strat-hero-line-2 text-[34px] font-normal leading-[1.15] text-white lg:text-[66px]">
             The future won't replace businesses.
             <br />
             <span className="italic font-light text-accent-200">Businesses using AI will.</span>
