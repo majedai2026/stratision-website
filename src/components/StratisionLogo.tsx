@@ -45,7 +45,7 @@ export const StratisionLogo: React.FC<StratisionLogoProps> = ({
       } ${className}`}
     >
       <img
-        src="/stratision-white-300w-1.png"
+        src="/stratision-white-300w.png"
         alt="Stratision — Strategy • Vision • Intelligence"
         className={`${getSizeClass()} ${imgClassName} w-auto object-contain transition-opacity duration-200 group-hover:opacity-90`}
         draggable={false}
