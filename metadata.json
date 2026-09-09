@@ -1,0 +1,6 @@
+{
+  "name": "Stratision - AI Strategy, Systems & Enterprise Solutions",
+  "description": "Stratision helps organisations identify, prioritise and implement practical AI solutions that deliver measurable business value.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
