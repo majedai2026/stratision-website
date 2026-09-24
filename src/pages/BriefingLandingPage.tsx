@@ -60,8 +60,8 @@ export const BriefingLandingPage: React.FC<BriefingLandingPageProps> = ({
     <div className="min-h-screen bg-[#080A10] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans antialiased">
       {/* 01 — HERO SECTION */}
       <section className="relative pt-28 sm:pt-32 lg:pt-36 pb-20 sm:pb-28 border-b border-white/[0.06] overflow-hidden">
-        {/* Subtle background ambient radial lighting */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-blue-600/[0.04] blur-[140px] pointer-events-none rounded-full" />
+        {/* Subtle background ambient radial lighting (Desktop only) */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-blue-600/[0.04] blur-[140px] pointer-events-none rounded-full hidden md:block" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           {/* Metadata pill */}

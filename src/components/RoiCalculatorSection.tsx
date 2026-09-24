@@ -417,7 +417,7 @@ export const RoiCalculatorSection: React.FC<RoiCalculatorSectionProps> = ({ onOp
                 onClick={onOpenBooking}
                 className="w-full py-3.5 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs tracking-wider uppercase transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Audit & Verify This Capacity Model</span>
+                <span>Start a Conversation</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

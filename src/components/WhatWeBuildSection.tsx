@@ -1,311 +1,388 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowRight, Check, ArrowUpRight } from "lucide-react";
 
 interface WhatWeBuildSectionProps {
-  onOpenBooking: () => void;
+  onOpenBooking?: () => void;
 }
 
-export const WhatWeBuildSection: React.FC<WhatWeBuildSectionProps> = ({ onOpenBooking }) => {
-  const [selectedFamily, setSelectedFamily] = useState<number>(0);
+interface Capability {
+  id: string;
+  number: string;
+  title: string;
+  tagline: string;
+  description: string;
+}
 
-  const capabilities = [
-    {
-      id: "workforce",
-      number: "01",
-      title: "Workforce Intelligence",
-      flagship: "Workforce Intelligence Platform™",
-      summary: "Give employees instant access to the operational knowledge, procedures, and training they need.",
-      problem:
-        "Important knowledge is often scattered across documents, systems and individual employees. This can slow onboarding, create repeated questions and make it harder for teams to work consistently.",
-      systemDescription:
-        "A company-specific AI knowledge system built around your approved manuals, procedures and training materials. Employees can ask questions and quickly find the information they need.",
-      leverage:
-        "Faster access to company knowledge, easier onboarding and more consistent ways of working.",
-      keyCapabilities: [
-        "Uses your approved manuals, policies and procedural guides.",
-        "Helps employees find answers to day-to-day operational questions, with references back to the relevant source.",
-        "Highlights knowledge and training gaps to help leadership improve team readiness.",
-        "Provides role-specific onboarding paths built around approved company practices.",
-      ],
-      deliverable: "Bespoke AI Knowledge System",
-    },
-    {
-      id: "operations",
-      number: "02",
-      title: "Operations & Workflows",
-      flagship: "Workflow Automation & Core Operations",
-      summary: "Automate repetitive work, connect disconnected systems, and keep important tasks moving.",
-      problem:
-        "High-volume routine tasks—such as matching supplier invoices, verifying shipping documents, and updating records across separate software systems—consume hours of skilled employee time and create avoidable delays.",
-      systemDescription:
-        "Tailored automated workflows that extract information from incoming documents, verify figures against your business rules, update your accounting and management systems directly, and flag only unusual exceptions for manager review.",
-      leverage:
-        "Removes manual data entry, cuts turnaround times from days to minutes, and frees operational staff to focus on higher-value client and supplier management.",
-      keyCapabilities: [
-        "Automated extraction and verification of commercial invoices, contracts, and shipping files",
-        "Direct synchronization between your ERP, CRM, and internal databases without manual re-keying",
-        "Clear approval rules that automatically route exceptions to the responsible manager",
-        "Complete activity logs providing full operational visibility and compliance tracking",
-      ],
-      deliverable: "Bespoke Workflow Automation & Direct System-of-Record Integration",
-    },
-    {
-      id: "commercial",
-      number: "03",
-      title: "Sales & Customer Operations",
-      flagship: "Enquiry Triage & Commercial Operations",
-      summary: "Capture enquiries, qualify opportunities, respond faster, and support clients around the clock.",
-      problem:
-        "Valuable incoming sales leads, client inquiries, and quotation requests often wait hours or days for responses. Busy teams struggle with inconsistent lead follow-ups and time-consuming manual CRM updates.",
-      systemDescription:
-        "Intelligent commercial systems engineered around your exact qualification criteria, pricing guidelines, and brand standards. They promptly qualify incoming enquiries, generate initial proposals within approved guardrails, and schedule meetings with the right team members.",
-      leverage:
-        "Delivers instant responses to high-value prospects, ensures consistent commercial qualification, and keeps pipeline records current without adding administrative burden.",
-      keyCapabilities: [
-        "Prompt qualification and intelligent routing of inbound enquiries across web, email, and voice",
-        "Assisted proposal and quote preparation adhering strictly to your pricing parameters",
-        "Automated executive scheduling coordinating multiple stakeholder availability",
-        "Automatic pipeline updates keeping CRM deal records and client history accurate",
-      ],
-      deliverable: "Bespoke Commercial Core & Bidirectional CRM Architecture",
-    },
-    {
-      id: "intelligence",
-      number: "04",
-      title: "Knowledge & Decision Support",
-      flagship: "Executive Analysis & Decision Support",
-      summary: "Turn your company's information into clear, reliable insights leadership can actually use.",
-      problem:
-        "Executives and investment committees often spend days combing through 300+ page contracts, regulatory filings, financial audits, or investment dossiers to identify covenant risks, hidden liabilities, or reporting discrepancies.",
-      systemDescription:
-        "Private analytical engines that review and cross-reference extensive document archives. They extract key terms, compare financial figures, and produce structured executive briefings where every finding is directly linked to the original page and paragraph.",
-      leverage:
-        "Reduces complex review cycles from days to hours, ensuring strategic decisions are backed by verifiable evidence with zero unverified speculation.",
-      keyCapabilities: [
-        "Comprehensive cross-document analysis across extensive contracts, filings, and audit decks",
-        "Direct page and paragraph references linking every summary point back to source documents",
-        "Automated identification of contractual risks, unusual terms, and financial discrepancies",
-        "Structured executive briefing dossiers formatted for executive committee review",
-      ],
-      deliverable: "Private Decision Engine & Evidentiary Verification Framework",
-    },
-  ];
+interface SystemArtifactData {
+  label: string;
+  reference: string;
+  subject: string;
+  context: string;
+  metric1: { value: string; label: string };
+  metric2: { value: string; label: string };
+  outcome: string;
+}
 
-  const current = capabilities[selectedFamily];
+const CAPABILITIES: Capability[] = [
+  {
+    id: "revenue",
+    number: "01",
+    title: "Sales & Client Intake",
+    tagline: "Qualify high-value enquiries immediately.",
+    description: "Sales teams lose deals when enquiries sit in inboxes. AI answers incoming buyers, confirms their budget, and passes qualified leads to your team.",
+  },
+  {
+    id: "marketing",
+    number: "02",
+    title: "Marketing & Growth",
+    tagline: "Focus budget on the campaigns that convert.",
+    description: "Businesses waste marketing spend on channels that do not bring profit. AI compares channel performance and moves budget to what works.",
+  },
+  {
+    id: "operations",
+    number: "03",
+    title: "Finance & Operations",
+    tagline: "Check invoices and approve payments with zero errors.",
+    description: "Finance teams waste hours manually checking supplier invoices. AI matches invoices against purchase orders and prepares the payment run.",
+  },
+  {
+    id: "workforce",
+    number: "04",
+    title: "Staff Training & Onboarding",
+    tagline: "Get new team members up to speed faster.",
+    description: "Training new employees takes senior staff away from daily work. AI turns company guidelines into practical practice scenarios and tracks progress.",
+  },
+  {
+    id: "customer-ops",
+    number: "05",
+    title: "Customer Enquiries & Booking",
+    tagline: "Never miss a booking or client enquiry.",
+    description: "Offices lose valuable appointments when phone lines are busy. AI answers callers, checks staff availability, and books appointments directly.",
+  },
+  {
+    id: "decision",
+    number: "06",
+    title: "Executive Business Reviews",
+    tagline: "Compare business options before making major decisions.",
+    description: "Senior leadership teams spend weeks gathering numbers for board decisions. AI compares the options, highlights risks, and prepares clear summaries.",
+  },
+];
+
+const SYSTEM_ARTIFACTS: SystemArtifactData[] = [
+  {
+    label: "CLIENT QUALIFICATION RECORD",
+    reference: "Ref: SR-0841",
+    subject: "Sarah Mitchell",
+    context: "Property purchase enquiry",
+    metric1: { value: "£1.5M", label: "Budget confirmed" },
+    metric2: { value: "3-bed", label: "Property matched" },
+    outcome: "Suitable property found and enquiry passed to the broker.",
+  },
+  {
+    label: "MARKETING BUDGET REVIEW",
+    reference: "Ref: CPB-2026",
+    subject: "Autumn Campaign",
+    context: "Lead generation review",
+    metric1: { value: "2.4x", label: "Higher return found" },
+    metric2: { value: "£15,000", label: "Budget reallocated" },
+    outcome: "Budget moved to the best performing marketing channel.",
+  },
+  {
+    label: "INVOICE CHECK",
+    reference: "Ref: INV-4821",
+    subject: "Meridian Industrial",
+    context: "Supplier payment review",
+    metric1: { value: "£18,420", label: "Invoice verified" },
+    metric2: { value: "100%", label: "Purchase order matched" },
+    outcome: "Invoice matched against order and approved for payment.",
+  },
+  {
+    label: "STAFF ONBOARDING CHECK",
+    reference: "Ref: TR-0412",
+    subject: "James Carter",
+    context: "Customer service training",
+    metric1: { value: "100%", label: "Policy test score" },
+    metric2: { value: "4 / 4", label: "Scenarios passed" },
+    outcome: "Training verified and employee approved for client work.",
+  },
+  {
+    label: "APPOINTMENT BOOKING",
+    reference: "Ref: COR-9941",
+    subject: "Sarah Mitchell",
+    context: "Client consultation",
+    metric1: { value: "Thu 14:30", label: "Appointment booked" },
+    metric2: { value: "0", label: "No scheduling conflicts" },
+    outcome: "Appointment booked and details sent to the team.",
+  },
+  {
+    label: "EXPANSION REVIEW",
+    reference: "Ref: EDB-2026",
+    subject: "Regional Expansion",
+    context: "New office review",
+    metric1: { value: "+18%", label: "Higher return projected" },
+    metric2: { value: "11 Months", label: "Time to open" },
+    outcome: "Options compared and board review prepared.",
+  },
+];
+
+interface BusinessArtifactProps {
+  capabilityIdx: number;
+}
+
+const BusinessArtifact: React.FC<BusinessArtifactProps> = ({ capabilityIdx }) => {
+  const artifact = SYSTEM_ARTIFACTS[capabilityIdx] || SYSTEM_ARTIFACTS[0];
+
+  return (
+    <div className="w-full h-full flex flex-col justify-between">
+      {/* 1 & 2: Small document label & Reference */}
+      <div className="flex items-center justify-between">
+        <span
+          className="text-[11px] sm:text-[12px] font-bold tracking-[0.1em] uppercase text-[#141619]"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          {artifact.label}
+        </span>
+        <span className="text-[11px] font-mono text-neutral-400">
+          {artifact.reference}
+        </span>
+      </div>
+
+      {/* 3, 4, 5: Large subject + Context + Two Large Metrics */}
+      <div className="my-auto py-5 sm:py-10 space-y-2">
+        <h4
+          className="text-[26px] sm:text-[34px] lg:text-[38px] font-bold text-[#141619] tracking-tight leading-tight"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          {artifact.subject}
+        </h4>
+        <p
+          className="text-[14px] sm:text-[15px] text-neutral-500 font-medium"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          {artifact.context}
+        </p>
+
+        {/* TWO LARGE KEY FACTS / OUTCOMES - DOMINATING THE CARD */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-10 pt-5 sm:pt-8">
+          <div>
+            <div
+              className="text-[26px] sm:text-[36px] font-bold text-[#141619] tracking-tight leading-none"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              {artifact.metric1.value}
+            </div>
+            <div
+              className="text-[12.5px] sm:text-[13px] text-neutral-500 font-medium mt-1"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              {artifact.metric1.label}
+            </div>
+          </div>
+          <div>
+            <div
+              className="text-[26px] sm:text-[36px] font-bold text-[#141619] tracking-tight leading-none"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              {artifact.metric2.value}
+            </div>
+            <div
+              className="text-[12.5px] sm:text-[13px] text-neutral-500 font-medium mt-1"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              {artifact.metric2.label}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 6: AI OUTCOME → Short result */}
+      <div className="pt-6 border-t border-black/[0.08] text-[13px] sm:text-[14px] font-medium text-neutral-800 flex items-baseline gap-2">
+        <span className="font-semibold text-neutral-900 font-mono text-[11px] sm:text-xs uppercase tracking-wider shrink-0">
+          AI OUTCOME →
+        </span>
+        <span className="text-neutral-700">{artifact.outcome}</span>
+      </div>
+    </div>
+  );
+};
+
+export const WhatWeBuildSection: React.FC<WhatWeBuildSectionProps> = ({ onOpenBooking: _onOpenBooking }) => {
+  const [selectedCapability, setSelectedCapability] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Check for prefers-reduced-motion and mobile screens
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const isMobile = window.innerWidth < 768;
+      setPrefersReducedMotion(mediaQuery.matches || isMobile);
+      if (mediaQuery.matches || isMobile) {
+        setIsAutoPlaying(false);
+      }
+
+      const handleChange = (e: MediaQueryListEvent) => {
+        const mobile = window.innerWidth < 768;
+        setPrefersReducedMotion(e.matches || mobile);
+        if (e.matches || mobile) setIsAutoPlaying(false);
+      };
+
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+  }, []);
+
+  // Autonomous Slideshow: Advance every 2.8 seconds on desktop only
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    if (typeof window !== "undefined" && (window.innerWidth < 768 || prefersReducedMotion)) {
+      setIsAutoPlaying(false);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setSelectedCapability((prev) => (prev + 1) % CAPABILITIES.length);
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, prefersReducedMotion]);
+
+  // Handle user manually selecting a capability (pauses autoplay)
+  const handleSelectCapability = (idx: number) => {
+    setIsAutoPlaying(false);
+    setSelectedCapability(idx);
+  };
 
   return (
     <section
-      id="what-we-build"
-      className="relative py-20 md:py-28 bg-[#080A10] border-t border-white/[0.06] text-slate-100 scroll-mt-28"
+      id="ai-systems"
+      ref={sectionRef}
+      className="relative py-24 sm:py-36 lg:py-44 bg-[#080B14] border-t border-white/[0.06] text-slate-100 scroll-mt-24 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-start max-w-4xl mb-12"
-        >
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-4 block">
-            03 — WHAT WE BUILD
-          </span>
+        <div className="max-w-3xl mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-widest text-blue-400 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span>AI SYSTEMS</span>
+          </div>
+
           <h2
-            className="text-[28px] sm:text-[38px] lg:text-[46px] font-bold text-white tracking-[-0.03em] leading-[1.12]"
+            className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.08]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
-            Four capability families. Determined by the business problem.
+            Custom architectures built for your business.
           </h2>
-          <p
-            className="text-base sm:text-lg text-slate-300 mt-4 leading-relaxed"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            The system is determined by the business problem — not the other way around. We do not sell off-the-shelf software subscriptions. Each capability is engineered bespoke around your organisation's workflows, anchored by our flagship Workforce Intelligence Platform™.
+
+          <p className="text-base sm:text-lg text-slate-300 mt-4 max-w-2xl font-normal leading-relaxed">
+            We don't build generic chatbots or novelty tools. We build practical AI systems that qualify incoming sales leads, evaluate marketing spend, check supplier invoices, onboard new staff, and coordinate client bookings.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Editorial 4-Column Navigation Bar */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-t border-b border-white/[0.08]">
-          {capabilities.map((cap, idx) => {
-            const isSelected = selectedFamily === idx;
-            const isFlagship = cap.id === "workforce";
+        {/* Mobile Horizontal Pill Selector */}
+        <div className="lg:hidden flex overflow-x-auto gap-2 pb-4 mb-6 px-0.5 no-scrollbar">
+          {CAPABILITIES.map((cap, idx) => {
+            const isSelected = selectedCapability === idx;
             return (
-              <div
+              <button
                 key={cap.id}
-                onClick={() => setSelectedFamily(idx)}
-                className={`p-7 lg:p-8 cursor-pointer transition-all duration-300 relative flex flex-col justify-between ${
-                  idx < 3 ? "lg:border-r border-b lg:border-b-0 border-white/[0.08]" : ""
-                } ${isSelected ? "bg-[#0C1019]" : "hover:bg-white/[0.02]"}`}
+                onClick={() => handleSelectCapability(idx)}
+                className={`shrink-0 min-h-[44px] px-4 py-2 rounded-full text-xs font-semibold tracking-tight transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isSelected
+                    ? "bg-white text-[#080B14] shadow-md"
+                    : "bg-white/[0.06] text-slate-300 hover:bg-white/10 hover:text-white border border-white/[0.08]"
+                }`}
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
-                {/* Active Top Accent Line */}
-                <div
-                  className={`absolute top-0 left-0 right-0 h-[2px] transition-all duration-300 ${
-                    isSelected ? "bg-blue-500" : "bg-transparent"
-                  }`}
-                />
-
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-mono font-bold text-blue-400">
-                      {cap.number}
-                    </span>
-                    {isFlagship ? (
-                      <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 uppercase font-semibold">
-                        FLAGSHIP ENGAGEMENT
-                      </span>
-                    ) : (
-                      <span className="text-[10px] font-mono text-slate-500 uppercase">
-                        CAPABILITY
-                      </span>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3
-                      className="text-lg font-bold text-white tracking-tight"
-                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                    >
-                      {cap.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                    {cap.summary}
-                  </p>
-                </div>
-
-                <div className="pt-6 flex items-center justify-between">
-                  <span className={`text-xs font-semibold tracking-tight transition-colors ${
-                    isSelected ? "text-blue-400" : "text-slate-500"
-                  }`}>
-                    {isSelected ? "Active Architecture" : "View Architecture"}
-                  </span>
-                  <ArrowUpRight className={`w-4 h-4 transition-transform ${
-                    isSelected ? "text-blue-400 translate-x-0.5 -translate-y-0.5" : "text-slate-500"
-                  }`} />
-                </div>
-              </div>
+                <span className="font-mono text-[11px] opacity-70">{cap.number}</span>
+                <span>{cap.title}</span>
+              </button>
             );
           })}
         </div>
 
-        {/* Editorial Consultancy Architecture Exhibition (Problem -> System -> Leverage) */}
-        <div className="mt-10">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="rounded-3xl bg-[#090D17] border border-white/[0.08] p-7 sm:p-10 shadow-xl"
-            >
-              {/* Header of the Selected Family */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-semibold text-blue-400 uppercase tracking-wider">
-                      CAPABILITY {current.number} — BESPOKE CONSULTANCY ENGAGEMENT
-                    </span>
-                    {current.id === "workforce" && (
-                      <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20 font-semibold">
-                        FLAGSHIP SYSTEM
+        {/* Main Two-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+          
+          {/* Left: Understated Typography Navigation */}
+          <div className="hidden lg:block lg:col-span-4 divide-y divide-white/[0.08] border-t border-b border-white/[0.08]">
+            {CAPABILITIES.map((cap, idx) => {
+              const isSelected = selectedCapability === idx;
+
+              return (
+                <button
+                  key={cap.id}
+                  onClick={() => handleSelectCapability(idx)}
+                  className={`w-full text-left py-4 sm:py-5 px-3.5 -mx-1 sm:mx-0 rounded-[2px] cursor-pointer transition-all duration-200 flex items-center justify-between group ${
+                    isSelected
+                      ? "bg-white/[0.07] pl-4 sm:pl-5 border-l-2 border-blue-400 text-white shadow-sm"
+                      : "hover:bg-white/[0.02] text-slate-400 border-l-2 border-transparent"
+                  }`}
+                >
+                  <div className="space-y-1 pr-3">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`text-[12px] font-mono font-medium tracking-[0.05em] transition-colors duration-200 ${
+                          isSelected ? "text-blue-400 font-semibold" : "text-slate-500"
+                        }`}
+                      >
+                        {cap.number}
                       </span>
-                    )}
-                  </div>
-                  <h4
-                    className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    {current.flagship}
-                  </h4>
-                  {current.id === "workforce" && (
-                    <p className="text-xs text-blue-300/90 font-mono mt-1">
-                      Built around your people, processes and company knowledge.
+                      <h3
+                        className={`text-[16px] sm:text-[17px] font-semibold tracking-[-0.015em] transition-colors duration-200 ${
+                          isSelected ? "text-white" : "text-slate-300 group-hover:text-white"
+                        }`}
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                      >
+                        {cap.title}
+                      </h3>
+                    </div>
+                    <p
+                      className={`text-[11px] sm:text-[12px] font-normal transition-colors duration-200 tracking-normal ${
+                        isSelected ? "text-slate-300" : "text-slate-400"
+                      }`}
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      {cap.tagline}
                     </p>
-                  )}
-                </div>
-                <div className="text-left md:text-right shrink-0">
-                  <span className="text-xs font-mono text-slate-400 block">DELIVERABLE</span>
-                  <span className="text-xs font-mono text-emerald-400 font-semibold">
-                    {current.deliverable}
-                  </span>
-                </div>
-              </div>
-
-              {/* 3 Strategic Columns: Business Problem -> Bespoke System -> Business Benefit */}
-              <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 pb-8 border-b border-white/[0.06]">
-                {/* 1. Problem */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-mono uppercase text-rose-400 tracking-wider font-semibold block">
-                    01 — THE BUSINESS PROBLEM
-                  </span>
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    {current.problem}
-                  </p>
-                </div>
-
-                {/* 2. System */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-mono uppercase text-blue-400 tracking-wider font-semibold block">
-                    02 — WHAT STRATISION BUILDS
-                  </span>
-                  <p className="text-sm text-slate-200 leading-relaxed">
-                    {current.systemDescription}
-                  </p>
-                </div>
-
-                {/* 3. Leverage */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-mono uppercase text-emerald-400 tracking-wider font-semibold block">
-                    03 — BUSINESS BENEFIT & OUTCOME
-                  </span>
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    {current.leverage}
-                  </p>
-                </div>
-              </div>
-
-              {/* Scope & Strategic Consultation Action */}
-              <div className="mt-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                {/* Key System Capabilities */}
-                <div className="space-y-2.5 max-w-2xl">
-                  <span className="text-[10px] font-mono uppercase text-slate-400 tracking-wider block">
-                    ENGINEERED CAPABILITY MATRIX
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-200">
-                    {current.keyCapabilities.map((capItem, cIdx) => (
-                      <div key={cIdx} className="flex items-start gap-2">
-                        <div className="w-3.5 h-3.5 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                          <Check className="w-2 h-2 text-blue-400" />
-                        </div>
-                        <span className="leading-snug">{capItem}</span>
-                      </div>
-                    ))}
                   </div>
-                </div>
 
-                {/* Direct Action */}
-                <div className="shrink-0">
-                  <button
-                    onClick={onOpenBooking}
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 group shadow-sm"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    <span>Discuss {current.flagship}</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-                  </button>
-                </div>
-              </div>
+                  <ChevronRight
+                    className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
+                      isSelected ? "text-blue-400 translate-x-1" : "text-slate-600"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
 
-            </motion.div>
-          </AnimatePresence>
+          {/* Right: PHYSICAL BUSINESS DOCUMENT SITTING DIRECTLY AGAINST THE DARK BACKGROUND */}
+          <div className="lg:col-span-8 w-full flex flex-col justify-start">
+            <div className="relative w-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`artifact-${selectedCapability}`}
+                  initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -4 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full"
+                >
+                  <div className="bg-[#FAF9F5] text-[#141619] rounded-[1px] p-5 sm:p-10 lg:p-14 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.65),0_1px_3px_rgba(0,0,0,0.12)] border border-[#E5E2D8] relative w-full min-h-[380px] sm:min-h-[460px] flex flex-col justify-between">
+                    <BusinessArtifact capabilityIdx={selectedCapability} />
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
         </div>
 
       </div>
     </section>
   );
 };
-

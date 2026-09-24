@@ -24,7 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
       setTimeout(() => {
         const el = document.getElementById(targetId);
         if (el) {
-          const yOffset = -104;
+          const yOffset = -84;
           const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: y, behavior: "smooth" });
         }
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
     } else {
       const el = document.getElementById(targetId);
       if (el) {
-        const yOffset = -104;
+        const yOffset = -84;
         const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
@@ -48,10 +48,10 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
 
   return (
     <footer className="bg-[#05070D] border-t border-white/[0.06] text-slate-400 text-xs relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 sm:py-16">
         
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/[0.06]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-white/[0.06]">
           
           {/* Brand & Purpose (5 Cols) */}
           <div className="lg:col-span-5 space-y-4">
@@ -59,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm pt-2">
               Stratision is a bespoke AI systems consultancy. We identify high-friction operational workflows and engineer custom autonomous systems that integrate with the way your business actually runs.
             </p>
-            <div className="flex items-center gap-5 text-xs text-slate-400 pt-2">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-5 text-xs text-slate-400 pt-2">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-blue-400" />
                 Client-Governed IP & Asset Ownership
@@ -81,12 +81,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
             </h4>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <button
-                  onClick={() => handleNavClick("what-we-build")}
-                  className="hover:text-white transition-colors cursor-pointer"
+                <Link
+                  to="/solutions"
+                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
                 >
-                  What We Build
-                </button>
+                  Solutions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/systems"
+                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
+                >
+                  Flagship Systems
+                </Link>
               </li>
               <li>
                 <button
@@ -187,12 +195,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
         </div>
 
         {/* Bottom Legal Bar */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500">
           <div>
             © {new Date().getFullYear()} Stratision Systems Architecture. All rights reserved. Strategy • Vision • Intelligence.
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
             <Link
               to="/privacy"
               className="hover:text-slate-300 transition-colors cursor-pointer"
@@ -210,7 +218,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
               onClick={scrollToTop}
               className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors cursor-pointer"
             >
-              <span>Back to top</span>
+              <span>Back to Top</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>

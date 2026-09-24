@@ -136,11 +136,13 @@ export interface BlueprintResult {
   };
 }
 
-export type InsightTerritory = 
+export type InsightCategory = 
   | "AI & Business"
   | "Systems & Operations"
   | "Governance & Leadership"
   | "Industry Perspectives";
+
+export type InsightTerritory = InsightCategory;
 
 export type InsightType =
   | "Major Perspective"
@@ -153,7 +155,7 @@ export interface InsightArticle {
   number: string;
   slug: string;
   title: string;
-  territory: InsightTerritory;
+  category: InsightCategory;
   type: InsightType;
   docRef: string;
   readTime: string;

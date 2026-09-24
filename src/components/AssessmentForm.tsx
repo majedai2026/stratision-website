@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, CheckCircle, ShieldCheck, Loader2 } from "lucide-react";
+import { trackEvent } from "../utils/analytics";
 
 interface AssessmentFormData {
   firstName: string;
@@ -53,6 +54,7 @@ export const AssessmentForm: React.FC = () => {
   const [errors, setErrors] = useState<Partial<Record<keyof AssessmentFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedReference, setSubmittedReference] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const validate = (): boolean => {
@@ -110,14 +112,18 @@ export const AssessmentForm: React.FC = () => {
         body: JSON.stringify(formData),
       });
 
+      const data = await res.json().catch(() => ({}));
+
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
         setServerError(
-          errorData.error || "We couldn't submit your enquiry. Please try again."
+          data.error || "We couldn't submit your enquiry. Please try again."
         );
         return;
       }
+
+      setSubmittedReference(data.referenceId || null);
       setIsSubmitted(true);
+      trackEvent("BIA_completed", { referenceId: data.referenceId });
     } catch (err: any) {
       console.error("Network error during assessment submission:", err);
       setServerError("We couldn't submit your enquiry. Please try again.");
@@ -156,6 +162,13 @@ export const AssessmentForm: React.FC = () => {
         <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-[-0.03em] mb-4">
           Thank you. We&apos;ve received your enquiry.
         </h3>
+
+        {submittedReference && (
+          <div className="mb-6 p-3 rounded-lg bg-white/[0.03] border border-white/10 text-xs font-mono text-slate-300 inline-flex items-center gap-2">
+            <span className="text-slate-500">Assessment Reference:</span>
+            <span className="text-white font-semibold">{submittedReference}</span>
+          </div>
+        )}
 
         <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed mb-10">
           Your information has been submitted to Stratision. We&apos;ll review the context you&apos;ve provided and determine the appropriate next step.

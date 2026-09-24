@@ -21,7 +21,7 @@ export const GOVERNANCE_PILLARS: GovernancePillar[] = [
     specifications: [
       "Deployments architected for client-designated private cloud environments or isolated VPC configurations (AWS, Azure, GCP).",
       "Single-tenant vector repository architectures designed to prevent multi-tenant cross-contamination.",
-      "LLM orchestration configured with enterprise zero-retention API agreements to restrict vendor training on client telemetry and prompt data.",
+      "LLM orchestration configured with enterprise zero-retention API agreements to restrict vendor training on client data and prompt inputs.",
     ],
     standards: [
       "Dedicated VPC peering and private subnet isolation capabilities",
@@ -51,7 +51,7 @@ export const GOVERNANCE_PILLARS: GovernancePillar[] = [
     specifications: [
       "Native API and webhook orchestration connecting directly into core transactional systems (Bullhorn, Vincere, SAP, NetSuite, Salesforce).",
       "Rate-limited bi-directional synchronization protocols preventing transactional race conditions.",
-      "Comprehensive transactional logging recording API payloads, retrieval metadata, and system state transitions.",
+      "Comprehensive transactional logging recording API payloads, retrieval metadata, and audit records.",
     ],
     standards: [
       "Secure REST/GraphQL endpoint orchestration with token-based authentication",

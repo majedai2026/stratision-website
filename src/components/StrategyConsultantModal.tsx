@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StratisionLogo } from "./StratisionLogo";
 import { BlueprintResult } from "../types";
+import { trackEvent } from "../utils/analytics";
 import {
   X,
-  ArrowRight,
   CheckCircle2,
   Calendar,
-  ShieldCheck,
-  Building2,
-  Sparkles,
+  MessageSquare,
   RefreshCw,
-  Mail,
-  User,
-  Clock,
-  Briefcase,
+  AlertCircle,
 } from "lucide-react";
-import confetti from "canvas-confetti";
 
 interface StrategyConsultantModalProps {
   isOpen: boolean;
@@ -35,30 +29,61 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
   const modalRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
 
-  const [step, setStep] = useState<number>(1);
+  // Focusable input refs for accessible error focusing
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const companyInputRef = useRef<HTMLInputElement>(null);
+
+  // View mode: 'form' | 'calendar'
+  const [activeTab, setActiveTab] = useState<"form" | "calendar">("form");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [bookingConfirmation, setBookingConfirmation] = useState<{
     id: string;
     message: string;
   } | null>(null);
 
-  // Form states
+  const hasTrackedStartRef = useRef<boolean>(false);
+
+  // Controlled form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
-  const [role, setRole] = useState("Managing Director / C-Suite");
-  const [industry, setIndustry] = useState("Professional & Financial Services");
-  const [selectedPainPoints, setSelectedPainPoints] = useState<string[]>(
-    initialPainPoint ? [initialPainPoint] : ["Tribal Knowledge Silos & Unsearchable Data"]
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{
+    name?: string;
+    email?: string;
+    company?: string;
+  }>({});
+  const [challenge, setChallenge] = useState(
+    initialPainPoint
+      ? `Operational area: ${initialPainPoint}`
+      : initialTier
+      ? `Interested in ${initialTier}`
+      : ""
   );
-  const [timeline, setTimeline] = useState("Immediate (Priority SOW Sprint)");
-  const [notes, setNotes] = useState(
-    initialTier ? `Interested in discussing ${initialTier}.` : ""
-  );
+
+  // Calendar URL configuration
+  const rawBookingUrl =
+    (import.meta as any).env?.VITE_BOOKING_CALENDAR_URL ||
+    "https://calendly.com/majedai2026/30min";
+  const bookingUrl =
+    typeof rawBookingUrl === "string"
+      ? rawBookingUrl.trim()
+      : "https://calendly.com/majedai2026/30min";
+  const embedUrl = `${bookingUrl}${
+    bookingUrl.includes("?") ? "&" : "?"
+  }hide_gdpr_banner=1&background_color=080c15&text_color=f8fafc&primary_color=3b82f6`;
 
   // Focus management, Escape key listener, and body scroll lock
   useEffect(() => {
     if (isOpen) {
+      hasTrackedStartRef.current = false;
+      trackEvent("conversation_modal_opened", {
+        source: initialPainPoint ? "pain_point" : initialTier ? "tier" : "homepage",
+      });
+      setErrorMessage(null);
+      setFieldErrors({});
       previouslyFocusedElementRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = "hidden";
 
@@ -71,7 +96,7 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
         // Trap focus inside modal
         if (e.key === "Tab" && modalRef.current) {
           const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            'button, [href], input, select, textarea, iframe, [tabindex]:not([tabindex="-1"])'
           );
           if (focusableElements.length === 0) return;
 
@@ -94,11 +119,10 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
 
       window.addEventListener("keydown", handleKeyDown);
 
-      // Auto-focus first input or close button
       setTimeout(() => {
         if (modalRef.current) {
           const firstInteractive = modalRef.current.querySelector<HTMLElement>(
-            "button, input, select, textarea"
+            "input, button, textarea"
           );
           if (firstInteractive) {
             firstInteractive.focus();
@@ -118,60 +142,93 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
 
   if (!isOpen) return null;
 
-  const painPointOptions = [
-    "Workforce Intelligence Platform™ (Knowledge Ingestion & Gap Intelligence)",
-    "AI Operations (Document Extraction & ERP/CRM Synchronization)",
-    "AI Commercial Systems (Inbound Triage, AI Receptionist & Proposals)",
-    "AI Knowledge & Decision Intelligence (Contract, CIM & Risk Synthesis)",
-    "Tribal Knowledge Silos & Onboarding Latency",
-    "Manual Reporting & Cross-System Operational Friction",
-  ];
-
-  const togglePainPoint = (point: string) => {
-    if (selectedPainPoints.includes(point)) {
-      setSelectedPainPoints(selectedPainPoints.filter((p) => p !== point));
-    } else {
-      setSelectedPainPoints([...selectedPainPoints, point]);
+  const trackFormStartOnce = () => {
+    if (!hasTrackedStartRef.current) {
+      hasTrackedStartRef.current = true;
+      trackEvent("conversation_form_started");
     }
   };
 
-  const handleSubmitBooking = async (e: React.FormEvent) => {
+  const handleTabChange = (tab: "form" | "calendar") => {
+    setActiveTab(tab);
+    if (tab === "calendar") {
+      trackEvent("calendar_opened", { source: "consultation_modal" });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+
+    // Controlled inline validation (eliminating browser-native popups)
+    const errors: { name?: string; email?: string; company?: string } = {};
+
+    if (!name.trim()) {
+      errors.name = "Please enter your name.";
+    }
+
+    const emailTrimmed = email.trim();
+    if (!emailTrimmed) {
+      errors.email = "Please enter your work email.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+      errors.email = "Please enter a valid work email address.";
+    }
+
+    if (!company.trim()) {
+      errors.company = "Please enter your company or website.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      if (errors.name) {
+        nameInputRef.current?.focus();
+      } else if (errors.email) {
+        emailInputRef.current?.focus();
+      } else if (errors.company) {
+        companyInputRef.current?.focus();
+      }
+      return;
+    }
+
+    setFieldErrors({});
     setIsSubmitting(true);
+    trackEvent("conversation_submitted");
 
     try {
       const res = await fetch("/api/consultation/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          company,
-          role,
-          industry,
-          painPoints: selectedPainPoints,
-          timeline,
-          notes,
+          name: name.trim(),
+          email: emailTrimmed,
+          company: company.trim(),
+          notes: challenge.trim(),
         }),
       });
 
-      const data = await res.json();
-      if (data.success) {
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.success && (data.referenceId || data.bookingId)) {
+        const refId = data.referenceId || data.bookingId;
         setBookingConfirmation({
-          id: data.bookingId,
+          id: refId,
           message: data.message,
         });
-        setStep(3);
-        try {
-          confetti({
-            particleCount: 50,
-            spread: 60,
-            origin: { y: 0.6 },
-          });
-        } catch (err) {}
+        setIsSuccess(true);
+        trackEvent("conversation_confirmed", { referenceId: refId });
+      } else {
+        const errorText =
+          data?.error ||
+          "Something went wrong and your request wasn't submitted. Please try again.";
+        setErrorMessage(errorText);
+        trackEvent("conversation_submission_failed", { reason: errorText });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Booking error:", error);
+      const errorText =
+        "Something went wrong and your request wasn't submitted. Please try again.";
+      setErrorMessage(errorText);
+      trackEvent("conversation_submission_failed", { reason: error?.message || errorText });
     } finally {
       setIsSubmitting(false);
     }
@@ -191,262 +248,342 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
         ref={modalRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="modal-strategy-title"
-        className="bg-[#080C15] border border-slate-800 w-full max-w-2xl rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl relative max-h-[90vh] overflow-y-auto"
+        aria-labelledby="modal-conversation-title"
+        className="bg-[#080C15] border border-slate-800 w-full max-w-xl rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl relative max-h-[92vh] overflow-y-auto"
       >
-        
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="absolute top-5 right-5 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500"
           aria-label="Close modal"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
-        <div className="text-center pb-4 border-b border-slate-800">
+        <div className="text-center pb-5 border-b border-slate-800/80">
           <StratisionLogo size="sm" showTagline={true} />
-          <h3 id="modal-strategy-title" className="text-xl sm:text-2xl font-bold text-white mt-4 tracking-tight">
-            Request Business Intelligence Assessment™
+          <h3
+            id="modal-conversation-title"
+            className="text-2xl sm:text-3xl font-bold text-white mt-4 tracking-tight"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Start a Conversation
           </h3>
-          <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto font-normal">
-            Confidential strategic discovery and workflow scoping with a Senior Systems Architect.
+          <p
+            className="text-sm text-slate-300 mt-2 max-w-md mx-auto font-normal leading-relaxed"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Speak directly with a lead architect about your operational bottlenecks and what an AI system would look like in practice.
           </p>
         </div>
 
-        {/* Step Progress Indicators */}
-        {step < 3 && (
-          <div className="mt-4 flex items-center justify-center gap-3 text-xs font-mono">
-            <div className={`flex items-center gap-1.5 ${step === 1 ? "text-blue-400 font-semibold" : "text-slate-500"}`}>
-              <span className="w-5 h-5 rounded-full bg-slate-900 border border-blue-500/40 flex items-center justify-center text-[10px]">
-                1
-              </span>
-              <span>Scope & Systems</span>
-            </div>
-            <span className="text-slate-700">───</span>
-            <div className={`flex items-center gap-1.5 ${step === 2 ? "text-blue-400 font-semibold" : "text-slate-500"}`}>
-              <span className="w-5 h-5 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-[10px]">
-                2
-              </span>
-              <span>Your Details</span>
-            </div>
-          </div>
-        )}
-
-        {/* Step 1: Bottleneck & Scope */}
-        {step === 1 && (
-          <div className="mt-6 space-y-5">
-            <div>
-              <label className="block text-xs font-mono uppercase text-slate-400 mb-2">
-                Industry Domain
-              </label>
-              <select
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
-                className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-              >
-                <option value="Professional & Financial Services">Professional & Financial Services</option>
-                <option value="Logistics & Supply Chain">Logistics & Supply Chain</option>
-                <option value="Healthcare & Life Sciences">Healthcare & Life Sciences</option>
-                <option value="Enterprise SaaS & Technology">Enterprise SaaS & Technology</option>
-                <option value="E-Commerce & High-Volume Retail">E-Commerce & High-Volume Retail</option>
-                <option value="Coaching, Education & Consulting">Coaching, Education & Consulting</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-mono uppercase text-slate-400 mb-2">
-                Target Systems of Interest ({selectedPainPoints.length})
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                {painPointOptions.map((opt, i) => {
-                  const isChecked = selectedPainPoints.includes(opt);
-                  return (
-                    <div
-                      key={i}
-                      onClick={() => togglePainPoint(opt)}
-                      className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                        isChecked
-                          ? "bg-blue-600/15 border-blue-500 text-white font-medium shadow-md"
-                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => {}}
-                          className="rounded border-slate-700 text-blue-500"
-                        />
-                        <span>{opt}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <button
-                onClick={() => setStep(2)}
-                className="w-full py-3.5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer shadow-xl transition-all"
-              >
-                <span>Continue to Schedule</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Executive Details */}
-        {step === 2 && (
-          <form onSubmit={handleSubmitBooking} className="mt-6 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Sarah Jenkins"
-                  className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                  Work Email *
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="s.jenkins@enterprise.com"
-                  className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                  Company Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  placeholder="e.g. Apex Global"
-                  className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                  Executive Role
-                </label>
-                <input
-                  type="text"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                Target Implementation Timeline
-              </label>
-              <select
-                value={timeline}
-                onChange={(e) => setTimeline(e.target.value)}
-                className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-              >
-                <option value="Immediate (Priority SOW Sprint)">Immediate (Priority SOW Sprint)</option>
-                <option value="Q3 Roadmap (30-60 Days)">Q3 Roadmap (30-60 Days)</option>
-                <option value="Exploratory Evaluation">Exploratory Evaluation</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-xs font-mono uppercase text-slate-400 mb-1.5">
-                Operational Context / Tools in Use
-              </label>
-              <textarea
-                rows={2}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Current software stack (Salesforce, SAP, Notion, HubSpot) or specific goals..."
-                className="w-full bg-[#050811] border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-slate-100 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <div className="pt-2 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="px-5 py-3 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white text-xs font-mono cursor-pointer"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex-1 py-3.5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 shadow-xl"
-              >
-                {isSubmitting ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Processing Assessment Request...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Confirm Assessment Request</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        )}
-
-        {/* Step 3: Confirmation */}
-        {step === 3 && (
+        {/* Success View */}
+        {isSuccess ? (
           <div className="mt-8 text-center space-y-6 py-4">
             <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-xl font-bold text-white tracking-tight">
-                Briefing Requested Successfully
+              <h4
+                className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                We've got it.
               </h4>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                {bookingConfirmation?.message || "Our Principal AI Architect is reviewing your operational profile and will send calendar coordinates within 4 business hours."}
+              <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                Your enquiry has been received and passed to the Stratision team.
               </p>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-400 max-w-sm mx-auto">
-              <div>Booking Reference: <span className="text-slate-200">{bookingConfirmation?.id || "STRAT-CONF-782"}</span></div>
-              <div className="mt-1 text-emerald-400">SOC2 Confidentiality Standard Applied</div>
+            {/* Genuine Server-returned Reference Box */}
+            {bookingConfirmation?.id && (
+              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800/80 text-xs font-mono text-slate-400 max-w-xs mx-auto">
+                <span className="text-slate-400">Reference: </span>
+                <span className="text-slate-100 font-semibold tracking-wider">
+                  {bookingConfirmation.id}
+                </span>
+              </div>
+            )}
+
+            <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+              A member of the team will review the operational challenge you've described.
+            </p>
+
+            <div className="pt-3 space-y-3 max-w-sm mx-auto">
+              <button
+                onClick={() => {
+                  setIsSuccess(false);
+                  setActiveTab("calendar");
+                }}
+                className="w-full min-h-[44px] py-3.5 px-6 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              >
+                <Calendar className="w-4 h-4 text-slate-950" />
+                <span>Schedule a conversation →</span>
+              </button>
+
+              <p className="text-xs text-slate-400">
+                You can also wait for us to come back to you.
+              </p>
+
+              <div>
+                <button
+                  onClick={onClose}
+                  className="text-xs text-slate-400 hover:text-slate-200 underline underline-offset-4 cursor-pointer pt-1"
+                >
+                  Return to Website
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Mode Switcher: Send Details vs Direct Calendar Booking */}
+            <div className="mt-5 flex items-center justify-center p-1 rounded-full bg-slate-950 border border-slate-800 text-xs font-mono max-w-xs mx-auto">
+              <button
+                type="button"
+                onClick={() => handleTabChange("form")}
+                className={`flex-1 py-2 px-3 min-h-[40px] rounded-full transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === "form"
+                    ? "bg-white text-[#080A10] font-semibold shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Send Details</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleTabChange("calendar")}
+                className={`flex-1 py-2 px-3 min-h-[40px] rounded-full transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === "calendar"
+                    ? "bg-white text-[#080A10] font-semibold shadow-sm"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Book Calendar</span>
+              </button>
             </div>
 
-            <button
-              onClick={onClose}
-              className="px-8 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-semibold text-xs transition-all cursor-pointer"
-            >
-              Return to Website
-            </button>
-          </div>
-        )}
+            {/* TAB 1: Streamlined 4-Field Business Conversation Form */}
+            {activeTab === "form" ? (
+              <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-4">
+                {/* 1. Name */}
+                <div>
+                  <label htmlFor="modal-name-input" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Name <span className="text-blue-400">*</span>
+                  </label>
+                  <input
+                    ref={nameInputRef}
+                    id="modal-name-input"
+                    type="text"
+                    value={name}
+                    onFocus={trackFormStartOnce}
+                    onChange={(e) => {
+                      trackFormStartOnce();
+                      setName(e.target.value);
+                      if (fieldErrors.name) {
+                        setFieldErrors((prev) => ({ ...prev, name: undefined }));
+                      }
+                    }}
+                    placeholder="e.g. Sarah Jenkins"
+                    aria-invalid={!!fieldErrors.name}
+                    aria-describedby={fieldErrors.name ? "modal-name-error" : undefined}
+                    className={`w-full bg-[#050811] min-h-[44px] border rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none transition-colors ${
+                      fieldErrors.name
+                        ? "border-red-500/80 focus:border-red-500"
+                        : "border-slate-800 focus:border-blue-500"
+                    }`}
+                  />
+                  {fieldErrors.name && (
+                    <p id="modal-name-error" role="alert" className="text-xs text-red-400 mt-1.5 font-mono flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{fieldErrors.name}</span>
+                    </p>
+                  )}
+                </div>
 
+                {/* 2. Work Email */}
+                <div>
+                  <label htmlFor="modal-email-input" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Work Email <span className="text-blue-400">*</span>
+                  </label>
+                  <input
+                    ref={emailInputRef}
+                    id="modal-email-input"
+                    type="email"
+                    value={email}
+                    onFocus={trackFormStartOnce}
+                    onChange={(e) => {
+                      trackFormStartOnce();
+                      setEmail(e.target.value);
+                      if (fieldErrors.email) {
+                        setFieldErrors((prev) => ({ ...prev, email: undefined }));
+                      }
+                    }}
+                    placeholder="sarah@company.co.uk"
+                    aria-invalid={!!fieldErrors.email}
+                    aria-describedby={fieldErrors.email ? "modal-email-error" : undefined}
+                    className={`w-full bg-[#050811] min-h-[44px] border rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none transition-colors ${
+                      fieldErrors.email
+                        ? "border-red-500/80 focus:border-red-500"
+                        : "border-slate-800 focus:border-blue-500"
+                    }`}
+                  />
+                  {fieldErrors.email && (
+                    <p id="modal-email-error" role="alert" className="text-xs text-red-400 mt-1.5 font-mono flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{fieldErrors.email}</span>
+                    </p>
+                  )}
+                </div>
+
+                {/* 3. Company / Website */}
+                <div>
+                  <label htmlFor="modal-company-input" className="block text-xs font-medium text-slate-300 mb-1.5">
+                    Company / Website <span className="text-blue-400">*</span>
+                  </label>
+                  <input
+                    ref={companyInputRef}
+                    id="modal-company-input"
+                    type="text"
+                    value={company}
+                    onFocus={trackFormStartOnce}
+                    onChange={(e) => {
+                      trackFormStartOnce();
+                      setCompany(e.target.value);
+                      if (fieldErrors.company) {
+                        setFieldErrors((prev) => ({ ...prev, company: undefined }));
+                      }
+                    }}
+                    placeholder="e.g. Apex Logistics Ltd (apexlogistics.co.uk)"
+                    aria-invalid={!!fieldErrors.company}
+                    aria-describedby={fieldErrors.company ? "modal-company-error" : undefined}
+                    className={`w-full bg-[#050811] min-h-[44px] border rounded-xl px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none transition-colors ${
+                      fieldErrors.company
+                        ? "border-red-500/80 focus:border-red-500"
+                        : "border-slate-800 focus:border-blue-500"
+                    }`}
+                  />
+                  {fieldErrors.company && (
+                    <p id="modal-company-error" role="alert" className="text-xs text-red-400 mt-1.5 font-mono flex items-center gap-1.5">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{fieldErrors.company}</span>
+                    </p>
+                  )}
+                </div>
+
+                {/* 4. Operational Challenge */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label htmlFor="modal-challenge-input" className="block text-xs font-medium text-slate-300">
+                      What would you like AI to handle?
+                    </label>
+                    <span className="text-[11px] text-slate-500 font-mono">Optional</span>
+                  </div>
+                  <p className="text-[12px] text-slate-400 mb-2 font-normal leading-relaxed">
+                    Optional — tell us where time, admin or missed opportunities are costing your business.
+                  </p>
+                  <textarea
+                    id="modal-challenge-input"
+                    rows={3}
+                    value={challenge}
+                    onFocus={trackFormStartOnce}
+                    onChange={(e) => {
+                      trackFormStartOnce();
+                      setChallenge(e.target.value);
+                    }}
+                    placeholder="Tell us where time, admin or missed opportunities are costing your business..."
+                    className="w-full bg-[#050811] border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+
+                {/* Error Banner */}
+                {errorMessage && (
+                  <div className="p-3.5 rounded-xl bg-red-950/40 border border-red-800/60 text-red-200 text-xs flex items-center gap-2.5 animate-in fade-in">
+                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                    <span>{errorMessage}</span>
+                  </div>
+                )}
+
+                {/* Primary Submit Action */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full min-h-[44px] py-3.5 px-6 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                        <span>Sending Enquiry...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Send My Enquiry →</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Strengthened Trust Microcopy Footer */}
+                <div className="pt-3 text-center space-y-1.5 border-t border-slate-800/60 mt-4">
+                  <p className="text-[12px] text-slate-300 font-medium">
+                    Your information stays private.
+                  </p>
+                  <p className="text-[12px] text-slate-400">
+                    Direct 20-minute discussion with an AI Systems Architect. No sales pitch.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("calendar")}
+                    className="text-xs text-blue-400 hover:text-blue-300 underline underline-offset-4 cursor-pointer pt-0.5 inline-block"
+                  >
+                    Or pick a time directly on our calendar →
+                  </button>
+                </div>
+              </form>
+            ) : (
+              /* TAB 2: Direct Calendar Booking */
+              <div className="mt-5 space-y-4">
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between text-xs">
+                  <span className="text-slate-300">Live booking with Lead Architect:</span>
+                  <a
+                    href={bookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 font-mono inline-flex items-center min-h-[44px]"
+                  >
+                    Open in new tab ↗
+                  </a>
+                </div>
+
+                <div className="rounded-xl overflow-hidden border border-slate-800 bg-[#080c15] h-[480px]">
+                  <iframe
+                    src={embedUrl}
+                    width="100%"
+                    height="100%"
+                    frameBorder="0"
+                    title="Direct Calendar Booking"
+                    className="w-full h-full"
+                  />
+                </div>
+
+                <div className="text-center pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("form")}
+                    className="text-xs text-slate-400 hover:text-white cursor-pointer inline-flex items-center gap-1.5 min-h-[44px]"
+                  >
+                    <span>← Prefer to send details first?</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

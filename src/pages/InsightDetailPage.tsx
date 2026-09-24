@@ -41,21 +41,21 @@ export const InsightDetailPage: React.FC<InsightDetailPageProps> = ({
       {/* Top Breadcrumb & Metadata Bar */}
       <header className="pt-28 sm:pt-32 pb-10 border-b border-white/[0.06] bg-[#06080D]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-mono text-slate-400 mb-6">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-400 mb-6 font-medium">
             <Link to="/insights" className="hover:text-blue-400 transition-colors flex items-center gap-1">
               <ArrowLeft className="w-3 h-3" />
               <span>Insights</span>
             </Link>
             <span className="text-white/20">/</span>
-            <span className="text-slate-400">{article.territory}</span>
+            <span className="text-slate-400">{article.category}</span>
             <span className="text-white/20">/</span>
-            <span className="text-slate-500 font-mono">{article.number}</span>
+            <span className="text-slate-500">{article.number}</span>
           </nav>
 
-          {/* Territory & Metadata — Quiet Restrained System Notation */}
-          <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs text-slate-400 mb-6">
-            <span className="text-blue-400 font-medium uppercase tracking-wider">
-              {article.territory}
+          {/* Category & Metadata */}
+          <div className="flex flex-wrap items-center gap-2.5 text-xs text-slate-400 mb-6 font-medium">
+            <span className="text-blue-400 font-semibold">
+              {article.category}
             </span>
             <span className="text-white/20">/</span>
             <span>{article.docRef}</span>

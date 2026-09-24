@@ -513,7 +513,7 @@ export const BriefingPageRenderer: React.FC<BriefingPageRendererProps> = ({
                 onClick={onOpenBooking}
                 className="px-8 py-4 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-sm tracking-tight transition-all duration-200 cursor-pointer flex items-center gap-3 shadow-[0_2px_20px_rgba(255,255,255,0.18)] group"
               >
-                <span>Request Business Intelligence Assessment™</span>
+                <span>Start a Conversation</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
               </button>
 

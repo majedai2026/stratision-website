@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { trackEvent } from "../utils/analytics";
 import {
   ChevronRight,
   ArrowRight,
@@ -93,6 +94,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
 
   const handleOpenBookingTabOrExternal = () => {
     setActiveTab("booking");
+    trackEvent("calendar_opened", { source: "contact_page_cta" });
     const newParams = new URLSearchParams(searchParams);
     newParams.set("mode", "booking");
     setSearchParams(newParams, { replace: true });
@@ -104,6 +106,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
     const newParams = new URLSearchParams(searchParams);
     if (tab === "booking") {
       newParams.set("mode", "booking");
+      trackEvent("calendar_opened", { source: "contact_page_tab" });
     } else {
       newParams.delete("mode");
       newParams.delete("book");
@@ -153,6 +156,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onOpenBooking }) => {
       }
 
       setSubmittedReference(data.referenceId);
+      trackEvent("contact_submitted", { referenceId: data.referenceId });
       if (formRef.current) {
         formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
       }

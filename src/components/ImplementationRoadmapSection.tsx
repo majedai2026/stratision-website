@@ -281,7 +281,7 @@ export const ImplementationRoadmapSection: React.FC<ImplementationRoadmapSection
                 onClick={onOpenBooking}
                 className="px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm shrink-0"
               >
-                <span>Schedule Systems Scoping Session</span>
+                <span>Start a Conversation</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

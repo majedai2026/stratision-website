@@ -59,9 +59,13 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
     },
   ];
 
-  // Auto-play through stages smoothly unless user manually paused
+  // Auto-play through stages smoothly unless user manually paused (desktop only)
   useEffect(() => {
     if (!isAutoPlaying) return;
+    if (typeof window !== "undefined" && (window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
+      setIsAutoPlaying(false);
+      return;
+    }
     const timer = setInterval(() => {
       setActiveStepIndex((prev) => (prev + 1) % steps.length);
     }, 4000);
@@ -75,26 +79,23 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
       {/* Top Header & Simulation Controls */}
       <div className="pb-6 border-b border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] font-mono uppercase tracking-widest text-blue-400 font-semibold">
-              HOW THE SYSTEM OPERATES
+          <div className="flex items-center gap-2.5 text-xs">
+            <span className="font-semibold text-blue-400">
+              System blueprint
             </span>
-            <span className="text-slate-600 font-mono text-xs">/</span>
-            <span className="text-[11px] font-mono uppercase text-emerald-400 font-medium flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              LIVE FLOW SIMULATION
+            <span className="text-slate-600">·</span>
+            <span className="text-emerald-400 font-medium flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 md:animate-pulse" />
+              Live flow simulation
             </span>
           </div>
-          <h3
-            className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
+          <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug">
             {scenario.title}
           </h3>
         </div>
 
         {/* Play/Pause Control */}
-        <div className="flex items-center gap-2 font-mono text-xs text-slate-400 self-start sm:self-auto">
+        <div className="flex items-center gap-2 text-xs text-slate-400 self-start sm:self-auto font-medium">
           <button
             onClick={() => setIsAutoPlaying(!isAutoPlaying)}
             className="px-3 py-1.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] transition-colors flex items-center gap-1.5 cursor-pointer"
@@ -103,12 +104,12 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
             {isAutoPlaying ? (
               <>
                 <Pause className="w-3 h-3 text-blue-400" />
-                <span>PAUSE FLOW</span>
+                <span>Pause Simulation</span>
               </>
             ) : (
               <>
                 <Play className="w-3 h-3 text-blue-400" />
-                <span>AUTO-PLAY</span>
+                <span>Resume Simulation</span>
               </>
             )}
           </button>
@@ -128,12 +129,12 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
       {/* Primary Transformation Stage Flow with Animated Traveling Information Packet */}
       <div className="space-y-8">
         
-        {/* Animated SVG Pipeline Line */}
+        {/* Animated SVG Pipeline Line (Desktop only motion graphic) */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-40px" }}
-          className="w-full h-16 py-1 select-none"
+          className="w-full h-16 py-1 select-none hidden md:block"
         >
           <svg className="w-full h-full" viewBox="0 0 760 52" fill="none">
             <defs>
@@ -323,8 +324,8 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
             className="lg:col-span-4 space-y-6"
           >
             <div className="space-y-2 pb-4 border-b border-white/[0.06]">
-              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-widest block font-semibold">
-                INPUT DOCUMENTS
+              <span className="text-xs text-slate-400 font-medium block">
+                Input documents
               </span>
               <h4
                 className="text-lg font-bold text-white tracking-tight"
@@ -352,7 +353,7 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
                   }}
                   className="py-3.5 flex items-start gap-3 group"
                 >
-                  <span className="text-xs font-mono text-blue-400 font-bold shrink-0 mt-0.5">
+                  <span className="text-xs font-semibold text-blue-400 shrink-0 mt-0.5">
                     0{idx + 1}
                   </span>
                   <span className="text-xs text-slate-300 group-hover:text-white transition-colors leading-relaxed">
@@ -385,8 +386,8 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-mono text-blue-400 font-bold">
-                        STEP 0{idx + 1}
+                      <span className="text-xs font-semibold text-blue-400">
+                        Step 0{idx + 1}
                       </span>
                       <Icon className={`w-3.5 h-3.5 ${isActive ? "text-blue-400" : "text-slate-500"}`} />
                     </div>
@@ -412,12 +413,12 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
                 className="space-y-6 pt-4"
               >
                 <div className="space-y-3 pb-6 border-b border-white/[0.06]">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-mono uppercase text-blue-400 font-bold">
-                      STEP 0{activeStepIndex + 1}
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="font-semibold text-blue-400">
+                      Step 0{activeStepIndex + 1}
                     </span>
-                    <span className="text-slate-600 font-mono text-xs">/</span>
-                    <span className="text-[11px] font-mono uppercase text-slate-400">
+                    <span className="text-slate-600">·</span>
+                    <span className="text-slate-400 font-normal">
                       {steps[activeStepIndex].subLabel}
                     </span>
                   </div>
@@ -437,16 +438,16 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
                 {/* Executive Assurances */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
                   <div className="space-y-1.5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-semibold">
-                      SOURCE TRACEABILITY
+                    <span className="text-xs text-slate-400 font-medium block">
+                      Source traceability
                     </span>
                     <p className="text-xs text-slate-300 font-medium">
                       Important findings can be traced back to the original document and page.
                     </p>
                   </div>
                   <div className="space-y-1.5">
-                    <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-semibold">
-                      GOVERNED DEPLOYMENT
+                    <span className="text-xs text-slate-400 font-medium block">
+                      Governed deployment
                     </span>
                     <p className="text-xs text-slate-300 font-medium">
                       Data handling and model use are governed according to the terms of your engagement.
@@ -472,8 +473,8 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
         className="pt-10 border-t border-white/[0.08] grid grid-cols-1 md:grid-cols-12 gap-8 items-start"
       >
         <div className="md:col-span-4 space-y-2">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
-            WHAT YOU RECEIVE
+          <span className="text-xs text-emerald-400 font-semibold block">
+            What you receive
           </span>
           <h4
             className="text-lg font-bold text-white tracking-tight"
@@ -485,16 +486,16 @@ export const IndustryArchitecturalCanvas: React.FC<IndustryArchitecturalCanvasPr
 
         <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
           <div className="space-y-2">
-            <span className="text-[10px] font-mono uppercase text-slate-400 tracking-wider block font-semibold">
-              OUTPUT
+            <span className="text-xs text-slate-400 font-medium block">
+              Output
             </span>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
               {scenario.outputSummary}
             </p>
           </div>
           <div className="space-y-2">
-            <span className="text-[10px] font-mono uppercase text-emerald-400 tracking-wider block font-semibold">
-              BUSINESS BENEFIT
+            <span className="text-xs text-emerald-400 font-semibold block">
+              Business benefit
             </span>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
               {scenario.businessOutcome}

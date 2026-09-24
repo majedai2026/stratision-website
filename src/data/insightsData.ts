@@ -79,7 +79,7 @@ export const INDUSTRY_PERSPECTIVES_LINKS = [
   {
     name: "Financial Services & Investment",
     slug: "financial-services",
-    description: "Multi-jurisdiction compliance checks, portfolio telemetry, and audit-ready reporting trails."
+    description: "Multi-jurisdiction compliance checks, portfolio monitoring, and audit-ready reporting trails."
   },
   {
     name: "Insurance & Underwriting",
@@ -115,7 +115,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "01",
     slug: "most-businesses-dont-have-an-ai-problem",
     title: "Most Businesses Don't Have an AI Problem. They Have a Workflow Problem.",
-    territory: "AI & Business",
+    category: "AI & Business",
     type: "Major Perspective",
     docRef: "INS-01 // PERSPECTIVE",
     readTime: "7 min read",
@@ -190,7 +190,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "02",
     slug: "ai-tools-are-easy-to-buy",
     title: "AI Tools Are Easy to Buy. AI Systems Are Harder to Build.",
-    territory: "AI & Business",
+    category: "AI & Business",
     type: "Major Perspective",
     docRef: "INS-02 // SYSTEMS",
     readTime: "6 min read",
@@ -260,7 +260,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "03",
     slug: "the-hidden-cost-of-information-handoffs",
     title: "The Hidden Cost of Information Handoffs",
-    territory: "Systems & Operations",
+    category: "Systems & Operations",
     type: "Standard Insight",
     docRef: "INS-03 // OPERATIONS",
     readTime: "5 min read",
@@ -332,7 +332,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "04",
     slug: "where-should-ai-actually-sit",
     title: "Where Should AI Actually Sit Inside a Business?",
-    territory: "Systems & Operations",
+    category: "Systems & Operations",
     type: "Standard Insight",
     docRef: "INS-04 // TAXONOMY",
     readTime: "6 min read",
@@ -351,7 +351,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     reality: {
       title: "The Four Core Opportunity Areas",
       paragraphs: [
-        "Across hundreds of operational workflows, high-leverage AI applications consistently cluster into four distinct operational territories. These are not software products; they are structural zones of organizational friction:",
+        "Across hundreds of operational workflows, high-leverage AI applications consistently cluster into four distinct operational areas. These are not software products; they are structural zones of organizational friction:",
         "1. Workforce Intelligence: Helping staff instantly locate institutional policies, standard operating procedures, technical documentation, and regulatory requirements without relying on informal shoulder-tapping or outdated intranets.",
         "2. Operations & Workflows: Connecting repetitive operational handoffs, automated data validation, document ingestion, invoice reconciliation, and cross-system ledger syncs.",
         "3. Sales & Customer Operations: Managing multi-channel inbound inquiry triage, automated quotation generation, qualification scoring, and proactive client engagement.",
@@ -362,7 +362,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
       title: "The Core Argument",
       paragraphs: [
         "Different enterprises have vastly different operational centers of gravity. A specialized advisory firm may experience 80% of its friction in Knowledge & Decision Support, while a logistics operator experiences 85% of its friction in Operations & Workflows.",
-        "Attempting to deploy a generalized 'enterprise AI solution' ignores this structural asymmetry. High-performing organizations identify their specific operational bottleneck and deploy focused, purpose-engineered systems into that exact territory.",
+        "Attempting to deploy a generalized 'enterprise AI solution' ignores this structural asymmetry. High-performing organizations identify their specific operational bottleneck and deploy focused, purpose-engineered systems into that exact area.",
         "When an organization aligns its technical architecture with its specific friction zone, implementation cycles drop from twelve months to six weeks, and operational payback becomes immediately visible."
       ],
       diagramType: "opportunity-areas"
@@ -377,7 +377,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
       keyTakeaways: [
         "Every organization has an operational center of gravity where friction concentrates.",
         "AI deployment should be targeted at that center of gravity, not scattered evenly across all departments.",
-        "The four territories provide a rigorous framework for executive resource allocation."
+        "The four areas provide a rigorous framework for executive resource allocation."
       ]
     },
     questionsToAsk: {
@@ -386,7 +386,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
         "Which of the four opportunity areas currently consumes the largest portion of our overhead without delivering differentiation?",
         "Are our current AI initiatives concentrated where our biggest operational headache is, or where software was easiest to purchase?",
         "Can our team clearly articulate the specific business metric (cycle time, error rate, headcount scale) targeted by our AI efforts?",
-        "Have we mapped how an AI system in one territory connects with the systems of record in adjacent territories?"
+        "Have we mapped how an AI system in one area connects with the systems of record in adjacent areas?"
       ]
     },
     closingThought: {
@@ -403,7 +403,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "05",
     slug: "build-buy-or-configure",
     title: "Build, Buy or Configure: How Executives Should Think About AI",
-    territory: "Governance & Leadership",
+    category: "Governance & Leadership",
     type: "Standard Insight",
     docRef: "INS-05 // GOVERNANCE",
     readTime: "6 min read",
@@ -475,7 +475,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "06",
     slug: "ai-adoption-is-not-ai-deployment",
     title: "AI Adoption Is Not AI Deployment",
-    territory: "AI & Business",
+    category: "AI & Business",
     type: "Standard Insight",
     docRef: "INS-06 // DEPLOYMENT",
     readTime: "5 min read",
@@ -551,7 +551,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "07",
     slug: "governance-before-automation",
     title: "Governance Should Be Designed Before Automation",
-    territory: "Governance & Leadership",
+    category: "Governance & Leadership",
     type: "Standard Insight",
     docRef: "INS-07 // GOVERNANCE",
     readTime: "6 min read",
@@ -625,7 +625,7 @@ export const INSIGHTS_ARTICLES: InsightArticle[] = [
     number: "08",
     slug: "the-executive-question-after-the-ai-experiment",
     title: "The Executive Question After the AI Experiment",
-    territory: "AI & Business",
+    category: "AI & Business",
     type: "Point of View",
     docRef: "INS-08 // POINT-OF-VIEW",
     readTime: "4 min read",

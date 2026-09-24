@@ -18,7 +18,7 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
   onOpenBooking,
 }) => {
   const navigate = useNavigate();
-  const [selectedTerritory, setSelectedTerritory] = useState<InsightTerritory | "All">("All");
+  const [selectedCategory, setSelectedCategory] = useState<InsightTerritory | "All">("All");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -45,9 +45,9 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
 
   const featuredArticle = INSIGHTS_ARTICLES[0]; // "Most Businesses Don't Have an AI Problem. They Have a Workflow Problem."
 
-  const filteredArticles = selectedTerritory === "All"
+  const filteredArticles = selectedCategory === "All"
     ? INSIGHTS_ARTICLES
-    : INSIGHTS_ARTICLES.filter((art) => art.territory === selectedTerritory);
+    : INSIGHTS_ARTICLES.filter((art) => art.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-[#080A10] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans antialiased">
@@ -65,8 +65,8 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
           </svg>
         </div>
 
-        {/* Ambient radial gradient */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-blue-600/[0.03] blur-[120px] pointer-events-none rounded-full" />
+        {/* Ambient radial gradient (Desktop only) */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-blue-600/[0.03] blur-[120px] pointer-events-none rounded-full hidden md:block" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-4xl">
@@ -120,12 +120,12 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
               <span className="w-1.5 h-1.5 bg-blue-400" />
               <span>FEATURED PERSPECTIVE // {featuredArticle.docRef}</span>
             </div>
-            <div className="hidden sm:flex items-center gap-3 font-mono text-xs text-slate-400">
-              <span>{featuredArticle.territory.toUpperCase()}</span>
+            <div className="hidden sm:flex items-center gap-3 text-xs font-medium text-slate-400">
+              <span className="text-blue-400 font-semibold">{featuredArticle.category}</span>
               <span className="text-white/20">/</span>
-              <span>{featuredArticle.readTime.toUpperCase()}</span>
+              <span>{featuredArticle.readTime}</span>
               <span className="text-white/20">/</span>
-              <span>{featuredArticle.type.toUpperCase()}</span>
+              <span>{featuredArticle.type}</span>
             </div>
           </div>
 
@@ -133,8 +133,8 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Main Editorial Text Column */}
             <div className="lg:col-span-8">
-              <div className="flex sm:hidden items-center gap-2 font-mono text-xs text-slate-400 mb-4">
-                <span className="text-blue-400">{featuredArticle.territory}</span>
+              <div className="flex sm:hidden items-center gap-2 text-xs font-medium text-slate-400 mb-4">
+                <span className="text-blue-400 font-semibold">{featuredArticle.category}</span>
                 <span>•</span>
                 <span>{featuredArticle.readTime}</span>
               </div>
@@ -243,29 +243,29 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
               </p>
             </div>
 
-            {/* Territory Filter — Understated Editorial Tabs with Hairline Indicator */}
+            {/* Category Filter — Understated Editorial Tabs with Hairline Indicator */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
               <button
-                onClick={() => setSelectedTerritory("All")}
-                className={`text-xs font-mono tracking-wider transition-colors pb-1 border-b cursor-pointer ${
-                  selectedTerritory === "All"
+                onClick={() => setSelectedCategory("All")}
+                className={`text-xs font-semibold uppercase tracking-wider transition-colors pb-1 border-b cursor-pointer ${
+                  selectedCategory === "All"
                     ? "text-white border-blue-400 font-medium"
                     : "text-slate-400 hover:text-slate-200 border-transparent"
                 }`}
               >
                 ALL ({INSIGHTS_ARTICLES.length})
               </button>
-              {INSIGHTS_TERRITORIES.slice(0, 3).map((territory) => (
+              {INSIGHTS_TERRITORIES.slice(0, 3).map((cat) => (
                 <button
-                  key={territory.id}
-                  onClick={() => setSelectedTerritory(territory.name)}
-                  className={`text-xs font-mono tracking-wider transition-colors pb-1 border-b cursor-pointer ${
-                    selectedTerritory === territory.name
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.name)}
+                  className={`text-xs font-semibold uppercase tracking-wider transition-colors pb-1 border-b cursor-pointer ${
+                    selectedCategory === cat.name
                       ? "text-white border-blue-400 font-medium"
                       : "text-slate-400 hover:text-slate-200 border-transparent"
                   }`}
                 >
-                  {territory.name.toUpperCase()}
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -287,9 +287,9 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
 
                   {/* Title & Metadata */}
                   <div className="md:col-span-6">
-                    <div className="flex items-center gap-3 mb-1.5 font-mono text-xs text-slate-400">
-                      <span className="text-blue-400 uppercase tracking-wide">
-                        {article.territory}
+                    <div className="flex items-center gap-3 mb-1.5 text-xs text-slate-400 font-medium">
+                      <span className="text-blue-400 font-semibold">
+                        {article.category}
                       </span>
                       <span className="text-white/20">•</span>
                       <span>{article.readTime}</span>
@@ -334,12 +334,12 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
             </p>
           </div>
 
-          {/* Editorial Index of Territories — Large Typography, Hairline Separators, Generous Vertical Rhythm */}
+          {/* Editorial Index of Topics — Large Typography, Hairline Separators, Generous Vertical Rhythm */}
           <div className="divide-y divide-white/[0.08] border-t border-b border-white/[0.08]">
             {/* 01: AI & Business */}
             <div
               onClick={() => {
-                setSelectedTerritory("AI & Business");
+                setSelectedCategory("AI & Business");
                 handleScrollToArticles();
               }}
               className="group py-8 sm:py-10 transition-all duration-200 cursor-pointer hover:bg-white/[0.01]"
@@ -367,7 +367,7 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
             {/* 02: Systems & Operations */}
             <div
               onClick={() => {
-                setSelectedTerritory("Systems & Operations");
+                setSelectedCategory("Systems & Operations");
                 handleScrollToArticles();
               }}
               className="group py-8 sm:py-10 transition-all duration-200 cursor-pointer hover:bg-white/[0.01]"
@@ -395,7 +395,7 @@ export const InsightsIndexPage: React.FC<InsightsIndexPageProps> = ({
             {/* 03: Governance & Leadership */}
             <div
               onClick={() => {
-                setSelectedTerritory("Governance & Leadership");
+                setSelectedCategory("Governance & Leadership");
                 handleScrollToArticles();
               }}
               className="group py-8 sm:py-10 transition-all duration-200 cursor-pointer hover:bg-white/[0.01]"

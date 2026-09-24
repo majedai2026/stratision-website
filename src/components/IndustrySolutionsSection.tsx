@@ -230,7 +230,7 @@ export const IndustrySolutionsSection: React.FC<IndustrySolutionsSectionProps> =
               }}
               className="shrink-0 px-5 py-3 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all self-start sm:self-auto"
             >
-              <span>Schedule Architecture Audit</span>
+              <span>Start a Conversation</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

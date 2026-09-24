@@ -246,7 +246,7 @@ export const InsightsDiagram: React.FC<DiagramProps> = ({ type }) => {
               </div>
               <h5 className="text-sm font-semibold text-white mb-1.5">Knowledge & Decision Support</h5>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Synthesizing massive unstructured context across contracts, portfolios, market telemetry, and assembling pre-validated briefing dossiers for committees.
+                Synthesizing massive unstructured context across contracts, portfolios, market intelligence, and assembling pre-validated briefing dossiers for committees.
               </p>
             </div>
           </div>

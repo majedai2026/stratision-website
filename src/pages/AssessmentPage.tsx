@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, ArrowDown, ChevronRight, FileText } from "lucide-react";
+import { trackEvent } from "../utils/analytics";
 import { AssessmentHeroVisual } from "../components/AssessmentHeroVisual";
 import { AssessmentPrioritisationMatrix } from "../components/AssessmentPrioritisationMatrix";
 import { AssessmentSignatureVisual } from "../components/AssessmentSignatureVisual";
@@ -38,6 +39,7 @@ export const AssessmentPage: React.FC<AssessmentPageProps> = ({ onOpenBooking, o
     canonical.setAttribute("href", `${window.location.origin}/assessment`);
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+    trackEvent("BIA_started");
   }, []);
 
   const scrollToSection = (id: string) => {
@@ -92,7 +94,7 @@ export const AssessmentPage: React.FC<AssessmentPageProps> = ({ onOpenBooking, o
               onClick={() => navigate("/contact")}
               className="px-7 py-3.5 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-sm tracking-tight transition-all duration-200 cursor-pointer flex items-center gap-2 shadow-[0_2px_12px_rgba(255,255,255,0.15)] group"
             >
-              <span>Discuss an Assessment</span>
+              <span>Start a Conversation</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
 
@@ -434,7 +436,7 @@ export const AssessmentPage: React.FC<AssessmentPageProps> = ({ onOpenBooking, o
             {
               step: "01",
               title: "Business Overview",
-              desc: "A synthesized architectural baseline of how the organisation generates value, mapping departmental workflows and existing system topology.",
+              desc: "A synthesized architectural baseline of how the organisation generates value, mapping departmental workflows and existing system landscape.",
             },
             {
               step: "02",
@@ -619,7 +621,7 @@ export const AssessmentPage: React.FC<AssessmentPageProps> = ({ onOpenBooking, o
                 title: "Build & Deploy",
                 tag: "ENGINEERING",
                 tagColor: "text-slate-400 border-white/10 bg-white/[0.02]",
-                desc: "Engineering production AI systems deployed inside private enterprise boundaries, with rigorous governance and performance telemetry.",
+                desc: "Engineering production AI systems deployed inside private enterprise boundaries, with rigorous governance and performance monitoring.",
               },
             ].map((phase, idx) => (
               <div
@@ -677,7 +679,7 @@ export const AssessmentPage: React.FC<AssessmentPageProps> = ({ onOpenBooking, o
               onClick={() => navigate("/contact")}
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-sm tracking-tight transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-[0_2px_16px_rgba(255,255,255,0.18)] group"
             >
-              <span>Discuss an Assessment</span>
+              <span>Start a Conversation</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
 

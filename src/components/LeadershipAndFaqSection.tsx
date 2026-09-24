@@ -272,7 +272,7 @@ export const LeadershipAndFaqSection: React.FC<LeadershipAndFaqSectionProps> = (
               <div className="space-y-1">
                 <div className="text-xs font-mono font-bold uppercase tracking-wider text-white flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
-                  <span>SCHEDULE AN EXECUTIVE SYSTEMS BRIEFING</span>
+                  <span>START A CONVERSATION</span>
                 </div>
                 <div className="text-xs font-mono text-slate-400">
                   Review specific operational friction points, boundary parameters, and milestone scopes with our principal architects.
@@ -283,7 +283,7 @@ export const LeadershipAndFaqSection: React.FC<LeadershipAndFaqSectionProps> = (
                 onClick={onOpenBooking}
                 className="px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm shrink-0"
               >
-                <span>Schedule Executive Scoping Session</span>
+                <span>Start a Conversation</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

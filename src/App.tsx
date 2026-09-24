@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { MotionConfig } from "motion/react";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { HomePage } from "./pages/HomePage";
+import { SolutionsHubPage } from "./pages/SolutionsHubPage";
+import { SolutionDetailPage } from "./pages/SolutionDetailPage";
+import { SystemsHubPage } from "./pages/SystemsHubPage";
+import { SystemDetailPage } from "./pages/SystemDetailPage";
 import { IndustriesHubPage } from "./pages/IndustriesHubPage";
 import { IndustryDetailPage } from "./pages/IndustryDetailPage";
+import { AiTrainingSystemPage } from "./pages/AiTrainingSystemPage";
 import { BriefingLandingPage } from "./pages/BriefingLandingPage";
 import { BriefingReaderPage } from "./pages/BriefingReaderPage";
 import { InsightsIndexPage } from "./pages/InsightsIndexPage";
@@ -24,12 +30,32 @@ export default function App() {
   const [selectedTierForBooking, setSelectedTierForBooking] = useState<string | undefined>(undefined);
   const [selectedBlueprintForBooking, setSelectedBlueprintForBooking] = useState<BlueprintResult | null>(null);
 
-  const handleOpenBooking = () => {
-    const calendarUrl = (import.meta as any).env?.VITE_BOOKING_CALENDAR_URL;
-    if (calendarUrl && typeof calendarUrl === "string" && calendarUrl.trim()) {
-      window.open(calendarUrl.trim(), "_blank", "noopener,noreferrer");
-      return;
+  // Responsive motion refinement: disable decorative/entrance motion on mobile (<768px) and when prefers-reduced-motion is active
+  const [isMobileOrReduced, setIsMobileOrReduced] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     }
+    return false;
+  });
+
+  useEffect(() => {
+    const handleCheck = () => {
+      setIsMobileOrReduced(
+        window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+    };
+
+    window.addEventListener("resize", handleCheck);
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mediaQuery.addEventListener("change", handleCheck);
+
+    return () => {
+      window.removeEventListener("resize", handleCheck);
+      mediaQuery.removeEventListener("change", handleCheck);
+    };
+  }, []);
+
+  const handleOpenBooking = () => {
     setSelectedPainPointForBooking(undefined);
     setSelectedTierForBooking(undefined);
     setSelectedBlueprintForBooking(null);
@@ -37,7 +63,8 @@ export default function App() {
   };
 
   return (
-    <BrowserRouter>
+    <MotionConfig reducedMotion={isMobileOrReduced ? "always" : "user"}>
+      <BrowserRouter>
       <ScrollToTop />
       <div className="min-h-screen bg-[#080A10] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans antialiased flex flex-col justify-between">
         {/* Sticky Floating Top Navigation */}
@@ -54,6 +81,61 @@ export default function App() {
               path="/"
               element={
                 <HomePage
+                  onOpenBooking={handleOpenBooking}
+                  onOpenBriefing={() => setIsBriefingModalOpen(true)}
+                />
+              }
+            />
+
+            {/* Strategic Solutions Hub */}
+            <Route
+              path="/solutions"
+              element={
+                <SolutionsHubPage
+                  onOpenBooking={handleOpenBooking}
+                  onOpenBriefing={() => setIsBriefingModalOpen(true)}
+                />
+              }
+            />
+
+            {/* Dedicated Solution Domain Architecture Pages */}
+            <Route
+              path="/solutions/:slug"
+              element={
+                <SolutionDetailPage
+                  onOpenBooking={handleOpenBooking}
+                  onOpenBriefing={() => setIsBriefingModalOpen(true)}
+                />
+              }
+            />
+
+            {/* Flagship Systems Hub */}
+            <Route
+              path="/systems"
+              element={
+                <SystemsHubPage
+                  onOpenBooking={handleOpenBooking}
+                  onOpenBriefing={() => setIsBriefingModalOpen(true)}
+                />
+              }
+            />
+
+            {/* Dedicated AI Training & Learning System Architecture Page */}
+            <Route
+              path="/systems/ai-training"
+              element={
+                <AiTrainingSystemPage
+                  onOpenBooking={handleOpenBooking}
+                  onOpenBriefing={() => setIsBriefingModalOpen(true)}
+                />
+              }
+            />
+
+            {/* Dedicated Flagship System Architecture Pages */}
+            <Route
+              path="/systems/:slug"
+              element={
+                <SystemDetailPage
                   onOpenBooking={handleOpenBooking}
                   onOpenBriefing={() => setIsBriefingModalOpen(true)}
                 />
@@ -173,5 +255,6 @@ export default function App() {
         />
       </div>
     </BrowserRouter>
+    </MotionConfig>
   );
 }

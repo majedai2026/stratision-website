@@ -87,7 +87,7 @@ export const SCALE_OPTIONS: ScaleOption[] = [
     id: "enterprise",
     name: "150+ Enterprise",
     code: "S3",
-    scopeDescription: "Multi-tenant VPC deployment with formal security review gates and dedicated compliance audit telemetry.",
+    scopeDescription: "Multi-tenant VPC deployment with formal security review gates and dedicated compliance audit logging.",
     deliveryRange: {
       p1: "Phase 1 (Days 1–10): Architectural Triage & Security Audit",
       p2: "Phase 2 (Days 11–20): Dedicated VPC Infrastructure Staging",
@@ -143,9 +143,9 @@ export const BOTTLENECK_OPTIONS: BottleneckOption[] = [
     id: "reporting",
     name: "Cross-Departmental Reporting & Compliance Gaps",
     code: "B4",
-    primaryIntervention: "Automated telemetry synthesis pipeline aggregating operational metrics across all business units into structured executive briefings.",
+    primaryIntervention: "Automated data synthesis aggregating operational metrics across all business units into structured executive briefings.",
     guardrails: [
-      "Immutable transactional logging of all state transitions",
+      "Immutable transactional audit logging of all operational events",
       "Automated compliance rule validation against contract baselines",
       "Tiered executive approval thresholds for operational changes",
     ],
@@ -158,7 +158,7 @@ export interface InfrastructureOption {
   name: string;
   code: string;
   boundaryDescription: string;
-  topologySpecs: string[];
+  infrastructureSpecs: string[];
 }
 
 export const INFRASTRUCTURE_OPTIONS: InfrastructureOption[] = [
@@ -167,7 +167,7 @@ export const INFRASTRUCTURE_OPTIONS: InfrastructureOption[] = [
     name: "Dedicated Private VPC (AWS / Azure)",
     code: "VPC",
     boundaryDescription: "Single-tenant isolated VPC deployment with dedicated private subnets and zero public IP routing.",
-    topologySpecs: [
+    infrastructureSpecs: [
       "Dedicated single-tenant VPC peering (AWS / Azure / GCP)",
       "Single-tenant vector database with zero multi-tenant memory",
       "Enterprise zero-retention model orchestration API contracts",
@@ -178,9 +178,9 @@ export const INFRASTRUCTURE_OPTIONS: InfrastructureOption[] = [
     name: "Private Cloud Enclave (Client-Governed)",
     code: "ENC",
     boundaryDescription: "Air-gapped containerized agent runtime executed directly inside client-owned cloud or on-prem infrastructure.",
-    topologySpecs: [
+    infrastructureSpecs: [
       "Client-hosted container deployment with full local data residency",
-      "Outbound telemetry can be restricted according to client deployment requirements",
+      "Outbound data transmission can be restricted according to client deployment requirements",
       "Self-contained embeddings repository and local LLM runtime options",
     ],
   },
@@ -495,15 +495,15 @@ Delivery Projection (Indicative):
                   </p>
                 </div>
 
-                {/* Recommended Topology & Boundaries */}
+                {/* Recommended Infrastructure & Boundaries */}
                 <div className="space-y-2.5 p-4 bg-[#070A12] border border-slate-800/80">
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                    <Shield className="w-3 h-3 text-blue-400" />
-                    <span>RECOMMENDED TOPOLOGY & BOUNDARIES:</span>
+                  <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    <Shield className="w-3.5 h-3.5 text-blue-400" />
+                    <span>RECOMMENDED INFRASTRUCTURE & BOUNDARIES:</span>
                   </div>
                   <div className="space-y-1.5">
-                    {activeInfra.topologySpecs.map((spec, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs font-mono text-slate-300">
+                    {activeInfra.infrastructureSpecs.map((spec, idx) => (
+                      <div key={idx} className="flex items-start gap-2 text-xs text-slate-300">
                         <span className="text-blue-400 font-bold shrink-0">↳</span>
                         <span className="leading-relaxed">{spec}</span>
                       </div>
@@ -578,7 +578,7 @@ Delivery Projection (Indicative):
                     onClick={handleBooking}
                     className="px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm shrink-0"
                   >
-                    <span>Schedule Systems Scoping Session</span>
+                    <span>Start a Conversation</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

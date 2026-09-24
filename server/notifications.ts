@@ -163,23 +163,32 @@ export class WebhookNotificationProvider implements NotificationProvider {
     const isGoogleChat = webhookUrl.includes("chat.googleapis.com");
     let bodyString: string;
 
+    const isConsultation =
+      record.topic?.toLowerCase().includes("consultation") ||
+      record.preferredNextStep?.toLowerCase().includes("consultation");
+
     if (isGoogleChat) {
+      const headerTitle = isConsultation
+        ? `*STRATISION — NEW EXECUTIVE CONSULTATION REQUEST*`
+        : `*STRATISION — NEW CONTACT ENQUIRY*`;
       const lines = [
-        `*STRATISION — NEW CONTACT ENQUIRY*`,
+        headerTitle,
         `*Reference ID:* \`${record.referenceId}\``,
         `*Name:* ${record.firstName} ${record.lastName}`.trim(),
         `*Company:* ${record.company}`,
         `*Role:* ${record.role}`,
         `*Email:* ${record.workEmail}`,
         `*Topic:* ${record.topic}`,
-        record.objective ? `*Objective:* ${record.objective}` : null,
+        record.objective ? `*Operational Challenge / Objective:* ${record.objective}` : null,
         record.preferredNextStep ? `*Preferred Next Step:* ${record.preferredNextStep}` : null,
         `*Submitted:* ${record.createdAt}`,
       ].filter(Boolean);
       bodyString = JSON.stringify({ text: lines.join("\n") });
     } else {
       const payload = {
-        event: "INITIAL_CONVERSATION_ENQUIRY_SUBMITTED",
+        event: isConsultation
+          ? "EXECUTIVE_CONSULTATION_REQUEST_SUBMITTED"
+          : "INITIAL_CONVERSATION_ENQUIRY_SUBMITTED",
         timestamp: new Date().toISOString(),
         referenceId: record.referenceId,
         createdAt: record.createdAt,
@@ -191,6 +200,7 @@ export class WebhookNotificationProvider implements NotificationProvider {
         },
         enquiry: {
           topic: record.topic,
+          operationalChallenge: record.objective || null,
           objective: record.objective || null,
           preferredNextStep: record.preferredNextStep,
         },

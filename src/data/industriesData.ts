@@ -723,7 +723,7 @@ export const INDUSTRIES_LIST: IndustryData[] = [
         whatAiDoes:
           "Extracts engagement terms from signed engagement letters, configures project workspaces, and populates billing and time-tracking systems.",
         leverageOutcome:
-          "Supports clean engagement launch, faster initial billing setup, and reduced administrative friction for project leads.",
+          "Supports clean engagement launch, faster initial billing setup, and reduced administrative workload for project leads.",
       }
     ],
     capabilityMappings: [
@@ -1201,6 +1201,342 @@ export const INDUSTRIES_LIST: IndustryData[] = [
         title: "Clear Records",
         description:
           "All submittal evaluations, compliance checks, and engineer notes are recorded for project accountability."
+      }
+    ]
+  },
+  {
+    id: "healthcare",
+    slug: "healthcare",
+    number: "07",
+    name: "Healthcare & Private Clinics",
+    shortName: "Healthcare",
+    headline: "Bespoke AI systems for patient triage, clinical correspondence, and appointment intake.",
+    heroSummary:
+      "Private practices and specialist clinics receive hundreds of daily enquiries, referral documents, and appointment requests. Stratision builds secure, private AI systems that answer patient queries in seconds, draft referral summaries for clinician review, and keep clinic schedules fully booked — with human doctors maintaining complete control.",
+    metaTitle: "AI Systems for Healthcare & Private Clinics | Stratision",
+    metaDescription:
+      "Custom, private AI systems for private clinics, dental practices, and diagnostic centres. UK GDPR and clinical governance compliant.",
+    strategicTags: [
+      "Strict Clinical Governance",
+      "NHS & Private Referral Triage",
+      "24/7 Telephone Reception",
+      "Human-in-the-Loop Sign-off"
+    ],
+    overviewContext:
+      "In private healthcare, rapid patient response directly impacts clinical intake and treatment continuity. Front-desk teams spend substantial time fielding repetitive telephone enquiries, checking diary availability, and transcribing consultant letters into electronic health records.",
+    operatingRealities: [
+      {
+        title: "High Peak Telephone & Enquiry Volume",
+        description:
+          "Patients calling during morning clinic peaks face ring-busy signals or voicemail delays, leading to cancelled treatments and patient dissatisfaction."
+      },
+      {
+        title: "Unstructured GP & Consultant Referrals",
+        description:
+          "Inbound referral letters arrive via email, PDF, or fax with differing medical layouts, requiring clinical administrators to manually parse medical histories and urgency levels."
+      },
+      {
+        title: "Heavy Dictation & Typing Overhead",
+        description:
+          "Doctors spend 2–3 hours each evening typing consultation notes, updating patient histories, and formatting referral letters."
+      },
+      {
+        title: "Clinic Room & Theatre Capacity Losses",
+        description:
+          "Late cancellations and administrative delays leave expensive specialist equipment and consultant clinic rooms under-utilised."
+      }
+    ],
+    leveragePoints: [
+      {
+        title: "24/7 Inbound Patient Call & Triage System",
+        problem:
+          "Peak morning call volumes overwhelm reception teams, causing abandoned calls and missed private patient registrations.",
+        whatAiDoes:
+          "Answers incoming calls with clear, natural voice response, collects patient symptoms against defined triage trees, and books slots in the practice diary.",
+        leverageOutcome:
+          "Guarantees 100% call answer rate with zero wait time, passing complex or urgent clinical queries immediately to duty clinicians."
+      },
+      {
+        title: "GP & Consultant Referral Parsing",
+        problem:
+          "Referral PDFs require manual extraction of patient demographics, NHS numbers, clinical history, and urgency tags.",
+        whatAiDoes:
+          "Extracts key clinical metadata, checks consultant availability by sub-specialty, and prepares pre-populated electronic health records.",
+        leverageOutcome:
+          "Reduces referral intake time from hours to seconds while highlighting patient allergies and urgency flags."
+      },
+      {
+        title: "Consultation Note & Letter Drafting",
+        problem:
+          "Specialists spend valuable clinical hours typing consultation letters and updating electronic records after clinic hours.",
+        whatAiDoes:
+          "Drafts structured consultation letters and patient summaries from audio or bullet notes, formatted strictly to clinical standards for doctor sign-off.",
+        leverageOutcome:
+          "Returns hours of clinician time to patient care while preserving doctor signature on every outgoing letter."
+      },
+      {
+        title: "Diary Optimisation & Appointment Confirmation",
+        problem:
+          "Last-minute cancellations cause revenue loss and leave clinic rooms idle.",
+        whatAiDoes:
+          "Sends automated multichannel confirmations, manages waitlists, and rapidly re-allocates cancelled slots to waiting patients.",
+        leverageOutcome:
+          "Maximises clinic room utilisation and ensures continuity of patient care."
+      }
+    ],
+    capabilityMappings: [
+      {
+        familyNumber: "01",
+        familyName: "Workforce Intelligence",
+        systemTitle: "Clinical Protocols & Practice Knowledge",
+        description:
+          "Provides clinic staff with instant verified guidance on clinical pathways, consultant fees, and pre-procedure preparation guidelines."
+      },
+      {
+        familyNumber: "02",
+        familyName: "Operations & Workflows",
+        systemTitle: "Referral & Medical Document Pipeline",
+        description:
+          "Parses, tags, and routes incoming patient referrals, diagnostic scans, and insurance pre-authorisations directly into the EHR."
+      },
+      {
+        familyNumber: "03",
+        familyName: "Sales & Customer Operations",
+        systemTitle: "24/7 Patient Intake & Scheduling Receptionist",
+        description:
+          "Handles patient enquiries across telephony, webchat, and email, verifying insurance eligibility and scheduling appointments."
+      },
+      {
+        familyNumber: "04",
+        familyName: "Knowledge & Decision Support",
+        systemTitle: "Clinical Letter & Documentation Assistant",
+        description:
+          "Generates structured medical draft letters with verifiable citations to previous notes for clinician review and approval."
+      }
+    ],
+    modelledScenario: {
+      title: "Patient Triage & Referral Document Processing",
+      categoryBadge: "CLINICAL WORKFLOW",
+      inputDescription:
+        "GP referral letter PDF, patient symptom intake notes, and consultant clinic schedule.",
+      inputsList: [
+        "Specialist GP Referral Letter (PDF)",
+        "Patient Insurance Pre-Authorisation Code",
+        "EHR Patient History Record"
+      ],
+      steps: {
+        understand: {
+          stepNumber: "01",
+          stageName: "Document Ingestion",
+          label: "Referral Parsing",
+          description: "Extracts clinical indication, patient demographics, and priority tags with 99.4% accuracy."
+        },
+        orchestrate: {
+          stepNumber: "02",
+          stageName: "Matching & Verification",
+          label: "Consultant Slot Allocation",
+          description: "Matches clinical specialty with available consultant diaries and confirms clinic room allocation."
+        },
+        verify: {
+          stepNumber: "03",
+          stageName: "Clinical Gate",
+          label: "Duty Clinician Sign-off",
+          description: "Presents structured dossier to duty doctor for triage level confirmation prior to booking."
+        },
+        action: {
+          stepNumber: "04",
+          stageName: "Dispatch",
+          label: "Appointment Confirmation",
+          description: "Updates EHR, notifies patient via SMS/email, and transmits pre-consultation medical questionnaire."
+        }
+      },
+      outputSummary: "Patient booked within 4 minutes of referral arrival with full audit trail in EHR.",
+      businessOutcome: "Zero missed enquiries, 40% reduction in admin backlog, and full compliance with UK Caldicott guidelines.",
+      governanceNote: "All patient data remains strictly isolated in UK cloud infrastructure. Zero model training on protected health data."
+    },
+    governanceConsiderations: [
+      {
+        title: "UK GDPR & Caldicott Compliance",
+        description:
+          "All patient identifiers and sensitive medical data remain strictly encrypted with UK data residency."
+      },
+      {
+        title: "Zero Autonomous Clinical Decisions",
+        description:
+          "Systems operate strictly within administrative and triage boundaries. All clinical diagnoses remain human."
+      },
+      {
+        title: "Audit Logging",
+        description:
+          "Every document extraction, record access, and diary modification is permanently logged with timestamps."
+      }
+    ]
+  },
+  {
+    id: "manufacturing",
+    slug: "manufacturing",
+    number: "08",
+    name: "Manufacturing & Industrial",
+    shortName: "Manufacturing",
+    headline: "Bespoke AI systems for RFQ engineering quotes, supplier certificates, and maintenance logs.",
+    heroSummary:
+      "Precision engineering and industrial manufacturing businesses spend days manually estimating complex RFQs, verifying supplier material certificates, and auditing quality records. Stratision builds custom AI systems that parse CAD specs, cross-reference materials against ISO standards, and accelerate bid preparation.",
+    metaTitle: "AI Systems for Manufacturing & Precision Engineering | Stratision",
+    metaDescription:
+      "Custom AI systems for precision engineering, aerospace parts, and industrial fabrication. RFQ estimation, MTC validation, and maintenance intelligence.",
+    strategicTags: [
+      "Rapid RFQ Engineering Estimation",
+      "Supplier Material Certificate Verification",
+      "ISO 9001 Quality Audit Support",
+      "Preventative Maintenance Intelligence"
+    ],
+    overviewContext:
+      "In precision manufacturing, quoting speed directly influences win rates. Estimators spend days extracting tolerances and materials from CAD prints, while quality managers spend hours cross-referencing Mill Test Certificates against heat numbers.",
+    operatingRealities: [
+      {
+        title: "Multi-Day RFQ Estimation Delays",
+        description:
+          "Complex engineering RFQs require senior estimators to manually calculate cycle times, material weights, and tooling costs from dense prints."
+      },
+      {
+        title: "Supplier Material Certificate Audits",
+        description:
+          "Incoming raw materials must be verified against chemical and mechanical composition specs on Mill Test Certificates before machining begins."
+      },
+      {
+        title: "Unplanned Equipment Downtime",
+        description:
+          "Maintenance logs and sensor warnings remain buried in shift handovers, allowing avoidable machine breakdowns to disrupt production runs."
+      },
+      {
+        title: "ISO 9001 & AS9100 Quality Traceability",
+        description:
+          "Auditors require instant proof of heat numbers, operator sign-offs, and calibration records across distributed filing systems."
+      }
+    ],
+    leveragePoints: [
+      {
+        title: "RFQ Specification & Bill of Materials Parsing",
+        problem:
+          "Estimators spend 4–8 hours per RFQ manually extracting dimensions, tolerances, surface finishes, and material grades from CAD prints.",
+        whatAiDoes:
+          "Extracts engineering requirements from drawing prints and specs, cross-referencing against standard machining rates and raw material stock.",
+        leverageOutcome:
+          "Cuts quotation turnaround from 4 days to 3 hours, giving sales teams first-mover advantage on high-margin tenders."
+      },
+      {
+        title: "Mill Test Certificate (MTC) Verification",
+        problem:
+          "Quality teams manually check chemical composition and tensile strength on mill certs against aerospace and industrial standards.",
+        whatAiDoes:
+          "Extracts heat numbers, tensile strength, yield stress, and chemical percentages, verifying compliance against EN/ASTM standards.",
+        leverageOutcome:
+          "Eliminates non-conforming material entry into production and automates traceability paperwork."
+      },
+      {
+        title: "Maintenance Knowledge & Shift Handover",
+        problem:
+          "Critical machinery fix history and error code resolutions are lost between shift changes.",
+        whatAiDoes:
+          "Enables machine operators and technicians to query historical CNC breakdown logs, PLC alarm codes, and maintenance manuals.",
+        leverageOutcome:
+          "Reduces mean time to repair (MTTR) by enabling rapid diagnosis based on previous machine history."
+      },
+      {
+        title: "Production SOP & Quality Audit Retrieval",
+        problem:
+          "Staff search paper binders and complex folders to confirm approved machine setup procedures and inspection tolerances.",
+        whatAiDoes:
+          "Provides instant, voice and tablet-friendly retrieval of approved standard operating procedures and tooling diagrams on the shop floor.",
+        leverageOutcome:
+          "Ensures consistent component quality and simplifies ISO audit compliance."
+      }
+    ],
+    capabilityMappings: [
+      {
+        familyNumber: "01",
+        familyName: "Workforce Intelligence",
+        systemTitle: "Shop Floor SOP & Tooling Intelligence",
+        description:
+          "Provides operators and programmers with fast access to approved CNC setups, tooling feeds, and machine manuals."
+      },
+      {
+        familyNumber: "02",
+        familyName: "Operations & Workflows",
+        systemTitle: "Automated RFQ Parsing & Costing Core",
+        description:
+          "Parses engineering drawings, extracts material specs and tolerances, and generates preliminary costed bills of materials."
+      },
+      {
+        familyNumber: "03",
+        familyName: "Sales & Customer Operations",
+        systemTitle: "Customer Spec & Revision Tracker",
+        description:
+          "Monitors drawing revisions, highlights tolerance modifications, and prevents manufacturing to obsolete drawing versions."
+      },
+      {
+        familyNumber: "04",
+        familyName: "Knowledge & Decision Support",
+        systemTitle: "Material Traceability & ISO Audit Dossier",
+        description:
+          "Links mill test certificates, batch numbers, and inspection sign-offs into instantly auditable compliance dossiers."
+      }
+    ],
+    modelledScenario: {
+      title: "RFQ Specification Ingestion & Engineering Estimation",
+      categoryBadge: "MANUFACTURING WORKFLOW",
+      inputDescription:
+        "Customer RFQ package: 2D drawing PDF, 3D step file, and material specification sheet.",
+      inputsList: [
+        "Engineering Drawing PDF (Tolerances & Finishes)",
+        "Material Spec Sheet (316L Stainless Steel)",
+        "Target Delivery Schedule & Batch Volume"
+      ],
+      steps: {
+        understand: {
+          stepNumber: "01",
+          stageName: "Spec Extraction",
+          label: "Dimensional & Tolerance Parse",
+          description: "Extracts critical tolerances (±0.01mm), surface roughness (Ra 0.8), and material specs."
+        },
+        orchestrate: {
+          stepNumber: "02",
+          stageName: "Costing Engine",
+          label: "Machine Cycle & Tooling Estimate",
+          description: "Calculates material blank weight, machine cycle times across 5-axis CNC, and tool wear allowance."
+        },
+        verify: {
+          stepNumber: "03",
+          stageName: "Engineering Review",
+          label: "Lead Estimator Verification",
+          description: "Presents costed breakdown to senior manufacturing engineer for margin and setup confirmation."
+        },
+        action: {
+          stepNumber: "04",
+          stageName: "Quote Dispatch",
+          label: "Formal Quotation Generation",
+          description: "Produces formal customer quotation with lead times, material cert terms, and payment milestones."
+        }
+      },
+      outputSummary: "Complete RFQ quote generated in 18 minutes with full engineering bill of materials.",
+      businessOutcome: "Win rate improved by 32% due to same-day turnaround on high-spec industrial tenders.",
+      governanceNote: "All proprietary customer CAD files and drawings remain isolated in secure on-premise or private cloud storage."
+    },
+    governanceConsiderations: [
+      {
+        title: "IP Protection & Non-Disclosure",
+        description:
+          "Customer engineering drawings and proprietary tooling setups are protected in isolated private repositories."
+      },
+      {
+        title: "Engineer Authority Over Quotes",
+        description:
+          "AI calculates preliminary numbers; qualified manufacturing engineers retain final authority over all bids."
+      },
+      {
+        title: "Full Audit Traceability",
+        description:
+          "Complete traceability from raw material batch to shipped component for ISO 9001 and aerospace standards."
       }
     ]
   }

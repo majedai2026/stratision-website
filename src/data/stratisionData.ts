@@ -82,7 +82,7 @@ export const STRATISION_OFFERS: OfferDetail[] = [
       "Custom conversational voice and webchat assistant",
       "Deterministic CRM sync (HubSpot, Salesforce, Zoho)",
       "Instant calendar booking & reminder SMS sequence",
-      "Live call recording, transcription & intent telemetry",
+      "Live call recording, transcription & intent capture",
     ],
     capabilities: [
       "Sub-60 second response time across all channels",
@@ -359,7 +359,7 @@ export const BUSINESS_PROBLEMS_LIBRARY: BusinessProblem[] = [
     symptoms: [
       "Delayed month-end close due to manual 3-way invoice and purchase order matching.",
       "Missed early payment discounts and occasional duplicate vendor payments.",
-      "Finance leadership lacks real-time predictive cashflow telemetry.",
+      "Finance leadership lacks real-time predictive cashflow forecasting.",
     ],
     rootCause: "Manual accounting verification workflows across legacy ERPs without automated anomaly detection.",
     solution: "Automated AP/AR Reconciliation Agent with deterministic line-item validation and cashflow forecast modeling.",
@@ -374,9 +374,9 @@ export const BUSINESS_PROBLEMS_LIBRARY: BusinessProblem[] = [
       "Emerging customer churn and operational bottlenecks are detected weeks too late.",
       "Shadow AI usage across employees creates unmonitored security and IP hazards.",
     ],
-    rootCause: "Absence of real-time operational telemetry and lack of enterprise-wide AI governance standards.",
+    rootCause: "Absence of real-time operational metrics and lack of enterprise-wide AI governance standards.",
     solution: "Executive Business Intelligence Engine with predictive alerting, unified cognitive search, and SOC2 AI governance policies.",
-    roi: "Real-Time Telemetry • Dedicated Private Cloud Tenancy",
+    roi: "Real-Time Visibility • Dedicated Private Cloud Tenancy",
   },
 ];
 
@@ -644,7 +644,7 @@ export const PRICING_TIERS: PricingTier[] = [
       "Production deployment of 1-2 custom AI systems or agent workflows",
       "Live bi-directional integration with your CRM, ERP, or internal databases",
       "Deterministic safety firewalls, SOC2 isolation & 0-hallucination guardrails",
-      "Staff onboarding, executive telemetry dashboard & operational handover",
+      "Staff onboarding, executive reporting dashboard & operational handover",
       "30 days of post-deployment optimization & SLA monitoring",
     ],
     guarantee: "100% client-owned intellectual property and code repository.",

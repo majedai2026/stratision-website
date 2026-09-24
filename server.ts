@@ -37,56 +37,6 @@ app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", service: "Stratision AI Consulting Platform" });
 });
 
-// Consultation Bookings Endpoint
-interface BookingData {
-  id: string;
-  name: string;
-  email: string;
-  company: string;
-  role: string;
-  industry: string;
-  painPoints: string[];
-  timeline: string;
-  notes?: string;
-  createdAt: string;
-}
-
-const bookings: BookingData[] = [];
-
-app.post("/api/consultation/book", (req: Request, res: Response) => {
-  try {
-    const { name, email, company, role, industry, painPoints, timeline, notes } = req.body;
-    if (!name || !email || !company) {
-      res.status(400).json({ error: "Name, email, and company are required." });
-      return;
-    }
-
-    const booking: BookingData = {
-      id: `STRAT-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 899 + 100)}`,
-      name,
-      email,
-      company,
-      role: role || "Executive",
-      industry: industry || "General Enterprise",
-      painPoints: painPoints || [],
-      timeline: timeline || "Immediate (1-2 weeks)",
-      notes: notes || "",
-      createdAt: new Date().toISOString(),
-    };
-
-    bookings.push(booking);
-    res.json({
-      success: true,
-      bookingId: booking.id,
-      message: "Executive AI Consultation successfully scheduled. A Stratision Principal Architect has been assigned to your case.",
-      details: booking,
-    });
-  } catch (error: any) {
-    console.error("Booking error:", error);
-    res.status(500).json({ error: "Failed to process booking request." });
-  }
-});
-
 import { AssessmentRecord, ContactRecord, getPersistenceProvider } from "./server/persistence";
 import { getNotificationProvider } from "./server/notifications";
 
@@ -120,6 +70,162 @@ function checkIpRateLimit(ip: string, isLocalDev: boolean = false): boolean {
   entry.count++;
   return true;
 }
+
+// POST /api/consultation/book — Production-Hardened Consultation Intake
+app.post("/api/consultation/book", async (req: Request, res: Response) => {
+  try {
+    const clientIp =
+      (req.headers["x-forwarded-for"] as string)?.split(",")[0]?.trim() ||
+      req.socket.remoteAddress ||
+      "unknown";
+    const isLocalDev =
+      process.env.NODE_ENV !== "production" &&
+      (clientIp === "127.0.0.1" ||
+        clientIp === "::1" ||
+        clientIp === "unknown" ||
+        clientIp === "::ffff:127.0.0.1");
+
+    if (!checkIpRateLimit(clientIp, isLocalDev)) {
+      res.status(429).json({ error: "Too many requests. Please try again later." });
+      return;
+    }
+
+    const body = req.body || {};
+    const rawName = typeof body.name === "string" ? body.name.trim() : "";
+    let firstName = typeof body.firstName === "string" ? body.firstName.trim() : "";
+    let lastName = typeof body.lastName === "string" ? body.lastName.trim() : "";
+
+    if (!firstName && rawName) {
+      const parts = rawName.split(/\s+/);
+      firstName = parts[0] || "";
+      lastName = parts.slice(1).join(" ") || "";
+    }
+
+    const workEmail = typeof body.email === "string"
+      ? body.email.trim().toLowerCase()
+      : typeof body.workEmail === "string"
+      ? body.workEmail.trim().toLowerCase()
+      : "";
+
+    const company = typeof body.company === "string" ? body.company.trim() : "";
+    const role = typeof body.role === "string" && body.role.trim() ? body.role.trim() : "Operational Lead";
+    const topic = typeof body.topic === "string" && body.topic.trim() ? body.topic.trim() : "Executive AI Consultation";
+    const challenge = typeof body.notes === "string"
+      ? body.notes.trim()
+      : typeof body.challenge === "string"
+      ? body.challenge.trim()
+      : typeof body.objective === "string"
+      ? body.objective.trim()
+      : "";
+
+    // Required fields validation
+    if ((!firstName && !rawName) || !workEmail || !company) {
+      res.status(400).json({ error: "Name, work email, and company are required." });
+      return;
+    }
+
+    // Email format validation
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!EMAIL_REGEX.test(workEmail)) {
+      res.status(400).json({ error: "Please provide a valid work email address." });
+      return;
+    }
+
+    // Input bounds validation
+    if (
+      firstName.length > 100 ||
+      lastName.length > 100 ||
+      rawName.length > 200 ||
+      company.length > 200 ||
+      role.length > 200
+    ) {
+      res.status(400).json({ error: "Field content exceeds allowable character limits." });
+      return;
+    }
+    if (challenge.length > 4000) {
+      res.status(400).json({ error: "Operational challenge description exceeds maximum character limits." });
+      return;
+    }
+
+    // Duplicate submission prevention (60s sliding window on identical email + company)
+    const duplicateKey = crypto
+      .createHash("sha256")
+      .update(`consultation|${workEmail}|${company.toLowerCase()}`)
+      .digest("hex");
+    const existing = recentSubmissions.get(duplicateKey);
+    const now = Date.now();
+
+    if (existing && now - existing.timestamp < 60000) {
+      console.log(`[Consultation Intake] Duplicate submission intercepted for ${workEmail}. Returning existing reference.`);
+      res.status(200).json({
+        success: true,
+        bookingId: existing.referenceId,
+        referenceId: existing.referenceId,
+        message: "Your conversation request has been received. A Lead Systems Architect will review your operational context and reach out directly within one business day.",
+      });
+      return;
+    }
+
+    // Generate unique server-side reference ID
+    const referenceId = generateContactReferenceId();
+    const createdAt = new Date().toISOString();
+
+    const record: ContactRecord = {
+      referenceId,
+      createdAt,
+      firstName: firstName || rawName,
+      lastName: lastName || "",
+      workEmail,
+      company,
+      role,
+      topic,
+      objective: challenge || undefined,
+      preferredNextStep: "Executive Consultation Call",
+    };
+
+    // 1. Authoritative persistence via persistenceProvider
+    const persistenceProvider = getPersistenceProvider();
+    await persistenceProvider.saveContactEnquiry(record);
+    recentSubmissions.set(duplicateKey, { timestamp: now, referenceId });
+
+    // 2. Dispatch internal notification via notificationProvider
+    const notificationProvider = getNotificationProvider();
+    if (notificationProvider.isConfigured()) {
+      try {
+        const notificationResult = await notificationProvider.dispatchContact(record);
+        if (!notificationResult.success) {
+          console.error(
+            `[INTERNAL NOTIFICATION FAILURE] Consultation delivery failed for reference ${record.referenceId}: ${notificationResult.error}`
+          );
+        } else {
+          console.log(
+            `[INTERNAL NOTIFICATION] Successfully delivered consultation notification for reference ${record.referenceId}`
+          );
+        }
+      } catch (notifErr: any) {
+        console.error(
+          `[INTERNAL NOTIFICATION EXCEPTION] Unexpected consultation notification error for reference ${record.referenceId}:`,
+          notifErr
+        );
+      }
+    } else {
+      console.log(
+        `[INTERNAL NOTIFICATION AUDIT] Consultation reference ${record.referenceId} saved to ${persistenceProvider.name}. Internal notification webhook not configured.`
+      );
+    }
+
+    // 3. Return HTTP 200 with authentic referenceId
+    res.status(200).json({
+      success: true,
+      bookingId: record.referenceId,
+      referenceId: record.referenceId,
+      message: "Your conversation request has been received. A Lead Systems Architect will review your operational context and reach out directly within one business day.",
+    });
+  } catch (error: any) {
+    console.error("Consultation persistence error:", error);
+    res.status(500).json({ error: "Something went wrong and your request wasn't submitted. Please try again." });
+  }
+});
 
 // POST /api/assessment/request
 app.post("/api/assessment/request", async (req: Request, res: Response) => {
@@ -658,6 +764,29 @@ Respond concisely (under 180 words), with authoritative strategic clarity, execu
   }
 });
 
+// SEO Infrastructure: Dedicated robots.txt and sitemap.xml endpoints
+app.get("/robots.txt", (_req: Request, res: Response) => {
+  const robotsPath = path.join(process.cwd(), "public", "robots.txt");
+  const distRobotsPath = path.join(process.cwd(), "dist", "robots.txt");
+  const targetPath = fs.existsSync(distRobotsPath) ? distRobotsPath : robotsPath;
+  if (fs.existsSync(targetPath)) {
+    res.type("text/plain").sendFile(targetPath);
+  } else {
+    res.type("text/plain").send("User-agent: *\nAllow: /\n");
+  }
+});
+
+app.get("/sitemap.xml", (_req: Request, res: Response) => {
+  const sitemapPath = path.join(process.cwd(), "public", "sitemap.xml");
+  const distSitemapPath = path.join(process.cwd(), "dist", "sitemap.xml");
+  const targetPath = fs.existsSync(distSitemapPath) ? distSitemapPath : sitemapPath;
+  if (fs.existsSync(targetPath)) {
+    res.type("application/xml").sendFile(targetPath);
+  } else {
+    res.status(404).end();
+  }
+});
+
 // Export configured Express application for serverless deployments (e.g., Vercel)
 export { app };
 export default app;
@@ -695,15 +824,10 @@ async function start() {
 // Standalone execution guard:
 // In Vercel serverless functions, the Express app is imported as a request handler
 // and MUST NOT invoke app.listen() or start a local daemon process.
-const isDirectExecution =
-  typeof process.argv[1] === "string" &&
-  (process.argv[1].endsWith("server.ts") || process.argv[1].endsWith("server.cjs"));
-
 const isServerless = Boolean(
   process.env.VERCEL ||
   process.env.VERCEL_SERVERLESS ||
-  process.env.NOW_REGION ||
-  !isDirectExecution
+  process.env.NOW_REGION
 );
 
 if (!isServerless) {

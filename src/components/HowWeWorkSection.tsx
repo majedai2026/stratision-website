@@ -1,163 +1,120 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { ArrowRight, ShieldCheck, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface HowWeWorkSectionProps {
   onOpenBooking: () => void;
 }
 
-export const HowWeWorkSection: React.FC<HowWeWorkSectionProps> = ({ onOpenBooking }) => {
-  const navigate = useNavigate();
-  const steps = [
-    {
-      number: "01",
-      layer: "DISCOVER",
-      title: "Discover & Diagnose",
-      summary: "Understand the organisation before deciding what technology should be built.",
-      description:
-        "Through our Business Intelligence Assessment™, we review operational workflows, team friction, existing systems and AI opportunities to identify where technology can create genuine value.",
-      deliverable: "Business Intelligence Assessment™ & Strategic AI Roadmap",
-    },
-    {
-      number: "02",
-      layer: "ARCHITECT",
-      title: "Architect & Specify",
-      summary: "Design the system around your real processes, systems and business rules.",
-      description:
-        "We produce a complete system specification: workflow maps, data security boundaries, integration requirements and approval checkpoints tailored specifically to your operation.",
-      deliverable: "System Specification & Governance Blueprint",
-    },
-    {
-      number: "03",
-      layer: "DELIVER",
-      title: "Deliver & Integrate",
-      summary: "Bespoke engineering connected directly into your existing business systems.",
-      description:
-        "Our senior engineering team builds the system within your designated security environment, connecting directly with your ERP, CRM, databases and core operational software.",
-      deliverable: "Bespoke Production System & Direct Operational Integration",
-    },
-    {
-      number: "04",
-      layer: "ADOPT & EVOLVE",
-      title: "Adopt & Evolve",
-      summary: "Ensuring effective team adoption and continuous system improvement.",
-      description:
-        "We do not build software and walk away. We ensure your team is fully trained on the new workflows, providing ongoing operational support, performance tuning and system enhancements.",
-      deliverable: "Team Training, Operational Support & Ongoing Enhancement",
-    },
-  ];
+const STEPS = [
+  {
+    step: "01",
+    title: "SHOW US THE PROBLEM",
+    explanation: "Tell us what is slowing your business down.",
+  },
+  {
+    step: "02",
+    title: "MAP THE WORK",
+    explanation: "We look at the people, processes and information involved.",
+  },
+  {
+    step: "03",
+    title: "BUILD THE SYSTEM",
+    explanation: "We build a private AI system around the way your business actually works.",
+  },
+  {
+    step: "04",
+    title: "STAY IN CONTROL",
+    explanation: "Your team keeps final approval and decision-making. AI handles the repetitive work.",
+  },
+];
 
+export const HowWeWorkSection: React.FC<HowWeWorkSectionProps> = ({ onOpenBooking }) => {
   return (
     <section
       id="how-we-work"
-      className="relative py-20 md:py-28 bg-[#080A10] border-t border-white/[0.06] text-slate-100 scroll-mt-28"
+      className="relative py-20 sm:py-36 lg:py-44 bg-[#06080F] border-t border-white/[0.06] text-slate-100 scroll-mt-24 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-start max-w-3xl mb-12"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-3xl mb-12 sm:mb-20"
         >
-          <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-4 block">
-            05 — HOW WE WORK
-          </span>
+          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+            <span>HOW WE WORK</span>
+          </div>
+
           <h2
-            className="text-[28px] sm:text-[38px] lg:text-[46px] font-bold text-white tracking-[-0.03em] leading-[1.12]"
+            className="text-3xl sm:text-5xl lg:text-[64px] font-bold text-white tracking-[-0.035em] leading-[1.05]"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
-            A four-stage engagement protocol. Clear from the outset.
+            From problem to working system.
           </h2>
-          <p
-            className="text-base sm:text-lg text-slate-300 mt-4 leading-relaxed"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            We do not produce theoretical slide decks. Every engagement follows a structured sequence with clear milestone deliverables.
+          <p className="text-base sm:text-xl text-slate-300 mt-4 sm:mt-5 font-normal leading-relaxed">
+            What happens when you work with Stratision — from your first conversation to a live system.
           </p>
         </motion.div>
 
-        {/* Editorial Four-Stage Layout with Fine Dividers (No Roadmap/Cards Look) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-t border-b border-white/[0.08]">
-          {steps.map((step, idx) => (
+        {/* 4 Steps: Clean Editorial Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          {STEPS.map((item, idx) => (
             <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 15 }}
+              key={item.step}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: idx * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className={`p-7 lg:p-8 flex flex-col justify-between transition-colors hover:bg-white/[0.02] relative ${
-                idx < 3 ? "lg:border-r border-b lg:border-b-0 border-white/[0.08]" : ""
-              }`}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="border-t border-white/[0.12] pt-6 space-y-3"
             >
-              <div>
-                <div className="flex items-center justify-between pb-4">
-                  <span className="text-xs font-mono font-bold text-blue-400">
-                    PHASE {step.number}
-                  </span>
-                  <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 uppercase font-semibold">
-                    {step.layer}
-                  </span>
-                </div>
-
-                <h3
-                  className="text-2xl font-bold text-white tracking-tight mt-2 mb-2"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                >
-                  {step.title}
-                </h3>
-
-                <p className="text-xs font-medium text-slate-200 leading-snug mb-3">
-                  {step.summary}
-                </p>
-
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  {step.description}
-                </p>
+              {/* Large Number */}
+              <div className="font-mono text-3xl sm:text-4xl font-bold text-blue-400">
+                {item.step}
               </div>
 
-              {/* Deliverable Notation */}
-              <div className="mt-8 pt-4 border-t border-white/[0.06]">
-                <span className="text-[9px] font-mono uppercase text-slate-400 block mb-1">
-                  DELIVERABLE
-                </span>
-                <div className="text-xs font-medium text-slate-200 font-mono">
-                  {step.deliverable}
-                </div>
-              </div>
+              {/* Short Title */}
+              <h3
+                className="text-lg sm:text-xl font-bold text-white tracking-tight"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              >
+                {item.title}
+              </h3>
+
+              {/* One Concise Explanation */}
+              <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+                {item.explanation}
+              </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Reassurance Banner */}
+        {/* Understated Supporting Statement & Direct CTA */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className="mt-14 rounded-2xl bg-[#0B0E17] border border-white/[0.08] p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+          transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-12 sm:mt-24 pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-6"
         >
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs font-mono uppercase text-emerald-400 font-semibold tracking-wider">
-                COMMERCIAL ENGAGEMENT COMMITMENT
-              </span>
-            </div>
-            <p className="text-sm text-slate-300">
-              Every engagement starts with a direct conversation. If we determine AI cannot deliver clear, measurable business leverage to your operation, we state so immediately.
-            </p>
-          </div>
+          <p
+            className="text-base sm:text-xl font-medium text-white tracking-tight"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Built around your business. Controlled by your people.
+          </p>
 
           <button
-            onClick={() => navigate("/contact")}
-            className="px-6 py-3 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 group shadow-sm"
+            onClick={onOpenBooking}
+            className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-7 py-3.5 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-sm transition-all duration-200 cursor-pointer shadow-[0_2px_16px_rgba(255,255,255,0.12)] group shrink-0"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             <span>Start a Conversation</span>
-            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
           </button>
         </motion.div>
 

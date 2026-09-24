@@ -264,7 +264,7 @@ export const SystemsShowcaseSection: React.FC<SystemsShowcaseSectionProps> = ({ 
             onClick={onOpenBooking}
             className="px-6 py-2.5 bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-all shrink-0"
           >
-            <span>Scope Custom Environment</span>
+            <span>Start a Conversation</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

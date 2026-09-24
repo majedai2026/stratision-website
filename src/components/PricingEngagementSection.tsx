@@ -38,7 +38,7 @@ export const COMMERCIAL_MODELS: CommercialModel[] = [
       "Bespoke orchestration assets delivered according to agreed engagement terms.",
       "Designed to minimize vendor lock-in.",
     ],
-    ctaLabel: "Schedule Sprint Scoping",
+    ctaLabel: "Start a Conversation",
   },
   {
     id: "model-02",
@@ -63,7 +63,7 @@ export const COMMERCIAL_MODELS: CommercialModel[] = [
       "Bespoke orchestration assets and deployment documentation delivered according to agreed engagement terms.",
       "Designed to minimize vendor lock-in.",
     ],
-    ctaLabel: "Schedule Pipeline Scoping",
+    ctaLabel: "Start a Conversation",
   },
   {
     id: "model-03",
@@ -74,11 +74,11 @@ export const COMMERCIAL_MODELS: CommercialModel[] = [
     scope: [
       "Enterprise-wide systems program across multiple operational divisions",
       "Multi-workstream architecture across complex legacy and custom API mesh",
-      "Enterprise telemetry, audit repositories, and governance controls",
+      "Enterprise monitoring, audit repositories, and governance controls",
     ],
     deliveryStructure: [
       "Staged multi-workstream execution protocol with parallel engineering tracks",
-      "Dedicated VPC or private enclave topology configured according to agreed requirements",
+      "Dedicated VPC or private enclave architecture configured according to agreed requirements",
     ],
     milestoneHandover: [
       "Phased workstream milestone verification gates & executive reviews",
@@ -88,7 +88,7 @@ export const COMMERCIAL_MODELS: CommercialModel[] = [
       "Bespoke architecture and orchestration assets delivered according to agreed engagement terms.",
       "Designed to minimize vendor lock-in.",
     ],
-    ctaLabel: "Schedule Program Scoping",
+    ctaLabel: "Start a Conversation",
   },
 ];
 

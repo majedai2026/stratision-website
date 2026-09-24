@@ -15,12 +15,12 @@ interface OperatingRealityVisualProps {
 export const OperatingRealityVisual: React.FC<OperatingRealityVisualProps> = () => {
   return (
     <div className="w-full py-4 space-y-4 select-none">
-      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400 font-semibold">
-          HOW WORK MOVES TODAY
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
+        <span className="text-slate-400 font-medium">
+          How work moves today
         </span>
-        <span className="text-[10px] font-mono text-rose-400/90 font-semibold">
-          WHERE WORK SLOWS DOWN
+        <span className="text-rose-400/90 font-medium">
+          Where work slows down
         </span>
       </div>
 
@@ -32,7 +32,7 @@ export const OperatingRealityVisual: React.FC<OperatingRealityVisualProps> = () 
         className="relative w-full h-[220px]"
       >
         <svg
-          className="w-full h-full"
+          className="w-full h-full static-on-mobile"
           viewBox="0 0 540 200"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -199,9 +199,9 @@ export const OperatingRealityVisual: React.FC<OperatingRealityVisualProps> = () 
         </svg>
       </motion.div>
 
-      <div className="flex items-center justify-between text-xs text-slate-400 font-mono pt-1">
-        <span>INFORMATION SPREAD ACROSS SYSTEMS</span>
-        <span className="text-rose-400/90">MANUAL WORK & DELAY</span>
+      <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+        <span>Information spread across systems</span>
+        <span className="text-rose-400/90 font-medium">Manual work & delay</span>
       </div>
     </div>
   );
@@ -244,8 +244,8 @@ export const LeverageTransformationVisual: React.FC<LeverageTransformationVisual
           className="lg:col-span-4 p-5 border-l-2 border-rose-500/80 bg-white/[0.01] space-y-2"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono text-rose-400 font-bold uppercase tracking-widest">
-              THE PROBLEM
+            <span className="text-xs text-rose-400 font-semibold">
+              The problem
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
@@ -262,22 +262,22 @@ export const LeverageTransformationVisual: React.FC<LeverageTransformationVisual
           className="lg:col-span-4 p-5 border-l-2 border-blue-500 bg-blue-950/10 space-y-3 relative"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-widest flex items-center gap-1.5">
+            <span className="text-xs text-blue-400 font-semibold flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-              WHAT STRATISION BUILDS
+              What Stratision builds
             </span>
           </div>
           <p className="text-xs sm:text-sm text-white font-medium leading-relaxed">
             {aiRole}
           </p>
-          <div className="pt-2 border-t border-white/[0.06] flex items-center gap-2 text-[10px] font-mono text-blue-300">
-            <span>READ</span>
+          <div className="pt-2 border-t border-white/[0.06] flex items-center gap-2 text-xs text-blue-300">
+            <span>Read</span>
             <span className="text-blue-400">→</span>
-            <span>CONNECT</span>
+            <span>Connect</span>
             <span className="text-blue-400">→</span>
-            <span>CHECK</span>
+            <span>Check</span>
             <span className="text-blue-400">→</span>
-            <span>COMPLETE</span>
+            <span>Complete</span>
           </div>
         </motion.div>
 
@@ -290,15 +290,15 @@ export const LeverageTransformationVisual: React.FC<LeverageTransformationVisual
           className="lg:col-span-4 p-5 border-l-2 border-emerald-500/80 bg-emerald-950/10 space-y-2"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest">
-              THE BENEFIT
+            <span className="text-xs text-emerald-400 font-semibold">
+              The benefit
             </span>
           </div>
           <p className="text-xs sm:text-sm text-emerald-100 font-semibold leading-relaxed">
             {leverage}
           </p>
-          <div className="pt-2 text-[10px] font-mono text-emerald-400">
-            ✓ Faster decisions • Less manual work
+          <div className="pt-2 text-xs text-emerald-400 font-medium">
+            Faster decisions • Less manual work
           </div>
         </motion.div>
       </motion.div>
@@ -379,7 +379,7 @@ export const CapabilityOverviewVisual: React.FC<CapabilityOverviewProps> = ({
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-mono text-blue-400 font-bold">
+                <span className="text-xs font-semibold text-blue-400">
                   {c.num}
                 </span>
                 <span
@@ -398,7 +398,7 @@ export const CapabilityOverviewVisual: React.FC<CapabilityOverviewProps> = ({
 
               {/* Minimal Line Illustration with SVG stroke drawing */}
               <div className="py-2.5 px-3 bg-white/[0.02] border border-white/[0.06] rounded mb-3">
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-300">
+                <div className="flex items-center justify-between text-xs text-slate-300">
                   <span>{c.flow[0]}</span>
                   <span className="text-blue-400 font-semibold">→</span>
                   <span>{c.flow[1]}</span>
@@ -431,13 +431,13 @@ interface GovernanceBoundaryVisualProps {
 export const GovernanceBoundaryVisual: React.FC<GovernanceBoundaryVisualProps> = () => {
   return (
     <div className="w-full py-4 space-y-4 select-none">
-      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
-        <span className="text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-semibold flex items-center gap-1.5">
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
+        <span className="text-emerald-400 font-semibold flex items-center gap-1.5">
           <Lock className="w-3 h-3 text-emerald-400" />
-          HOW YOUR INFORMATION IS CONTROLLED
+          How your information is controlled
         </span>
-        <span className="text-[10px] font-mono text-slate-400">
-          GOVERNED & AUDITED
+        <span className="text-slate-400 font-medium">
+          Governed & audited
         </span>
       </div>
 
@@ -449,7 +449,7 @@ export const GovernanceBoundaryVisual: React.FC<GovernanceBoundaryVisualProps> =
         className="relative w-full h-[200px]"
       >
         <svg
-          className="w-full h-full"
+          className="w-full h-full static-on-mobile"
           viewBox="0 0 540 180"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -563,9 +563,9 @@ export const GovernanceBoundaryVisual: React.FC<GovernanceBoundaryVisualProps> =
         </svg>
       </motion.div>
 
-      <div className="flex items-center justify-between text-xs text-slate-400 font-mono pt-1">
-        <span>SECURITY, PRIVACY & GOVERNANCE</span>
-        <span className="text-emerald-400">PEOPLE IN CONTROL</span>
+      <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+        <span>Security, privacy & governance</span>
+        <span className="text-emerald-400 font-medium">People in control</span>
       </div>
     </div>
   );
@@ -582,12 +582,12 @@ export const CtaMotifVisual: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-30px" }}
-      className="w-full max-w-xl mx-auto py-2 opacity-80"
+      className="w-full max-w-xl mx-auto py-2 opacity-80 hidden md:block"
     >
-      <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 uppercase tracking-wider pb-2">
-        <span>YOUR WORKFLOWS</span>
-        <span>ASSESSMENT™</span>
-        <span>WORKING SYSTEM</span>
+      <div className="flex items-center justify-between text-xs text-slate-400 pb-2">
+        <span>Your workflows</span>
+        <span className="text-slate-300 font-medium">Assessment</span>
+        <span className="text-emerald-400 font-medium">Working system</span>
       </div>
       <div className="relative w-full h-2">
         <svg className="w-full h-full" viewBox="0 0 400 8" fill="none">
