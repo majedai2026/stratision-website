@@ -8,15 +8,14 @@ interface HeroSectionProps {
   onExploreSystems: () => void;
 }
 
-// Six core capabilities. Non-breaking spaces guarantee phrases never leave
-// isolated orphan words on any viewport.
+// Six core capabilities for the dynamic headline rotation.
 const CAPABILITIES = [
-  "ANSWER YOUR\u00A0CALLS.",
-  "HANDLE YOUR\u00A0MARKETING.",
-  "CAPTURE NEW\u00A0LEADS.",
-  "SAVE YOUR TEAM\u00A0TIME.",
-  "TRAIN YOUR\u00A0STAFF.",
-  "UNDERSTAND YOUR\u00A0BUSINESS.",
+  "ANSWER YOUR CALLS.",
+  "HANDLE YOUR MARKETING.",
+  "CAPTURE NEW LEADS.",
+  "SAVE YOUR TEAM TIME.",
+  "TRAIN YOUR STAFF.",
+  "UNDERSTAND YOUR BUSINESS.",
 ];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -34,7 +33,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
     const interval = setInterval(() => {
       setCapabilityIndex((prev) => (prev + 1) % CAPABILITIES.length);
-    }, 4000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -66,10 +65,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* =====================================================================
             02. BALANCED EDITORIAL SPREAD (Commanding Headline + Document Proof)
         ===================================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.72fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1.78fr)_minmax(0,1fr)] gap-10 lg:gap-11 xl:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] gap-10 lg:gap-11 xl:gap-12 items-center">
           {/* LEFT: Monumental Headline Statement, Human Proposition, CTAs */}
           <div>
-            {/* Monumental Headline Stage: Exactly 2 Lines on Desktop */}
+            {/* Monumental Headline Stage: Sized for natural wrapping without clipping */}
             <h1 className="m-0 p-0">
               {/* Static Anchor: Line 1 */}
               <motion.span
@@ -82,7 +81,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 AI SYSTEMS THAT
               </motion.span>
 
-              {/* Dynamic Capability: Line 2 (Calibrated to Line-Height, Zero Excess Gap) */}
+              {/* Dynamic Capability: Line 2 (Sized for natural wrap, zero clipping) */}
               <motion.span
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -90,12 +89,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="block relative w-full mt-0.5 sm:mt-1"
               >
                 {/*
-                  CALIBRATED STAGE:
-                  On desktop (lg+), sized to exactly one rendered line (64px/76px) matching
-                  the visual height of the rotating text, eliminating artificial dead space
-                  above the paragraph while guaranteeing zero layout shift.
+                  CALIBRATED ROTATING STAGE:
+                  Sized to accommodate two rendered lines across all viewports, eliminating
+                  artificial text clipping and layout shifts while ensuring zero overlap with
+                  the supporting copy below.
                 */}
-                <span className="relative block h-[74px] sm:h-[90px] md:h-[102px] lg:h-[64px] xl:h-[76px] w-full select-none overflow-hidden">
+                <span className="relative block min-h-[74px] sm:min-h-[90px] md:min-h-[102px] lg:min-h-[118px] xl:min-h-[148px] h-[74px] sm:h-[90px] md:h-[102px] lg:h-[118px] xl:h-[148px] w-full select-none">
                   <AnimatePresence mode="wait" initial={false}>
                     <motion.span
                       key={capabilityIndex}
@@ -106,7 +105,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       className="absolute top-0 left-0 right-0 block"
                     >
                       <span
-                        className="text-[32px] sm:text-[40px] md:text-[44px] lg:text-[52px] xl:text-[66px] font-extrabold text-[#F7F8FA] tracking-[-0.035em] leading-[1.08] uppercase block lg:whitespace-nowrap"
+                        className="text-[32px] sm:text-[40px] md:text-[44px] lg:text-[52px] xl:text-[66px] font-extrabold text-[#F7F8FA] tracking-[-0.035em] leading-[1.08] uppercase block"
                         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         {CAPABILITIES[capabilityIndex]}
