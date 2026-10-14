@@ -66,7 +66,7 @@ export default function App() {
     <MotionConfig reducedMotion={isMobileOrReduced ? "always" : "user"}>
       <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen bg-[#080A10] text-slate-100 selection:bg-blue-600/30 selection:text-white font-sans antialiased flex flex-col justify-between">
+      <div className="min-h-screen bg-[#08111E] text-[#F9F8F4] selection:bg-white/20 selection:text-white font-sans antialiased flex flex-col justify-between">
         {/* Sticky Floating Top Navigation */}
         <Navbar
           onOpenBooking={handleOpenBooking}

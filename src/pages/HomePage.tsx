@@ -1,37 +1,49 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { HeroSection } from "../components/HeroSection";
 import { TheStrategicDilemmaSection } from "../components/TheStrategicDilemmaSection";
-import { WhatWeBuildSection } from "../components/WhatWeBuildSection";
-import { FlagshipSystemsSection } from "../components/FlagshipSystemsSection";
-import { StratisionDifferenceSection } from "../components/StratisionDifferenceSection";
-import { ExampleArchitecturesSection } from "../components/ExampleArchitecturesSection";
+import { ComparisonSection } from "../components/ComparisonSection";
+import { StratisionLadderSection } from "../components/StratisionLadderSection";
+import { StartWithOneProblemSection } from "../components/StartWithOneProblemSection";
 import { HowWeWorkSection } from "../components/HowWeWorkSection";
-import { RealWorkProofSection } from "../components/RealWorkProofSection";
-import { IndustriesSection } from "../components/IndustriesSection";
-import { AssessmentBridgeSection } from "../components/AssessmentBridgeSection";
-import { TrustAndEngagementSection } from "../components/TrustAndEngagementSection";
+import { AppointedTeamSection } from "../components/AppointedTeamSection";
+import { InsideStratisionSection } from "../components/InsideStratisionSection";
+import { RetainerIncludedSection } from "../components/RetainerIncludedSection";
+import { BuildFeesSection } from "../components/BuildFeesSection";
+import { WhyStratisionSection } from "../components/WhyStratisionSection";
+import { StrategyVisionIntelligenceSection } from "../components/StrategyVisionIntelligenceSection";
+import { GlobalCapabilitySection } from "../components/GlobalCapabilitySection";
 import { FinalCtaSection } from "../components/FinalCtaSection";
+import { BlueprintResult } from "../types";
 
 interface HomePageProps {
   onOpenBooking: () => void;
   onOpenBriefing: () => void;
+  onSelectPainPointForBooking?: (title: string) => void;
+  onSelectTierForBooking?: (tierName: string) => void;
+  onSelectBlueprintForBooking?: (blueprint: BlueprintResult) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   onOpenBooking,
   onOpenBriefing,
 }) => {
+  const location = useLocation();
+
   useEffect(() => {
-    document.title = "Stratision | Bespoke AI Systems & Strategy";
-    // Check if there is a hash in URL to scroll to
-    if (window.location.hash) {
-      const rawId = window.location.hash.replace("#", "");
-      const id =
-        rawId === "sovereignty-trust" || rawId === "trust"
-          ? "trust-engagement"
-          : rawId === "bespoke-systems"
-          ? "proof-architectures"
-          : rawId;
+    document.title = "Stratision | Strategy. Vision. Intelligence.";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        "content",
+        "Why hire multiple departments when you can appoint one team? Stratision combines strategy, marketing, advertising, sales, CRM, systems and intelligence under one monthly retainer."
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
       setTimeout(() => {
         const el = document.getElementById(id);
         if (el) {
@@ -41,16 +53,10 @@ export const HomePage: React.FC<HomePageProps> = ({
         }
       }, 100);
     }
-  }, []);
+  }, [location]);
 
-  const scrollToSection = (sectionId: string) => {
-    const id =
-      sectionId === "sovereignty-trust" || sectionId === "trust"
-        ? "trust-engagement"
-        : sectionId === "bespoke-systems"
-        ? "proof-architectures"
-        : sectionId;
-    const el = document.getElementById(id);
+  const handleSeeHowItWorks = () => {
+    const el = document.getElementById("the-problem");
     if (el) {
       const yOffset = -84;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -59,48 +65,57 @@ export const HomePage: React.FC<HomePageProps> = ({
   };
 
   return (
-    <main id="main-content">
-      {/* 01. Hero (Spacious, Typography-Led, Rotating Capabilities) */}
+    <>
+      {/* 01. HERO — Why Hire Multiple Departments When You Can Appoint One Team? */}
       <HeroSection
         onOpenBooking={onOpenBooking}
-        onExploreSystems={() => scrollToSection("flagship-systems")}
+        onExploreSystems={handleSeeHowItWorks}
       />
 
-      {/* 02. The Problem (AI is everywhere. Useful AI is not. SCATTERED ↓ CONNECTED) */}
+      {/* 02. THE PROBLEM — Growing a Business Shouldn't Mean Building an Entire Department */}
       <TheStrategicDilemmaSection onOpenBooking={onOpenBooking} />
 
-      {/* 03. What We Build (Interactive Visual Systems Showcase) */}
-      <WhatWeBuildSection onOpenBooking={onOpenBooking} />
+      {/* 03. THE COMPARISON — What Are You Actually Hiring? */}
+      <ComparisonSection />
 
-      {/* 04. Flagship Systems (Editorial Visual System Demonstrations with Business Artefacts) */}
-      <FlagshipSystemsSection onOpenBooking={onOpenBooking} />
+      {/* 04. STRATISION LADDER — We Don't Build Everything on Day One */}
+      <StratisionLadderSection />
 
-      {/* 05. Stratision Difference (We don't sell AI. We build the systems that make it useful.) */}
-      <StratisionDifferenceSection />
+      {/* 05. START WITH ONE PROBLEM — Pragmatic Entry Sequence */}
+      <StartWithOneProblemSection />
 
-      {/* 06. Proof / Deployments (Systems We Can Build / Example Architectures) */}
-      <ExampleArchitecturesSection onOpenBooking={onOpenBooking} />
-
-      {/* 07. Visual Industry Experience (Business Environment Showcase) */}
-      <IndustriesSection />
-
-      {/* 08. How We Work (Continuous Visual Journey: 01 to 04) */}
+      {/* 06. HOW WE WORK — Problem First. Technology Second. */}
       <HowWeWorkSection onOpenBooking={onOpenBooking} />
 
-      {/* 09. Proof (Built for Real Business Work) */}
-      <RealWorkProofSection onOpenBooking={onOpenBooking} />
+      {/* 07. YOUR APPOINTED TEAM — Experience Across Functions */}
+      <AppointedTeamSection />
 
-      {/* 10. Business Intelligence Assessment™ (Calm Strategic Entry) */}
-      <AssessmentBridgeSection onOpenBooking={onOpenBooking} />
+      {/* INSIDE STRATISION — What Does That Team Actually Do? */}
+      <InsideStratisionSection
+        onOpenBooking={onOpenBooking}
+        onExploreLadder={handleSeeHowItWorks}
+      />
 
-      {/* 10. Governance & Trust (Built responsibly. 5 Statements) */}
-      <TrustAndEngagementSection
+      {/* 08. WHAT'S INCLUDED IN THE RETAINER — One Team. One Monthly Retainer. */}
+      <RetainerIncludedSection />
+
+      {/* 09. BUILD FEES — Your Team Is The Retainer. Your Systems Are Built As Needed. */}
+      <BuildFeesSection />
+
+      {/* 10. WHY STRATISION — More Than A Marketing Company. More Than An AI Agency. */}
+      <WhyStratisionSection />
+
+      {/* 11. STRATEGY / VISION / INTELLIGENCE — Brand Statement */}
+      <StrategyVisionIntelligenceSection />
+
+      {/* 12. GLOBAL CAPABILITY — Built in Britain. Built for Business. */}
+      <GlobalCapabilitySection />
+
+      {/* 13. FINAL CTA — Ready to Appoint Your Team? */}
+      <FinalCtaSection
         onOpenBooking={onOpenBooking}
         onOpenBriefing={onOpenBriefing}
       />
-
-      {/* 11. Final Call to Action (What could AI do inside your business? Let's find out.) */}
-      <FinalCtaSection onOpenBooking={onOpenBooking} />
-    </main>
+    </>
   );
 };

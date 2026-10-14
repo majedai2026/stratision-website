@@ -2,11 +2,12 @@
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {
-  html, body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
+  html, body, h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
 
@@ -19,10 +20,10 @@
   }
 
   body {
-    background-color: #080A10;
-    color: #F8FAFC;
+    background-color: #08111E;
+    color: #F9F8F4;
     overflow-x: hidden;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -95,11 +96,29 @@
 }
 
 .font-serif {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+.font-editorial-italic,
+.font-serif.italic,
+.font-serif i,
+.font-serif em,
+i.font-serif,
+em.font-serif,
+span.font-serif.italic {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.015em;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.font-mono,
 .font-mono-tight {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* Stratision Grid & Constellation Patterns */

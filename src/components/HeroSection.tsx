@@ -1,258 +1,210 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import React from "react";
+import { ArrowRight, ArrowDown } from "lucide-react";
+import { motion } from "motion/react";
 
 interface HeroSectionProps {
   onOpenBooking: () => void;
   onExploreSystems: () => void;
 }
 
-// Six core capabilities for the dynamic headline rotation.
-const CAPABILITIES = [
-  "ANSWER YOUR CALLS.",
-  "HANDLE YOUR MARKETING.",
-  "CAPTURE NEW LEADS.",
-  "SAVE YOUR TEAM TIME.",
-  "TRAIN YOUR STAFF.",
-  "UNDERSTAND YOUR BUSINESS.",
+const APPOINTED_MANDATE_FUNCTIONS = [
+  {
+    index: "01",
+    title: "Strategy",
+    subtitle: "Commercial direction & growth planning",
+  },
+  {
+    index: "02",
+    title: "Marketing & Advertising",
+    subtitle: "Positioning, campaigns & paid acquisition",
+  },
+  {
+    index: "03",
+    title: "Sales & Acquisition",
+    subtitle: "Enquiry capture, follow-up & conversion",
+  },
+  {
+    index: "04",
+    title: "Systems & CRM",
+    subtitle: "Workflows, automation & infrastructure",
+  },
+  {
+    index: "05",
+    title: "Intelligence",
+    subtitle: "Reporting, analysis & AI systems",
+  },
 ];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenBooking,
   onExploreSystems,
 }) => {
-  const navigate = useNavigate();
-  const [capabilityIndex, setCapabilityIndex] = useState<number>(0);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const isMobile = window.innerWidth < 768;
-    if (mediaQuery.matches || isMobile) return;
-
-    const interval = setInterval(() => {
-      setCapabilityIndex((prev) => (prev + 1) % CAPABILITIES.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section
       id="hero"
-      className="relative bg-[#090B10] text-[#F7F8FA] overflow-hidden border-b border-white/[0.07]"
+      className="relative bg-[#08111E] text-[#F9F8F4] overflow-hidden border-b border-white/[0.08]"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 xl:pl-6 xl:pr-8 pt-24 sm:pt-26 lg:pt-28 xl:pt-28 pb-14 sm:pb-16 lg:pb-18 xl:pb-20 relative z-10 w-full">
+      {/* Subtle Architectural Watermark Numeral */}
+      <div
+        aria-hidden="true"
+        className="hidden lg:block absolute -bottom-12 right-12 font-serif text-[230px] leading-none text-white/[0.025] select-none pointer-events-none"
+      >
+        01
+      </div>
+
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-32 sm:pt-36 lg:pt-44 pb-16 sm:pb-24 lg:pb-28 relative z-10 w-full">
         {/* =====================================================================
-            01. EDITORIAL IDENTIFIER (Quiet Publication Folio)
+            01. EDITORIAL SPREAD (Dominant Headline + Appointed Mandate Panel)
         ===================================================================== */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="flex items-center gap-2 text-[10px] sm:text-[11px] font-mono mb-3 sm:mb-3.5 tracking-[0.15em] text-neutral-400 uppercase select-none"
-        >
-          <span className="text-neutral-300 font-semibold tracking-[0.16em]">
-            STRATISION
-          </span>
-          <span className="text-white/20">/</span>
-          <span className="text-neutral-400 tracking-[0.14em]">
-            CUSTOM AI SYSTEMS FOR GROWING UK BUSINESSES
-          </span>
-        </motion.div>
-
-        {/* =====================================================================
-            02. BALANCED EDITORIAL SPREAD (Commanding Headline + Document Proof)
-        ===================================================================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] gap-10 lg:gap-11 xl:gap-12 items-center">
-          {/* LEFT: Monumental Headline Statement, Human Proposition, CTAs */}
-          <div>
-            {/* Monumental Headline Stage: Sized for natural wrapping without clipping */}
-            <h1 className="m-0 p-0">
-              {/* Static Anchor: Line 1 */}
-              <motion.span
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
-                className="block text-[32px] sm:text-[40px] md:text-[44px] lg:text-[52px] xl:text-[66px] font-extrabold text-[#F7F8FA] tracking-[-0.035em] leading-[1.08] uppercase"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                AI SYSTEMS THAT
-              </motion.span>
-
-              {/* Dynamic Capability: Line 2 (Sized for natural wrap, zero clipping) */}
-              <motion.span
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-                className="block relative w-full mt-0.5 sm:mt-1"
-              >
-                {/*
-                  CALIBRATED ROTATING STAGE:
-                  Sized to accommodate two rendered lines across all viewports, eliminating
-                  artificial text clipping and layout shifts while ensuring zero overlap with
-                  the supporting copy below.
-                */}
-                <span className="relative block min-h-[74px] sm:min-h-[90px] md:min-h-[102px] lg:min-h-[118px] xl:min-h-[148px] h-[74px] sm:h-[90px] md:h-[102px] lg:h-[118px] xl:h-[148px] w-full select-none">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.span
-                      key={capabilityIndex}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute top-0 left-0 right-0 block"
-                    >
-                      <span
-                        className="text-[32px] sm:text-[40px] md:text-[44px] lg:text-[52px] xl:text-[66px] font-extrabold text-[#F7F8FA] tracking-[-0.035em] leading-[1.08] uppercase block"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                      >
-                        {CAPABILITIES[capabilityIndex]}
-                      </span>
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </motion.span>
-            </h1>
-
-            {/* Human Proposition — Connected Directly to the Headline */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 xl:gap-16 items-start">
+          {/* LEFT: Folio, Commanding Sans + Editorial Serif Italic Headline, Copy, CTAs (7 Cols) */}
+          <div className="lg:col-span-7 pt-2">
+            {/* Quiet Editorial Folio */}
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-4 sm:mt-4.5 lg:mt-5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4 }}
+              className="text-[11px] font-mono font-normal mb-7 sm:mb-9 tracking-[0.22em] text-[#8FA3B8] uppercase select-none"
             >
-              <p
-                className="text-[16px] sm:text-[17.5px] lg:text-[18px] text-neutral-300 font-normal leading-[1.62] max-w-[550px]"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              01 &nbsp;·&nbsp; THE OPERATING MODEL
+            </motion.div>
+
+            {/* Primary Hero Headline: Modern Sans-Serif + Controlled Editorial Serif Italic Accent */}
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[36px] sm:text-[46px] md:text-[52px] lg:text-[56px] xl:text-[62px] font-semibold text-[#F9F8F4] tracking-[-0.03em] leading-[1.12] m-0 p-0"
+            >
+              Why hire multiple
+              <br />
+              departments{" "}
+              <span
+                style={{
+                  fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                  fontStyle: 'italic',
+                  fontWeight: 400,
+                }}
+                className="text-[0.92em] font-editorial-italic font-normal text-[#DCE4EC] tracking-[-0.015em]"
               >
-                We build private, custom AI systems that answer client enquiries in seconds, process complex business documents, and automate repetitive operations — with human oversight built into every step.
+                when you
+                <br />
+                can appoint one team?
+              </span>
+            </motion.h1>
+
+            {/* Supporting Narrative */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-8 sm:mt-9 space-y-4 max-w-xl"
+            >
+              <p className="text-[16.5px] sm:text-[18px] lg:text-[19px] text-[#E2E8F0] font-normal tracking-[-0.01em] leading-[1.5]">
+                Marketing, sales, client acquisition, systems and intelligence — working together under one monthly retainer.
+              </p>
+
+              <p className="text-[13.5px] sm:text-[14px] text-[#8FA3B8] font-normal leading-[1.65]">
+                Instead of hiring separate people to manage each function, appoint Stratision as the team behind your growth. Built around what your business actually needs.
               </p>
             </motion.div>
 
-            {/* Restrained Physical Controls (CTAs) */}
+            {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-5.5 sm:mt-6.5 space-y-3"
+              transition={{ duration: 0.55, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-9 sm:mt-11"
             >
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
-                {/* Primary: Light physical surface */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
+                {/* Primary CTA */}
                 <button
                   id="hero-start-conversation-btn"
                   onClick={onOpenBooking}
-                  className="w-full sm:w-auto min-h-[48px] px-7 sm:px-8 py-3.5 sm:py-4 rounded-[2px] bg-[#F7F8FA] hover:bg-white text-[#090B10] font-medium text-[14.5px] sm:text-[15px] tracking-tight transition-colors duration-150 flex items-center justify-center gap-2.5 border border-white/90 shadow-sm cursor-pointer group"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  className="w-full sm:w-auto min-h-[52px] px-8 py-4 rounded-none bg-[#F9F8F4] hover:bg-white text-[#08111E] font-mono font-semibold text-[11px] sm:text-[11.5px] tracking-[0.16em] uppercase transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer group"
                 >
-                  <span>Start a Conversation</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5 text-[#090B10]" />
+                  <span>APPOINT YOUR TEAM</span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-150 group-hover:translate-x-0.5 text-[#08111E]" />
                 </button>
 
-                {/* Secondary: Quiet dark outline surface */}
+                {/* Secondary CTA */}
                 <button
                   id="hero-explore-systems-btn"
                   onClick={onExploreSystems}
-                  className="w-full sm:w-auto min-h-[48px] px-7 sm:px-8 py-3.5 sm:py-4 rounded-[2px] bg-transparent hover:bg-white/[0.04] border border-white/[0.22] hover:border-white/[0.32] text-neutral-200 hover:text-white font-medium text-[14.5px] sm:text-[15px] tracking-tight transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer group"
-                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  className="w-full sm:w-auto min-h-[52px] px-8 py-4 rounded-none bg-transparent hover:bg-white/[0.04] border border-white/[0.16] hover:border-white/[0.32] text-[#F9F8F4] font-mono font-medium text-[11px] sm:text-[11.5px] tracking-[0.16em] uppercase transition-colors duration-150 flex items-center justify-center gap-3 cursor-pointer group"
                 >
-                  <span>Explore AI Systems</span>
-                  <span className="text-neutral-400 group-hover:text-white group-hover:translate-y-0.5 transition-transform duration-150">
-                    ↓
-                  </span>
+                  <span>SEE HOW IT WORKS</span>
+                  <ArrowDown className="w-3.5 h-3.5 text-[#8FA3B8] group-hover:text-[#F9F8F4] transition-transform duration-150 group-hover:translate-y-0.5" />
                 </button>
               </div>
-
-              {/* Reassurance Micro-Copy */}
-              <p
-                className="text-[12.5px] sm:text-[13px] text-neutral-400 font-normal leading-relaxed max-w-[520px]"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                A direct 20-minute discussion with an AI Systems Architect. No sales pitch. We’ll tell you frankly whether an AI system makes commercial sense for your business.
-              </p>
             </motion.div>
           </div>
 
-          {/* RIGHT: Authentic Physical Business Document (Quiet Proof Element) */}
+          {/* RIGHT: 01 · THE APPOINTED MANDATE (5 Cols) */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="flex justify-start lg:justify-end w-full"
+            transition={{ duration: 0.65, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 w-full"
           >
-            {/*
-              PHYSICAL BUSINESS ARTEFACT:
-              Substantial A4-proportioned clinical correspondence document.
-              Warm off-white paper stock (#FAF9F5), fine hairline edge (#E5E2D8),
-              and realistic diffused paper shadow. Communicates tangible business proof
-              with generous internal whitespace and restrained editorial typography.
-            */}
-            <div className="bg-[#FAF9F5] text-[#141619] rounded-[1px] p-5 sm:p-8 lg:p-8 xl:p-9 shadow-[0_28px_65px_-18px_rgba(0,0,0,0.6),0_8px_24px_rgba(0,0,0,0.22)] border border-[#E5E2D8] relative w-full max-w-lg lg:max-w-[460px] xl:max-w-[480px]">
-              {/* Document Folio Header */}
-              <div className="flex items-baseline justify-between border-b border-black/[0.07] pb-3.5 mb-5 text-[10px] font-mono tracking-wider text-neutral-500 uppercase">
-                <span className="font-semibold text-neutral-800">OAKWOOD MEDICAL PRACTICE</span>
-                <span>14:12 GMT</span>
+            <div className="bg-[#F9F8F4] text-[#08111E] rounded-none p-7 sm:p-9 lg:p-10 border border-[#DDD9CE] relative w-full">
+              {/* Mandate Header */}
+              <div className="text-[10px] font-mono tracking-[0.2em] text-[#64748B] uppercase mb-2.5">
+                01 &nbsp;·&nbsp; THE APPOINTED MANDATE
               </div>
 
-              {/* Document Body: Clean Editorial Hierarchy */}
-              <div className="space-y-4">
-                {/* 01. Inbound Patient Request */}
-                <div className="space-y-1.5">
-                  <div className="text-[9.5px] font-mono text-neutral-400 uppercase tracking-widest font-semibold">
-                    INBOUND PATIENT REQUEST · RECORD #84102
-                  </div>
-                  <p
-                    className="text-[14.5px] sm:text-[15px] text-neutral-900 font-normal leading-[1.5] italic pt-0.5"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-                  >
-                    “Hi, I’d like to book an appointment with Dr Patel this Thursday afternoon.”
-                  </p>
-                </div>
+              <h2 className="text-[21px] sm:text-[23px] font-semibold text-[#08111E] tracking-[-0.025em] pb-5 border-b border-[#08111E]/[0.09]">
+                Five functions, one team.
+              </h2>
 
-                {/* 02. Practice Schedule Applied */}
-                <div className="pt-3.5 border-t border-black/[0.06] space-y-1.5">
-                  <div className="text-[9.5px] font-mono text-neutral-400 uppercase tracking-widest font-semibold">
-                    PRACTICE SCHEDULE APPLIED
-                  </div>
+              {/* Five Functions List */}
+              <div className="divide-y divide-[#08111E]/[0.08] border-b border-[#08111E]/[0.08]">
+                {APPOINTED_MANDATE_FUNCTIONS.map((fn) => (
                   <div
-                    className="text-[13.5px] sm:text-[14px] text-neutral-800 space-y-1 pt-0.5"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    key={fn.index}
+                    className="py-3.5 flex items-center gap-4"
                   >
-                    <p className="font-semibold text-neutral-900">
-                      Dr S. Patel · Consulting Room 3
-                    </p>
-                    <p className="text-neutral-600">
-                      Thursday, 14:30 GMT · 30-Minute Follow-Up
-                    </p>
+                    <span className="w-6 h-6 rounded-full border border-[#08111E]/[0.15] flex items-center justify-center font-mono text-[10px] text-[#526071] shrink-0">
+                      {fn.index}
+                    </span>
+                    <div>
+                      <div className="text-[13.5px] font-semibold text-[#08111E] tracking-[-0.01em] leading-snug">
+                        {fn.title}
+                      </div>
+                      <div className="text-[12px] text-[#64748B] font-normal leading-snug mt-0.5">
+                        {fn.subtitle}
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* 03. Completed Work */}
-                <div className="pt-3.5 border-t border-black/[0.06] space-y-1.5">
-                  <div className="text-[9.5px] font-mono text-neutral-400 uppercase tracking-widest font-semibold">
-                    COMPLETED WORK
-                  </div>
-                  <ul className="text-[12.5px] sm:text-[13px] text-neutral-700 space-y-1.5 font-mono pt-0.5">
-                    <li className="flex items-center gap-2">
-                      <span className="text-neutral-400">—</span>
-                      <span>Practice diary reserved &amp; locked</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-neutral-400">—</span>
-                      <span>Confirmation dispatched to patient via SMS</span>
-                    </li>
-                  </ul>
-                </div>
+                ))}
               </div>
 
-              {/* Document Footnote Verification */}
-              <div className="flex items-center justify-between border-t border-black/[0.07] pt-3.5 mt-5 text-[9.5px] font-mono text-neutral-400">
-                <span>DISPATCH MEMORANDUM</span>
-                <span>REF DIS-84102</span>
+              {/* Bottom Mandate Summary Block */}
+              <div className="mt-6 bg-[#08111E] text-[#F9F8F4] p-5 sm:p-6 rounded-none">
+                <div className="text-[9.5px] font-mono tracking-[0.2em] text-[#8FA3B8] uppercase mb-2">
+                  ONE MONTHLY RETAINER
+                </div>
+                <div className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.015em] text-[#F9F8F4] leading-snug">
+                  Stratision takes on what you appoint.
+                </div>
+                <p className="font-editorial-italic text-[13.5px] text-[#C8D2E0] mt-1.5 leading-relaxed">
+                  Strategy first. Vision second. Intelligence third.
+                </p>
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* =====================================================================
+            02. PROPOSAL-STYLE BASELINE RULE & ATTRIBUTION
+        ===================================================================== */}
+        <div className="mt-16 sm:mt-20 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <p className="font-editorial-italic text-[13px] sm:text-[14px] text-[#8FA3B8] tracking-wide">
+            British-founded &nbsp;·&nbsp; Business-first &nbsp;·&nbsp; Technology-enabled
+          </p>
+          <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-[#64748B]">
+            UNITED KINGDOM &nbsp;·&nbsp; MIDDLE EAST &nbsp;·&nbsp; UNITED STATES
+          </span>
         </div>
       </div>
     </section>

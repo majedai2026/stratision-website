@@ -1,123 +1,165 @@
 import React from "react";
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
 
 interface HowWeWorkSectionProps {
-  onOpenBooking: () => void;
+  onOpenBooking?: () => void;
 }
 
-const STEPS = [
+const DIAGNOSTIC_QUESTIONS = [
+  "Where are enquiries coming from?",
+  "What happens when someone enquires?",
+  "Where is time being wasted?",
+  "Where are opportunities being lost?",
+];
+
+const WORK_STEPS = [
   {
-    step: "01",
-    title: "SHOW US THE PROBLEM",
-    explanation: "Tell us what is slowing your business down.",
+    number: "01",
+    title: "Understand",
+    description: "We look at how your business currently generates, handles and converts work.",
   },
   {
-    step: "02",
-    title: "MAP THE WORK",
-    explanation: "We look at the people, processes and information involved.",
+    number: "02",
+    title: "Prioritise",
+    description: "We identify what needs attention first.",
   },
   {
-    step: "03",
-    title: "BUILD THE SYSTEM",
-    explanation: "We build a private AI system around the way your business actually works.",
+    number: "03",
+    title: "Build",
+    description: "We implement the marketing, sales or operational systems needed.",
   },
   {
-    step: "04",
-    title: "STAY IN CONTROL",
-    explanation: "Your team keeps final approval and decision-making. AI handles the repetitive work.",
+    number: "04",
+    title: "Prove",
+    description: "We make sure it works in the real world.",
+  },
+  {
+    number: "05",
+    title: "Expand",
+    description: "Once proven, we build the next layer.",
   },
 ];
 
-export const HowWeWorkSection: React.FC<HowWeWorkSectionProps> = ({ onOpenBooking }) => {
+export const HowWeWorkSection: React.FC<HowWeWorkSectionProps> = () => {
   return (
     <section
       id="how-we-work"
-      className="relative py-20 sm:py-36 lg:py-44 bg-[#06080F] border-t border-white/[0.06] text-slate-100 scroll-mt-24 overflow-hidden"
+      className="relative bg-[#F9F8F4] text-[#08111E] py-20 sm:py-32 lg:py-44 border-b border-[#08111E]/[0.08] scroll-mt-24"
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+        {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-3xl mb-12 sm:mb-20"
+          transition={{ duration: 0.45 }}
+          className="text-[11px] font-mono font-normal uppercase tracking-[0.22em] text-[#526071] mb-7"
         >
-          <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-            <span>HOW WE WORK</span>
-          </div>
-
-          <h2
-            className="text-3xl sm:text-5xl lg:text-[64px] font-bold text-white tracking-[-0.035em] leading-[1.05]"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            From problem to working system.
-          </h2>
-          <p className="text-base sm:text-xl text-slate-300 mt-4 sm:mt-5 font-normal leading-relaxed">
-            What happens when you work with Stratision — from your first conversation to a live system.
-          </p>
+          06 &nbsp;·&nbsp; APPROACH
         </motion.div>
 
-        {/* 4 Steps: Clean Editorial Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-          {STEPS.map((item, idx) => (
-            <motion.div
-              key={item.step}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="border-t border-white/[0.12] pt-6 space-y-3"
-            >
-              {/* Large Number */}
-              <div className="font-mono text-3xl sm:text-4xl font-bold text-blue-400">
-                {item.step}
-              </div>
+        {/* Headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.55, delay: 0.05 }}
+          className="text-3xl sm:text-5xl lg:text-[56px] font-semibold text-[#08111E] tracking-[-0.03em] leading-[1.1] max-w-4xl"
+        >
+          Problem first.{" "}
+          <span className="text-[0.9em] font-editorial-italic font-normal text-[#475569] tracking-[-0.01em]">
+            Technology second.
+          </span>
+        </motion.h2>
 
-              {/* Short Title */}
-              <h3
-                className="text-lg sm:text-xl font-bold text-white tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        {/* Intro Narrative & Diagnostic Questions */}
+        <div className="mt-12 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-5 space-y-4"
+          >
+            <p className="text-xl sm:text-2xl font-medium text-[#08111E] tracking-tight leading-snug">
+              Most agencies start with tools.
+            </p>
+            <p className="text-xl sm:text-2xl font-normal text-[#475569] tracking-tight leading-snug">
+              We start with your business.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4"
+          >
+            {DIAGNOSTIC_QUESTIONS.map((question, idx) => (
+              <div
+                key={question}
+                className="p-6 bg-white border border-[#08111E]/[0.09] rounded-[2px]"
               >
-                {item.title}
-              </h3>
-
-              {/* One Concise Explanation */}
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                {item.explanation}
-              </p>
-            </motion.div>
-          ))}
+                <div className="text-[10px] font-mono text-[#64748B] uppercase tracking-[0.16em] mb-2">
+                  DIAGNOSTIC 0{idx + 1}
+                </div>
+                <p className="text-base sm:text-lg font-medium text-[#08111E] leading-snug">
+                  {question}
+                </p>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
-        {/* Understated Supporting Statement & Direct CTA */}
+        {/* 5-Stage Process */}
+        <div className="mt-16 sm:mt-24">
+          <div className="text-[11px] font-mono font-medium uppercase tracking-[0.18em] text-[#526071] mb-6">
+            THE OPERATING SEQUENCE
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 lg:gap-5">
+            {WORK_STEPS.map((step, idx) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.45, delay: idx * 0.06 }}
+                className="bg-white border border-[#08111E]/[0.09] p-6 sm:p-7 rounded-[2px] flex flex-col justify-between"
+              >
+                <div>
+                  <div className="text-xs font-mono font-medium text-[#64748B] mb-3">
+                    {step.number}
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#08111E] tracking-[-0.02em] mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-[#475569] leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Key Statement */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-12 sm:mt-24 pt-8 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-6"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mt-16 sm:mt-24 pt-10 border-t border-[#08111E]/[0.09]"
         >
-          <p
-            className="text-base sm:text-xl font-medium text-white tracking-tight"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            Built around your business. Controlled by your people.
+          <p className="text-2xl sm:text-4xl lg:text-[42px] font-semibold text-[#08111E] tracking-[-0.03em] leading-[1.14]">
+            Your business doesn't need more software.
+            <br />
+            <span className="text-[0.92em] font-editorial-italic font-normal text-[#475569] tracking-[-0.01em]">
+              It needs better systems.
+            </span>
           </p>
-
-          <button
-            onClick={onOpenBooking}
-            className="w-full sm:w-auto inline-flex items-center justify-center min-h-[48px] gap-2 px-7 py-3.5 rounded-full bg-white hover:bg-slate-100 text-[#080A10] font-semibold text-sm transition-all duration-200 cursor-pointer shadow-[0_2px_16px_rgba(255,255,255,0.12)] group shrink-0"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            <span>Start a Conversation</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
         </motion.div>
-
       </div>
     </section>
   );

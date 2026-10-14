@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { StratisionLogo } from "./StratisionLogo";
-import { ArrowUp, ShieldCheck, Lock, FileText, X } from "lucide-react";
+import { ArrowUp, X } from "lucide-react";
 
 interface FooterProps {
   onOpenBooking: () => void;
   onOpenBriefing: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing }) => {
-  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+export const Footer: React.FC<FooterProps> = () => {
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,21 +18,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
   };
 
   const handleNavClick = (sectionId: string) => {
-    const targetId = sectionId === "sovereignty-trust" || sectionId === "trust" ? "trust-engagement" : sectionId;
     if (location.pathname !== "/") {
-      navigate(`/#${targetId}`);
+      navigate(`/#${sectionId}`);
       setTimeout(() => {
-        const el = document.getElementById(targetId);
+        const el = document.getElementById(sectionId);
         if (el) {
-          const yOffset = -84;
+          const yOffset = -80;
           const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
           window.scrollTo({ top: y, behavior: "smooth" });
         }
       }, 150);
     } else {
-      const el = document.getElementById(targetId);
+      const el = document.getElementById(sectionId);
       if (el) {
-        const yOffset = -84;
+        const yOffset = -80;
         const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
@@ -47,225 +46,186 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking, onOpenBriefing })
   };
 
   return (
-    <footer className="bg-[#05070D] border-t border-white/[0.06] text-slate-400 text-xs relative">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 sm:py-16">
-        
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 sm:gap-10 pb-10 sm:pb-12 border-b border-white/[0.06]">
-          
-          {/* Brand & Purpose (5 Cols) */}
-          <div className="lg:col-span-5 space-y-4">
-            <StratisionLogo size="md" showDescriptor={true} onClick={handleLogoClick} />
-            <p className="text-sm text-slate-400 leading-relaxed max-w-sm pt-2">
-              Stratision is a bespoke AI systems consultancy. We identify high-friction operational workflows and engineer custom autonomous systems that integrate with the way your business actually runs.
+    <footer className="bg-[#060D17] border-t border-white/[0.08] text-[#8FA3B8] text-xs relative">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-14 sm:py-20">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/[0.08]">
+          {/* Brand & Philosophy (5 Cols) */}
+          <div className="md:col-span-5 space-y-4">
+            <StratisionLogo size="md" showDescriptor={false} onClick={handleLogoClick} />
+            <p className="font-editorial-italic text-xl sm:text-2xl font-normal text-[#F9F8F4] tracking-[-0.01em] pt-1">
+              Strategy. Vision. Intelligence.
             </p>
-            <div className="flex flex-wrap items-center gap-4 sm:gap-5 text-xs text-slate-400 pt-2">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-blue-400" />
-                Client-Governed IP & Asset Ownership
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Lock className="w-4 h-4 text-blue-400" />
-                Private Deployment Options
-              </span>
-            </div>
+            <p className="text-xs text-[#8FA3B8] pt-1">
+              British-founded. Business-first. Technology-enabled.
+            </p>
           </div>
 
-          {/* Navigation Links (3 Cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4
-              className="text-xs font-semibold uppercase tracking-wider text-white"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
+          {/* Links (3 Cols) */}
+          <div className="md:col-span-3 space-y-3">
+            <h4 className="text-[11px] font-mono font-normal uppercase tracking-[0.22em] text-[#8FA3B8]">
               Navigation
             </h4>
-            <ul className="space-y-2.5 text-xs">
-              <li>
-                <Link
-                  to="/solutions"
-                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
-                >
-                  Solutions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/systems"
-                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
-                >
-                  Flagship Systems
-                </Link>
-              </li>
+            <ul className="space-y-2.5 text-sm text-[#C8D2E0]">
               <li>
                 <button
                   onClick={() => handleNavClick("how-we-work")}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer"
                 >
-                  How We Work
+                  Approach
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => handleNavClick("systems-in-action")}
-                  className="hover:text-white transition-colors cursor-pointer"
+                  onClick={() => handleNavClick("what-we-do")}
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer"
                 >
-                  Systems in Action
+                  What We Do
                 </button>
               </li>
               <li>
-                <Link
-                  to="/industries"
-                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
+                <button
+                  onClick={() => handleNavClick("the-ladder")}
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer"
                 >
-                  Industries & Environments
-                </Link>
+                  The Ladder
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavClick("why-stratision")}
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer"
+                >
+                  Why Stratision
+                </button>
               </li>
               <li>
                 <Link
                   to="/insights"
-                  className="hover:text-white text-slate-300 transition-colors cursor-pointer block"
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer block"
                 >
                   Insights
                 </Link>
               </li>
               <li>
-                <button
-                  onClick={() => handleNavClick("trust-engagement")}
-                  className="hover:text-white transition-colors cursor-pointer"
+                <Link
+                  to="/contact"
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer block"
                 >
-                  Sovereignty & Governance
-                </button>
+                  Contact
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Engagement & Executive Assets (4 Cols) */}
-          <div className="lg:col-span-4 space-y-3">
-            <h4
-              className="text-xs font-semibold uppercase tracking-wider text-white"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-            >
-              Executive Engagements
+          {/* Social (2 Cols) */}
+          <div className="md:col-span-2 space-y-3">
+            <h4 className="text-[11px] font-mono font-normal uppercase tracking-[0.22em] text-[#8FA3B8]">
+              Social
             </h4>
-            <ul className="space-y-2.5 text-xs">
+            <ul className="space-y-2.5 text-sm text-[#C8D2E0]">
               <li>
-                <Link
-                  to="/briefing"
-                  className="text-slate-300 hover:text-blue-400 transition-colors cursor-pointer flex items-center gap-1.5"
+                <a
+                  href="https://www.linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#F9F8F4] transition-colors block"
                 >
-                  <FileText className="w-3.5 h-3.5 text-blue-400" />
-                  <span>The Executive Guide to AI Systems</span>
-                </Link>
+                  LinkedIn
+                </a>
               </li>
               <li>
-                <Link
-                  to="/contact"
-                  className="text-white hover:text-blue-400 font-medium transition-colors cursor-pointer"
+                <a
+                  href="https://www.instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#F9F8F4] transition-colors block"
                 >
-                  Start a Conversation →
-                </Link>
+                  Instagram
+                </a>
               </li>
-              <li>
-                <Link
-                  to="/assessment"
-                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
-                >
-                  Business Intelligence Assessment™ Methodology
-                </Link>
-              </li>
+            </ul>
+          </div>
+
+          {/* Legal (2 Cols) */}
+          <div className="md:col-span-2 space-y-3">
+            <h4 className="text-[11px] font-mono font-normal uppercase tracking-[0.22em] text-[#8FA3B8]">
+              Legal
+            </h4>
+            <ul className="space-y-2.5 text-sm text-[#C8D2E0]">
               <li>
                 <Link
                   to="/privacy"
-                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="hover:text-[#F9F8F4] transition-colors block"
                 >
-                  Privacy Policy
+                  Privacy
                 </Link>
               </li>
               <li>
                 <button
-                  onClick={() => setIsPrivacyModalOpen(true)}
-                  className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  onClick={() => setIsTermsModalOpen(true)}
+                  className="hover:text-[#F9F8F4] transition-colors cursor-pointer"
                 >
-                  Data Handling & Governance Policy
+                  Terms
                 </button>
               </li>
             </ul>
           </div>
-
         </div>
 
-        {/* Bottom Legal Bar */}
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500">
+        {/* Bottom Bar */}
+        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-[#64748B]">
           <div>
-            © {new Date().getFullYear()} Stratision Systems Architecture. All rights reserved. Strategy • Vision • Intelligence.
+            © {new Date().getFullYear()} Stratision. All rights reserved.
           </div>
 
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-            <Link
-              to="/privacy"
-              className="hover:text-slate-300 transition-colors cursor-pointer"
-            >
-              Privacy Policy
-            </Link>
-            <button
-              onClick={() => setIsPrivacyModalOpen(true)}
-              className="hover:text-slate-300 transition-colors cursor-pointer"
-            >
-              Governance Notice
-            </button>
-            <span>Client-Governed Boundary</span>
+          <div className="flex items-center gap-6">
+            <span>British-founded. Business-first. Technology-enabled.</span>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-[#8FA3B8] hover:text-[#F9F8F4] transition-colors cursor-pointer"
             >
-              <span>Back to Top</span>
+              <span>Top</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
-
       </div>
 
-      {/* Privacy & Governance Modal */}
-      {isPrivacyModalOpen && (
+      {/* Terms Modal */}
+      {isTermsModalOpen && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#0E121C] border border-white/10 rounded-2xl max-w-xl w-full p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
-              <h3
-                className="text-lg font-bold text-white"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-              >
-                Data Handling & Governance Notice
+          <div className="bg-[#08111E] border border-white/[0.12] rounded-[2px] max-w-xl w-full p-6 sm:p-8 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 border-b border-white/[0.1]">
+              <h3 className="text-lg font-bold text-[#F9F8F4] tracking-[-0.02em]">
+                Terms of Engagement & Website Use
               </h3>
               <button
-                onClick={() => setIsPrivacyModalOpen(false)}
-                className="p-1 rounded text-slate-400 hover:text-white cursor-pointer"
+                onClick={() => setIsTermsModalOpen(false)}
+                className="p-1 rounded-[2px] text-[#8FA3B8] hover:text-[#F9F8F4] cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs text-slate-300 leading-relaxed">
+            <div className="space-y-3 text-xs text-[#C8D2E0] leading-relaxed">
               <p>
-                <strong>Client Data Protection:</strong> Stratision enforces agreed data-handling requirements across all commercial API gateways. Client operational data is never used to train public foundation models.
+                <strong>Retainer & Scope:</strong> Monthly retainers cover the agreed ongoing team and functions appointed by the client. Bespoke system builds, CRM implementations, and custom infrastructure are scoped and agreed separately prior to commencement.
               </p>
               <p>
-                <strong>Private Enclave Deployment:</strong> All bespoke multi-agent systems are engineered to deploy natively inside the client's designated cloud tenancy (AWS, Azure, or GCP).
+                <strong>Confidentiality:</strong> All business information, commercial strategy, and operational workflows shared with Stratision are treated with strict commercial confidentiality.
               </p>
               <p>
-                <strong>Confidential Intake:</strong> All communications, technical scoping discussions, and architecture diagrams shared during discovery are protected under mutual non-disclosure standards.
-              </p>
-              <p>
-                <strong>Intellectual Property:</strong> Bespoke source code and system integration assets are governed and owned by the client organisation in accordance with agreed engagement terms.
+                <strong>Intellectual Property:</strong> Custom systems and infrastructure built under separate implementation agreements are governed in accordance with the client's signed statement of work.
               </p>
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex justify-end">
+            <div className="pt-4 border-t border-white/[0.1] flex justify-end">
               <button
-                onClick={() => setIsPrivacyModalOpen(false)}
-                className="px-5 py-2 rounded-full bg-white text-[#080A10] font-semibold text-xs cursor-pointer hover:bg-slate-200"
+                onClick={() => setIsTermsModalOpen(false)}
+                className="px-5 py-2 rounded-[2px] bg-[#F9F8F4] text-[#08111E] font-semibold text-xs uppercase tracking-[0.08em] cursor-pointer hover:bg-white"
               >
-                Close Notice
+                Close
               </button>
             </div>
           </div>

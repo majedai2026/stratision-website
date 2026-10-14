@@ -778,9 +778,9 @@ const SECTORS: SectorDossier[] = [
     name: "Retail & Consumer Businesses",
     shortName: "Retail & Consumer",
     icon: ShoppingBag,
-    tagline: "Omnichannel retailers, luxury goods brands, specialist e-commerce, and high-ticket consumer services.",
+    tagline: "Omnichannel retailers, luxury goods brands, specialist e-commerce, and bespoke consumer services.",
     operationalReality:
-      "Retail customer service teams face massive inquiry surges across chat, social, email, and phone regarding order tracking, product specifications, returns, and bespoke orders. High-ticket consumer enquiries (furniture, jewelry, bespoke installs) require immediate personal follow-up to convert.",
+      "Retail customer service teams face massive inquiry surges across chat, social, email, and phone regarding order tracking, product specifications, returns, and bespoke orders. High-value consumer enquiries (furniture, jewelry, bespoke installs) require immediate personal follow-up to convert.",
     leakagePoints: [
       "Customers seeking consultations for bespoke furniture, jewelry, or home installs abandon if not contacted immediately",
       "Customer support desks flooded with 'Where is my order?' and return policy questions, driving up support headcount",
@@ -790,7 +790,7 @@ const SECTORS: SectorDossier[] = [
     whatStratisionAutomates: [
       {
         systemName: "Speed-to-Lead",
-        description: "Sub-60-second qualification and specialist appointment booking for high-ticket retail and custom order consultations."
+        description: "Sub-60-second qualification and specialist appointment booking for bespoke retail and custom order consultations."
       },
       {
         systemName: "AI Receptionist",
@@ -820,10 +820,10 @@ const SECTORS: SectorDossier[] = [
       folio: "ILLUSTRATIVE ARCHITECTURAL AUDIT · RETAIL OPS",
       timestamp: "18:22 GMT",
       badge: "ILLUSTRATIVE OPERATIONAL EXAMPLE",
-      title: "HIGH-TICKET CONSULTATION & ORDER STATUS DOSSIER",
+      title: "BESPOKE CONSULTATION & ORDER STATUS DOSSIER",
       subtitle: "Customer Service & Showroom Consultation Intake",
       fields: [
-        { label: "Consultation Request", value: "Bespoke Joinery & Installation", badge: "High-Ticket Lead" },
+        { label: "Consultation Request", value: "Bespoke Joinery & Installation", badge: "Priority Enquiry" },
         { label: "Customer Qualification", value: "Budget £15k–£20k · London Home", badge: "Pre-Qualified" },
         { label: "Design Appointment", value: "Confirmed for Tuesday 14:00", badge: "Showroom Booked" },
         { label: "Routine Enquiries Handled", value: "Order #8921 Tracked in 2s", badge: "Automated" }

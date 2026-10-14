@@ -249,32 +249,28 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-conversation-title"
-        className="bg-[#080C15] border border-slate-800 w-full max-w-xl rounded-2xl p-6 sm:p-8 text-slate-100 shadow-2xl relative max-h-[92vh] overflow-y-auto"
+        className="bg-[#08111E] border border-white/[0.12] w-full max-w-xl rounded-[2px] p-6 sm:p-8 text-[#F9F8F4] shadow-2xl relative max-h-[92vh] overflow-y-auto"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="absolute top-5 right-5 p-2 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-[2px] bg-white/[0.04] text-[#8FA3B8] hover:text-[#F9F8F4] border border-white/[0.12] transition-colors cursor-pointer"
           aria-label="Close modal"
         >
           <X className="w-4 h-4" />
         </button>
 
         {/* Modal Header */}
-        <div className="text-center pb-5 border-b border-slate-800/80">
+        <div className="text-center pb-5 border-b border-white/[0.09]">
           <StratisionLogo size="sm" showTagline={true} />
           <h3
             id="modal-conversation-title"
-            className="text-2xl sm:text-3xl font-bold text-white mt-4 tracking-tight"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            className="text-2xl sm:text-3xl font-semibold text-[#F9F8F4] mt-4 tracking-[-0.015em]"
           >
-            Start a Conversation
+            Appoint <span className="font-editorial-italic font-normal text-[#C8D2E0]">your team.</span>
           </h3>
-          <p
-            className="text-sm text-slate-300 mt-2 max-w-md mx-auto font-normal leading-relaxed"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-          >
-            Speak directly with a lead architect about your operational bottlenecks and what an AI system would look like in practice.
+          <p className="text-sm text-[#C8D2E0] mt-2 max-w-md mx-auto font-normal leading-relaxed">
+            Tell us what you're trying to achieve, what's currently holding the business back, and where you want to go next.
           </p>
         </div>
 
@@ -288,7 +284,6 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
             <div className="space-y-2">
               <h4
                 className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
               >
                 We've got it.
               </h4>
@@ -479,12 +474,12 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label htmlFor="modal-challenge-input" className="block text-xs font-medium text-slate-300">
-                      What would you like AI to handle?
+                      What are you looking to solve or build?
                     </label>
                     <span className="text-[11px] text-slate-500 font-mono">Optional</span>
                   </div>
                   <p className="text-[12px] text-slate-400 mb-2 font-normal leading-relaxed">
-                    Optional — tell us where time, admin or missed opportunities are costing your business.
+                    Optional — tell us what functions you want handled or which problem is costing the business most.
                   </p>
                   <textarea
                     id="modal-challenge-input"
@@ -495,7 +490,7 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
                       trackFormStartOnce();
                       setChallenge(e.target.value);
                     }}
-                    placeholder="Tell us where time, admin or missed opportunities are costing your business..."
+                    placeholder="e.g. Marketing & paid acquisition, sales process, CRM infrastructure, or operational workflows..."
                     className="w-full bg-[#050811] border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
                   />
                 </div>
@@ -513,7 +508,7 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full min-h-[44px] py-3.5 px-6 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                    className="w-full min-h-[48px] py-3.5 px-6 rounded-[2px] bg-[#F9F8F4] hover:bg-white text-[#08111E] font-semibold text-xs uppercase tracking-[0.08em] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <>
@@ -534,7 +529,7 @@ export const StrategyConsultantModal: React.FC<StrategyConsultantModalProps> = (
                     Your information stays private.
                   </p>
                   <p className="text-[12px] text-slate-400">
-                    Direct 20-minute discussion with an AI Systems Architect. No sales pitch.
+                    British-founded. Business-first. Technology-enabled.
                   </p>
                   <button
                     type="button"
